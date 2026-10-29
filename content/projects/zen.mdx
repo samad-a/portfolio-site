@@ -1,11 +1,19 @@
 ## The problem
 
-Coming soon.
+Zen was my project for the Edinburgh Award (Digital Skills Specialist). It's a focus and productivity app for Android that brings a pomodoro timer, a task list and progress tracking together in one calm place. It's local-first: there's no account, and it opens straight into the timer.
 
 ## My approach
 
-Coming soon.
+- **Design before code.** I designed the app in Figma from stakeholder feedback, then built it in Kotlin with XML layouts and View Binding, one fragment per tab.
+- **A timer that survives Android.** The pomodoro timer is driven by an end timestamp rather than by counting ticks, and a foreground service keeps it alive in the background, with actions in its notification.
+- **Tasks and progress.** Tasks have categories, due dates, reminders and drag-to-reorder. Every focus session is logged, which powers calendar heatmaps, streaks and totals.
+- **Local data with MVVM.** Tasks and sessions live in a Room database read through ViewModels as `LiveData`. The schema is exported, and migrations are tested.
+- **Checked on every push.** GitHub Actions runs lint, unit tests and a build, then Espresso UI tests on an emulator. Every Espresso action also runs Android's accessibility checks for labels, touch targets and contrast.
+
+The code is [on GitHub](https://github.com/samad-a/zen-productivity-app).
 
 ## What I learned
 
-Coming soon.
+- Android can pause or stop an app at any time, so state that matters, like when a focus session ends, has to be stored as a fact rather than kept running in memory.
+- Making time something the tests can control turned a 25-minute timer test into one that finishes instantly.
+- Automated accessibility checks catch problems on every interaction, not just the screens I remember to check by hand.

@@ -1,11 +1,19 @@
 ## The problem
 
-Coming soon.
+Social feeds and short-form video are built to pull you back in, a few seconds at a time. A website blocker helps, but it sees every site you visit, so it should keep that to itself. Blockr is a Chrome extension that blocks the sites you choose with no account, no server and no tracking: everything stays in your browser.
 
 ## My approach
 
-Coming soon.
+- **Built for Manifest V3.** Blockr is React, TypeScript and Vite, bundled for Chrome with CRXJS. Its service worker turns your block list into `declarativeNetRequest` redirect rules, so Chrome itself sends blocked pages to Blockr's calm "blocked" page before they load.
+- **Covering the gaps.** Sites like YouTube change page without reloading, which redirect rules never see. A `webNavigation` listener catches those, and tabs already open on a newly blocked site are moved to the blocked page.
+- **More than a list.** Ready-made presets for social media and short-form video, block schedules, daily time limits, a password lock with a cancellable 6-hour reset, and a stats page. Counters and stats stay on the device; only the list and settings sync.
+- **Data that can change safely.** Stored data has a version number. When the list moved to one entry per site, so about 400 sites fit instead of about 60, existing lists were upgraded automatically. Vitest suites cover the blocking rules, schedules, usage tracking and these storage migrations.
+- **Designed first.** I designed the UI in Figma, with light and dark themes audited to meet WCAG AA contrast. The stats chart has a table version for screen readers.
+
+It's [published on the Chrome Web Store](https://chromewebstore.google.com/detail/blockr-website-blocker/lndfkhpkbcnjhkedfoaedkboipijebji), and the code is [on GitHub](https://github.com/samad-a/blockr-chrome-extension).
 
 ## What I learned
 
-Coming soon.
+- Manifest V3 moves blocking out of my code and into Chrome's rules engine. That's faster and more private, but rules only see full page loads, so a blocker also needs an event-based path for everything else.
+- Stored data needs a plan for change from day one. Versioning it and testing each upgrade let me restructure the block list without losing anyone's sites.
+- Accessibility is easier to keep than to add. Checking colours with a test means a later redesign can't quietly break contrast.
