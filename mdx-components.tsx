@@ -23,9 +23,33 @@ const components: MDXComponents = {
   a: (props) => (
     <a className="underline decoration-2 underline-offset-4" {...props} />
   ),
-  code: (props) => (
-    <code className="bg-[rgb(27_27_47/0.08)] px-1 text-[0.9em]" {...props} />
+  // Code blocks, coloured by rehype-pretty-code while the site builds.
+  figure: (props) =>
+    "data-rehype-pretty-code-figure" in props ? (
+      <figure className="mt-5 grid" {...props} />
+    ) : (
+      <figure {...props} />
+    ),
+  figcaption: (props) => (
+    <figcaption
+      className="justify-self-start bg-ink px-3 pt-1.5 pb-1 font-label text-xs tracking-wide text-paper"
+      {...props}
+    />
   ),
+  pre: (props) => (
+    <pre
+      className="overflow-x-auto bg-ink px-4 py-3.5 font-mono text-[15px] leading-relaxed text-paper"
+      {...props}
+    />
+  ),
+  // Inline code gets a tint. Code inside a block is already coloured, and is
+  // marked with the theme it was coloured with.
+  code: (props) =>
+    "data-theme" in props ? (
+      <code {...props} />
+    ) : (
+      <code className="bg-[rgb(27_27_47/0.08)] px-1 text-[0.9em]" {...props} />
+    ),
 };
 
 export function useMDXComponents(): MDXComponents {
