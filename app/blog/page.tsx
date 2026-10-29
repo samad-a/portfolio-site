@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PostMeta } from "@/components/blog/post-meta";
 import { PixelPanel } from "@/components/ui/pixel-panel";
 import { getPosts } from "@/lib/blog/posts";
 
@@ -42,6 +43,7 @@ export default function BlogPage() {
                     {post.title}
                   </Link>
                 </h2>
+                <PostMeta post={post} />
                 <p>{post.summary}</p>
               </PixelPanel>
             </li>

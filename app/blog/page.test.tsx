@@ -29,6 +29,11 @@ describe("BlogPage", () => {
       within(articles[0]).getByRole("link", { name: "First post" }),
     ).toHaveAttribute("href", "/blog/first-post");
     expect(articles[0]).toHaveTextContent("What I learned.");
+    expect(within(articles[0]).getByText("29 Oct 2026")).toHaveAttribute(
+      "datetime",
+      "2026-10-29",
+    );
+    expect(articles[0]).toHaveTextContent("1 min read");
   });
 
   it("says so when there are no posts yet", () => {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PostMeta } from "@/components/blog/post-meta";
 import { PixelPanel } from "@/components/ui/pixel-panel";
 import { getPost, getPosts } from "@/lib/blog/posts";
 
@@ -43,6 +44,7 @@ export default async function PostPage({ params }: Props) {
           <h1 className="text-[clamp(32px,6vw,52px)] leading-[1.1] font-bold">
             {post.title}
           </h1>
+          <PostMeta post={post} />
         </header>
         <div className="max-w-[65ch]">
           <Content />
