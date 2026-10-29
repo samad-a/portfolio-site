@@ -62,6 +62,15 @@
     }
   }
 
+  /* Blinks four times, then stays on, so it stops within WCAG's five seconds. */
+  --animate-blink: blink 1.2s steps(1) 4;
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
   /* The avatar stands still, then hops. */
   --animate-hop: hop 2.4s steps(2) infinite;
 

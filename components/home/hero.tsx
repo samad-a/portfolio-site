@@ -1,6 +1,12 @@
+import { PixelButton } from "@/components/ui/pixel-button";
 import { PlayerCard } from "./player-card";
 
-export function Hero() {
+type HeroProps = {
+  // Leave out to hide the CV button, for example until a CV is uploaded.
+  cvHref?: string;
+};
+
+export function Hero({ cvHref }: HeroProps) {
   return (
     <section
       id="top"
@@ -20,6 +26,19 @@ export function Hero() {
           things feel playful. Below you&apos;ll find where I&apos;ve worked and
           what I&apos;ve made.
         </p>
+        <div className="mt-6.5 flex flex-wrap items-center gap-4.5">
+          {cvHref && (
+            <PixelButton href={cvHref} download>
+              <span aria-hidden="true">▼</span> save file (CV)
+            </PixelButton>
+          )}
+          <a
+            href="#experience"
+            className="animate-blink font-label text-sm tracking-wider text-ink no-underline motion-reduce:animate-none"
+          >
+            press start <span aria-hidden="true">↓</span>
+          </a>
+        </div>
       </div>
       <PlayerCard />
     </section>
