@@ -46,3 +46,9 @@
   --shadow-hard: 6px 6px 0 0 rgb(27 27 47 / 0.55);
   --drop-shadow-hard: 6px 6px 0 rgb(27 27 47 / 0.55);
 }
+
+/* Fonts are loaded by next/font in app/fonts.ts, which sets these variables. */
+@theme inline {
+  --font-sans: var(--font-pixelify-sans), "Courier New", monospace;
+  --font-label: var(--font-silkscreen), "Courier New", monospace;
+}
