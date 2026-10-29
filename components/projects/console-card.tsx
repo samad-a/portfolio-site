@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useId } from "react";
 import { Sprite } from "@/components/sprite";
 import { PixelPanel } from "@/components/ui/pixel-panel";
@@ -83,7 +84,12 @@ export function ConsoleCard({ project }: { project: Project }) {
       </div>
       <div>
         <h3 id={titleId} className="text-2xl leading-tight font-bold">
-          {project.name}
+          <Link
+            href={`/projects/${project.id}`}
+            className="text-paper underline decoration-transparent decoration-[3px] underline-offset-[5px] hover:decoration-current focus-visible:outline-paper"
+          >
+            {project.name}
+          </Link>
         </h3>
         <p className="mt-1.5 font-label text-xs tracking-wide">
           {project.stack.join(" · ")}
