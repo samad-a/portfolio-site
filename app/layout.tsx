@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { SkyCanvas } from "@/components/background/sky-canvas";
 import { SiteHeader } from "@/components/nav/site-header";
@@ -41,6 +43,9 @@ export default function RootLayout({
         {children}
         <SiteFooter />
         <Konami />
+        {/* Cookieless page view counts and real-visitor speed scores, on Vercel. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
