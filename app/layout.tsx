@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/nav/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { pixelifySans, silkscreen } from "./fonts";
 import "./globals.css";
 
@@ -32,6 +33,7 @@ export default function RootLayout({
         </a>
         <SiteHeader />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );
