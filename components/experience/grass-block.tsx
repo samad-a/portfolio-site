@@ -17,9 +17,9 @@ export function GrassBlock({ title, aside, children }: GrassBlockProps) {
     <PixelPanel
       as="article"
       aria-labelledby={titleId}
-      className="bg-dirt p-0 text-paper"
+      className="bg-dirt dirt-texture p-0 text-paper"
     >
-      <header className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 bg-grass px-5.5 pt-3.5 pb-2.5">
+      <header className="grass-edge flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 bg-grass px-5.5 pt-3.5 pb-2.5">
         <h3 id={titleId} className="text-2xl leading-tight font-bold">
           {title}
         </h3>
