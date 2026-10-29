@@ -71,4 +71,32 @@ describe("SkyCanvas", () => {
     setHidden(false);
     expect(request).toHaveBeenCalledTimes(2);
   });
+
+  it("draws one still frame with reduced motion, and again on scroll", () => {
+    stubCanvas();
+    vi.stubGlobal(
+      "matchMedia",
+      (query: string) =>
+        ({
+          matches: query === "(prefers-reduced-motion: reduce)",
+          addEventListener: () => {},
+          removeEventListener: () => {},
+        }) as unknown as MediaQueryList,
+    );
+    const frames: FrameRequestCallback[] = [];
+    vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) =>
+      frames.push(callback),
+    );
+    vi.stubGlobal("cancelAnimationFrame", () => {});
+    render(<SkyCanvas />);
+
+    // Drawing the frames that are waiting asks for no more.
+    const waiting = frames.splice(0);
+    expect(waiting.length).toBeGreaterThan(0);
+    waiting.forEach((callback) => callback(16));
+    expect(frames).toHaveLength(0);
+
+    dispatchEvent(new Event("scroll"));
+    expect(frames).toHaveLength(1);
+  });
 });

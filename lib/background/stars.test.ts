@@ -32,6 +32,13 @@ describe("starOpacity", () => {
     expect(starOpacity(star, (3 * Math.PI) / 4, 1)).toBeCloseTo(0.1);
   });
 
+  it("holds steady when twinkling is off", () => {
+    for (const seconds of [0, 1, 2.5]) {
+      expect(starOpacity(star, seconds, 1, false)).toBe(0.9);
+    }
+    expect(starOpacity(star, 1, 0.5, false)).toBe(0.45);
+  });
+
   it("is hidden on the day sky", () => {
     expect(starOpacity(star, 1, 0)).toBe(0);
   });
