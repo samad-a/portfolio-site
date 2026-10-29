@@ -47,6 +47,14 @@
   --drop-shadow-hard: 6px 6px 0 rgb(27 27 47 / 0.55);
 }
 
+@layer base {
+  /* A chunky dashed outline that stays visible on every background. */
+  :focus-visible {
+    outline: 3px dashed var(--color-gold-dark);
+    outline-offset: 4px;
+  }
+}
+
 /* Fonts are loaded by next/font in app/fonts.ts, which sets these variables. */
 @theme inline {
   --font-sans: var(--font-pixelify-sans), "Courier New", monospace;
