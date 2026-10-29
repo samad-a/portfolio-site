@@ -43,6 +43,18 @@ export const coin = defineSprite([
   "..KKKK..",
 ]);
 
+// LinkedIn-style badge, for the contact link.
+export const badge = defineSprite([
+  "KKKKKKKKK",
+  "KBBBBBBBK",
+  "KBWBBBBBK",
+  "KBBBWWWBK",
+  "KBWBWBWBK",
+  "KBWBWBWBK",
+  "KBBBBBBBK",
+  "KKKKKKKKK",
+]);
+
 // Points right. Flip it with CSS to point left.
 export const arrow = defineSprite([
   "...K...",
@@ -55,7 +67,7 @@ export const arrow = defineSprite([
 ]);
 
 // Every sprite, so tests can check them all.
-export const sprites = { cloud, avatar, coin, arrow, ...items };
+export const sprites = { cloud, avatar, coin, arrow, badge, ...items };
 
 export type SpriteName = keyof typeof sprites;
 export const spriteNames = Object.keys(sprites) as [
