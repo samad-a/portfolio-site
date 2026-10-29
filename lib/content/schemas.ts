@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { contrastRatio, hexColourPattern } from "@/lib/colour";
+import { spriteNames } from "@/lib/sprites";
 import { itemNames } from "@/lib/sprites/items";
 
 // Months are written as "2026-05" so they sort as plain strings.
@@ -58,8 +60,15 @@ export const experienceListSchema = z
   .min(1)
   .superRefine(uniqueBy((role) => role.id, "id"));
 
-// Matches the console colours in the theme.
-export const consoleColours = ["purple", "red", "green"] as const;
+// White text sits on a project's console, so its colour must keep the WCAG AA
+// ratio for normal text.
+const consoleColour = z
+  .string()
+  .regex(hexColourPattern, 'Use a colour like "#43308f"')
+  .refine((colour) => contrastRatio(colour, "#ffffff") >= 4.5, {
+    error: (issue) =>
+      `White text on ${issue.input} is ${contrastRatio(String(issue.input), "#ffffff").toFixed(2)}:1, below 4.5:1. Try a darker shade.`,
+  });
 
 export const projectSchema = z.strictObject({
   id: slug,
@@ -67,7 +76,22 @@ export const projectSchema = z.strictObject({
   summary: text,
   stack: z.array(text).min(1),
   highlights: z.array(text).min(1),
-  colour: z.enum(consoleColours),
+  // The console's body colour, ideally taken from the project's own branding.
+  colour: consoleColour,
+  // Drawn on the console's screen when there's no screenshot.
+  sprite: z.enum(spriteNames),
+  // A 4:3 image in public/projects/, shown on the console's screen.
+  screenshot: z
+    .strictObject({
+      src: z
+        .string()
+        .regex(
+          /^\/projects\/[a-z0-9-]+\.(png|jpg|webp|svg)$/,
+          'Use a path like "/projects/blockr.png"',
+        ),
+      alt: text,
+    })
+    .optional(),
   links: z
     .strictObject({
       code: z.url().optional(),

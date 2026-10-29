@@ -22,7 +22,8 @@ const project = {
   summary: "Does a thing.",
   stack: ["TypeScript"],
   highlights: ["Shipped it."],
-  colour: "red",
+  colour: "#ce4145",
+  sprite: "shield",
 };
 
 function messages(result: { error?: { issues: { message: string }[] } }) {
@@ -70,10 +71,17 @@ describe("projectSchema", () => {
     expect(projectSchema.parse(project).links).toEqual({});
   });
 
-  it("rejects a colour the theme doesn't have", () => {
+  it("rejects a colour that isn't a hex code", () => {
     expect(
       projectSchema.safeParse({ ...project, colour: "blue" }).success,
     ).toBe(false);
+  });
+
+  it("rejects a colour too light for white text", () => {
+    const result = projectSchema.safeParse({ ...project, colour: "#e5484d" });
+    expect(messages(result)).toEqual([
+      "White text on #e5484d is 3.91:1, below 4.5:1. Try a darker shade.",
+    ]);
   });
 
   it("rejects a link that isn't a URL", () => {
