@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SkyCanvas } from "@/components/background/sky-canvas";
 import { SiteHeader } from "@/components/nav/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { pixelifySans, silkscreen } from "./fonts";
@@ -31,6 +32,7 @@ export default function RootLayout({
         >
           skip to content
         </a>
+        <SkyCanvas />
         <SiteHeader />
         {children}
         <SiteFooter />

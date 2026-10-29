@@ -14,13 +14,14 @@ const links = [
 ];
 
 // The night sky at the bottom of the page. The gradient at the top fades the
-// day sky above into dusk and then night.
+// day sky above into dusk and then night. Once the sky canvas is running, it
+// paints the same sky with stars, so this background steps aside.
 export function ContactSection() {
   return (
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="bg-[linear-gradient(var(--color-sky),var(--color-dusk)_80px,var(--color-night)_160px)] px-4 pt-40 pb-30 text-center text-moon"
+      className="bg-[linear-gradient(var(--color-sky),var(--color-dusk)_80px,var(--color-night)_160px)] px-4 pt-40 pb-30 text-center text-moon [[data-sky=canvas]_&]:bg-none"
     >
       <div className="mx-auto grid max-w-page justify-items-center gap-7.5">
         <h2
