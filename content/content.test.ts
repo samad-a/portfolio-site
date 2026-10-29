@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
@@ -19,6 +19,18 @@ const files = readdirSync(__dirname).filter((file) => file.endsWith(".json"));
 describe("content files", () => {
   it("has a schema for every data file", () => {
     expect(files.toSorted()).toEqual(Object.keys(schemas).toSorted());
+  });
+
+  it.each(
+    projectListSchema
+      .parse(
+        JSON.parse(readFileSync(path.join(__dirname, "projects.json"), "utf8")),
+      )
+      .flatMap((project) =>
+        project.screenshot ? [project.screenshot.src] : [],
+      ),
+  )("%s exists in public/", (src) => {
+    expect(existsSync(path.join(__dirname, "..", "public", src))).toBe(true);
   });
 
   it.each(files)("%s matches its schema", (file) => {

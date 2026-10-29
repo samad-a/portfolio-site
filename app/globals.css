@@ -27,10 +27,7 @@
   --color-gold: #ffd43b;
   --color-gold-dark: #e8a317;
 
-  /* Handheld console bodies. Green is darkened for the same contrast reason. */
-  --color-console-purple: #43308f;
-  --color-console-red: #a3262b;
-  --color-console-green: #2f7a33;
+  /* Handheld console screens. Each body colour comes from content/projects.json. */
   --color-screen-bezel: #0f1a10;
   --color-screen: #c4d9a8;
 
