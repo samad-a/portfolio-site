@@ -43,6 +43,42 @@ export const coin = defineSprite([
   "..KKKK..",
 ]);
 
+// A twinkle, for the sky background.
+export const spark = defineSprite([
+  "...Y...",
+  "...Y...",
+  "..YWY..",
+  "YYWWWYY",
+  "..YWY..",
+  "...Y...",
+  "...Y...",
+]);
+
+// Night sky visitors, for the background.
+export const squid = defineSprite([
+  "....GGG....",
+  "..GGGGGGG..",
+  ".GGWWGWWGG.",
+  ".GGWKGWKGG.",
+  "GGGGGGGGGGG",
+  "GGG.GGG.GGG",
+  ".G..G.G..G.",
+  "G...G.G...G",
+]);
+
+export const rocket = defineSprite([
+  "...R...",
+  "..RWR..",
+  "..WCW..",
+  ".WWCWW.",
+  ".WWWWW.",
+  "RWWWWWR",
+  "R.WWW.R",
+  "...O...",
+  "..OYO..",
+  "...O...",
+]);
+
 // LinkedIn-style badge, for the contact link.
 export const badge = defineSprite([
   "KKKKKKKKK",
@@ -67,7 +103,17 @@ export const arrow = defineSprite([
 ]);
 
 // Every sprite, so tests can check them all.
-export const sprites = { cloud, avatar, coin, arrow, badge, ...items };
+export const sprites = {
+  cloud,
+  avatar,
+  coin,
+  arrow,
+  badge,
+  spark,
+  squid,
+  rocket,
+  ...items,
+};
 
 export type SpriteName = keyof typeof sprites;
 export const spriteNames = Object.keys(sprites) as [
