@@ -17,7 +17,8 @@
       "Wrote Vitest suites covering blocking rules, schedules, usage tracking and storage migrations.",
       "Designed the UI in Figma, with light and dark themes audited to ensure they meet WCAG AA contrast."
     ],
-    "colour": "red",
+    "colour": "#ce4145",
+    "sprite": "shield",
     "links": {
       "code": "https://github.com/samad-a/blockr-chrome-extension",
       "play": "https://chromewebstore.google.com/detail/blockr-website-blocker/lndfkhpkbcnjhkedfoaedkboipijebji"
@@ -40,9 +41,33 @@
       "Designed the app in Figma from stakeholder feedback, then built it in Kotlin with a pomodoro timer, task reminders and streak stats, earning the Edinburgh Award (Digital Skills Specialist).",
       "Set up GitHub Actions CI running lint, unit tests and Espresso UI tests on an emulator, with automated accessibility checks on every UI interaction."
     ],
-    "colour": "green",
+    "colour": "#2d601c",
+    "sprite": "leaf",
     "links": {
       "code": "https://github.com/samad-a/zen-productivity-app"
+    }
+  },
+  {
+    "id": "portfolio-site",
+    "name": "This website",
+    "summary": "A retro pixel-art portfolio, built one small pull request at a time.",
+    "stack": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Zod",
+      "Vitest",
+      "Playwright"
+    ],
+    "highlights": [
+      "Draws every sprite from typed string grids as crisp SVGs, checked by tests.",
+      "Keeps experience, projects and skills in data files validated with Zod, so a typo fails CI.",
+      "Runs lint, type checks and unit tests on every pull request, and Playwright against each Vercel preview."
+    ],
+    "colour": "#43308f",
+    "sprite": "cloud",
+    "links": {
+      "code": "https://github.com/samad-a/portfolio-site"
     }
   }
 ]

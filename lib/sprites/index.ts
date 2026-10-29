@@ -45,3 +45,9 @@ export const coin = defineSprite([
 
 // Every sprite, so tests can check them all.
 export const sprites = { cloud, avatar, coin, ...items };
+
+export type SpriteName = keyof typeof sprites;
+export const spriteNames = Object.keys(sprites) as [
+  SpriteName,
+  ...SpriteName[],
+];
