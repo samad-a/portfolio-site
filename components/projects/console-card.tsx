@@ -8,8 +8,14 @@ import { sprites } from "@/lib/sprites";
 const dpadShape =
   "[clip-path:polygon(33%_0,67%_0,67%_33%,100%_33%,100%_67%,67%_67%,67%_100%,33%_100%,33%_67%,0_67%,0_33%,33%_33%)]";
 
+// The gold focus outline would be too faint on some console colours, so the
+// controls use white, which every console colour is checked against.
 const controlClass =
-  "grid justify-items-center gap-1.5 font-label text-[11px] tracking-wider text-paper no-underline";
+  "group grid justify-items-center gap-1.5 font-label text-[11px] tracking-wider text-paper no-underline focus-visible:outline-paper";
+
+// Lit up gold when pointed at or focused, and pushed down while pressed.
+const buttonClass =
+  "bg-[rgb(0_0_0/0.4)] group-hover:bg-gold group-hover:text-ink group-focus-visible:bg-gold group-focus-visible:text-ink group-active:translate-y-[3px] motion-reduce:group-active:translate-y-0";
 
 function ConsoleControls({ project }: { project: Project }) {
   const { code, play } = project.links;
@@ -23,7 +29,7 @@ function ConsoleControls({ project }: { project: Project }) {
           aria-label={`View code for ${project.name}`}
           className={controlClass}
         >
-          <span className={`bg-black/40 size-14.5 ${dpadShape}`} />
+          <span className={`size-14.5 ${buttonClass} ${dpadShape}`} />
           code
         </a>
       )}
@@ -33,7 +39,9 @@ function ConsoleControls({ project }: { project: Project }) {
           aria-label={`Play ${project.name}`}
           className={`ml-auto ${controlClass}`}
         >
-          <span className="bg-black/40 grid size-13 place-items-center text-lg pixel-corners-2">
+          <span
+            className={`grid size-13 place-items-center text-lg pixel-corners-2 ${buttonClass}`}
+          >
             A
           </span>
           play
@@ -52,7 +60,8 @@ export function ConsoleCard({ project }: { project: Project }) {
     <PixelPanel
       as="article"
       aria-labelledby={titleId}
-      outerClassName="h-full"
+      // Lifts towards its shadow when pointed at or when a control has focus.
+      outerClassName="h-full transition-transform duration-100 ease-[steps(2)] hover:-translate-x-[3px] hover:-translate-y-[3px] has-focus-visible:-translate-x-[3px] has-focus-visible:-translate-y-[3px] motion-reduce:transition-none"
       className="grid h-full grid-rows-[auto_auto_1fr_auto] gap-3.5 px-5 pt-5 pb-6 text-paper pixel-corners-2"
       style={{ backgroundColor: project.colour }}
     >
