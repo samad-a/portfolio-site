@@ -1,9 +1,11 @@
+import { PlayerCard } from "./player-card";
+
 export function Hero() {
   return (
     <section
       id="top"
       aria-labelledby="hero-heading"
-      className="mx-auto grid max-w-page items-center gap-10 px-4 pt-12 pb-6"
+      className="mx-auto grid max-w-page items-center gap-10 px-4 pt-12 pb-6 md:grid-cols-[minmax(0,1fr)_auto]"
     >
       <div>
         <h1
@@ -19,6 +21,7 @@ export function Hero() {
           what I&apos;ve made.
         </p>
       </div>
+      <PlayerCard />
     </section>
   );
 }
