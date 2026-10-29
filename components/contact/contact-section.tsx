@@ -1,8 +1,10 @@
 import { Sprite } from "@/components/sprite";
 import { PixelPanel } from "@/components/ui/pixel-panel";
+import { sendContactMessage } from "@/lib/actions/contact";
 import { contact } from "@/lib/contact";
 import { badge } from "@/lib/sprites";
 import { items } from "@/lib/sprites/items";
+import { ContactForm } from "./contact-form";
 import { CopyEmail } from "./copy-email";
 
 const links = [
@@ -47,6 +49,9 @@ export function ContactSection() {
           ))}
         </ul>
         <CopyEmail email={contact.email} />
+        <div className="w-full max-w-xl pt-4">
+          <ContactForm action={sendContactMessage} />
+        </div>
       </div>
     </section>
   );
