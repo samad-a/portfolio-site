@@ -5,6 +5,7 @@ import {
   floaterCount,
   floaterScale,
   isOffScreen,
+  nightSprites,
   spawnFloater,
 } from "./floaters";
 
@@ -23,16 +24,24 @@ describe("floaters", () => {
   });
 
   it("scatters the first floaters across the screen", () => {
-    const floater = spawnFloater(always(0.5), desktop, daySprites, true);
+    const floater = spawnFloater(always(0.5), desktop, false, true);
 
     expect(floater.x).toBe(640);
     expect(floater.y).toBe(400);
     expect(daySprites).toContain(floater.sprite);
+    expect(floater.night).toBe(false);
+  });
+
+  it("picks night sprites for the night sky", () => {
+    const floater = spawnFloater(always(0.5), desktop, true, true);
+
+    expect(nightSprites).toContain(floater.sprite);
+    expect(floater.night).toBe(true);
   });
 
   it("brings later floaters in from the edge they drift away from", () => {
-    const rightward = spawnFloater(always(0.9), desktop, daySprites, false);
-    const leftward = spawnFloater(always(0.1), desktop, daySprites, false);
+    const rightward = spawnFloater(always(0.9), desktop, false, false);
+    const leftward = spawnFloater(always(0.1), desktop, false, false);
 
     expect(rightward.speed).toBeGreaterThan(0);
     expect(rightward.x).toBeLessThan(0);
@@ -42,14 +51,14 @@ describe("floaters", () => {
 
   it("drifts slowly, between 9 and 24 pixels a second", () => {
     for (const value of [0, 0.25, 0.75, 0.999]) {
-      const { speed } = spawnFloater(always(value), desktop, daySprites, true);
+      const { speed } = spawnFloater(always(value), desktop, false, true);
       expect(Math.abs(speed)).toBeGreaterThanOrEqual(9);
       expect(Math.abs(speed)).toBeLessThan(24);
     }
   });
 
   it("only counts as off screen once fully past an edge", () => {
-    const floater = spawnFloater(always(0.5), desktop, daySprites, true);
+    const floater = spawnFloater(always(0.5), desktop, false, true);
 
     expect(isOffScreen({ ...floater, x: -10 }, desktop)).toBe(false);
     expect(isOffScreen({ ...floater, x: -81 }, desktop)).toBe(true);
@@ -57,7 +66,7 @@ describe("floaters", () => {
   });
 
   it("bobs in whole 2px steps, at most 6px either way", () => {
-    const floater = spawnFloater(always(0.3), desktop, daySprites, true);
+    const floater = spawnFloater(always(0.3), desktop, false, true);
 
     for (let seconds = 0; seconds < 10; seconds += 0.37) {
       const offset = bobOffset(floater, seconds);

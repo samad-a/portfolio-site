@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import {
   bobOffset,
-  daySprites,
   type Floater,
   floaterCount,
   floaterScale,
@@ -18,6 +17,7 @@ import {
   skyLayout,
 } from "@/lib/background/sky";
 import { spriteImage } from "@/lib/background/sprite-image";
+import { makeStars, type Star, starOpacity } from "@/lib/background/stars";
 import { type SpriteName, sprites } from "@/lib/sprites";
 
 // Dense phone screens would otherwise draw up to 9 canvas pixels per CSS pixel.
@@ -50,6 +50,7 @@ export function SkyCanvas() {
       dusk: themeColour("dusk"),
       night: themeColour("night"),
     };
+    const starColour = themeColour("moon");
     const images = new Map<SpriteName, HTMLCanvasElement>();
     const imageOf = (name: SpriteName) => {
       if (!images.has(name)) images.set(name, spriteImage(sprites[name]));
@@ -59,6 +60,7 @@ export function SkyCanvas() {
     const viewport: Viewport = { width: 0, height: 0 };
     let layout: SkyLayout | undefined;
     let floaters: Floater[] = [];
+    let stars: Star[] = [];
     let frameId = 0;
     let lastTime: number | undefined;
 
@@ -70,20 +72,48 @@ export function SkyCanvas() {
       canvas!.height = Math.round(viewport.height * ratio);
       context!.setTransform(ratio, 0, 0, ratio, 0, 0);
       context!.imageSmoothingEnabled = false;
+      measure();
 
       const count = floaterCount(viewport);
       while (floaters.length < count) {
-        floaters.push(spawnFloater(Math.random, viewport, daySprites, true));
+        floaters.push(spawnFloater(Math.random, viewport, isNight(), true));
       }
       floaters = floaters.slice(0, count);
     }
 
-    // Finds the contact section, where night falls. Pages without one stay day.
+    // Whether the middle of the screen is on the night sky, which decides
+    // what kind of floater spawns next.
+    function isNight() {
+      return nightAmount(scrollY + viewport.height / 2, layout) > 0.5;
+    }
+
+    // Finds the contact section, where night falls, and fills the night sky
+    // below it with stars. Pages without one stay day.
     function measure() {
       const contact = document.getElementById("contact");
       layout = contact
         ? skyLayout(contact.getBoundingClientRect().top + scrollY)
         : undefined;
+      stars = layout
+        ? makeStars(
+            Math.random,
+            viewport.width,
+            layout.dayEnd,
+            document.documentElement.scrollHeight,
+          )
+        : [];
+    }
+
+    function drawStars(seconds: number) {
+      context!.fillStyle = starColour;
+      for (const star of stars) {
+        const y = star.y - scrollY;
+        if (y < -star.size || y > viewport.height) continue;
+        const opacity = starOpacity(star, seconds, nightAmount(star.y, layout));
+        if (opacity <= 0) continue;
+        context!.globalAlpha = opacity;
+        context!.fillRect(star.x, y, star.size, star.size);
+      }
     }
 
     function drawSky() {
@@ -107,16 +137,17 @@ export function SkyCanvas() {
       lastTime = time;
 
       drawSky();
+      drawStars(time / 1000);
 
       const scale = floaterScale(viewport);
       floaters = floaters.map((floater) => {
         floater.x += floater.speed * seconds;
         if (isOffScreen(floater, viewport)) {
-          return spawnFloater(Math.random, viewport, daySprites, false);
+          return spawnFloater(Math.random, viewport, isNight(), false);
         }
-        // Day sprites fade out as they reach the night sky.
-        const opacity =
-          floaterOpacity * (1 - nightAmount(scrollY + floater.y, layout));
+        // Each kind fades out as it drifts over the other kind of sky.
+        const night = nightAmount(scrollY + floater.y, layout);
+        const opacity = floaterOpacity * (floater.night ? night : 1 - night);
         if (opacity < 0.02) return floater;
         context!.globalAlpha = opacity;
         const image = imageOf(floater.sprite);
@@ -134,7 +165,6 @@ export function SkyCanvas() {
     }
 
     resize();
-    measure();
     addEventListener("resize", resize);
     // Images, fonts and the window size all move the contact section.
     const pageObserver = new ResizeObserver(measure);

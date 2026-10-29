@@ -54,6 +54,31 @@ export const spark = defineSprite([
   "...Y...",
 ]);
 
+// Night sky visitors, for the background.
+export const squid = defineSprite([
+  "....GGG....",
+  "..GGGGGGG..",
+  ".GGWWGWWGG.",
+  ".GGWKGWKGG.",
+  "GGGGGGGGGGG",
+  "GGG.GGG.GGG",
+  ".G..G.G..G.",
+  "G...G.G...G",
+]);
+
+export const rocket = defineSprite([
+  "...R...",
+  "..RWR..",
+  "..WCW..",
+  ".WWCWW.",
+  ".WWWWW.",
+  "RWWWWWR",
+  "R.WWW.R",
+  "...O...",
+  "..OYO..",
+  "...O...",
+]);
+
 // LinkedIn-style badge, for the contact link.
 export const badge = defineSprite([
   "KKKKKKKKK",
@@ -85,6 +110,8 @@ export const sprites = {
   arrow,
   badge,
   spark,
+  squid,
+  rocket,
   ...items,
 };
 

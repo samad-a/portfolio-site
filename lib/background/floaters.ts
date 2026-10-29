@@ -11,6 +11,8 @@ export type Floater = {
   speed: number;
   // Offsets the bob so floaters don't move in step.
   phase: number;
+  // Night floaters show on the night sky, and day ones on the day sky.
+  night: boolean;
 };
 
 export type Viewport = { width: number; height: number };
@@ -19,6 +21,7 @@ export type Viewport = { width: number; height: number };
 export type Random = () => number;
 
 export const daySprites: SpriteName[] = ["coin", "spark", "heart"];
+export const nightSprites: SpriteName[] = ["squid", "rocket", "spark"];
 
 // How far past either edge a floater goes before it respawns.
 const margin = 80;
@@ -32,14 +35,16 @@ export function floaterScale({ width }: Viewport) {
   return width < 640 ? 3 : 4;
 }
 
-// `scatter` places it anywhere across the screen, for the first frame;
-// otherwise it starts just off the edge it drifts in from.
+// `night` picks from the night sprites. `scatter` places it anywhere across
+// the screen, for the first frame; otherwise it starts just off the edge it
+// drifts in from.
 export function spawnFloater(
   random: Random,
   viewport: Viewport,
-  sprites: SpriteName[],
+  night: boolean,
   scatter: boolean,
 ): Floater {
+  const sprites = night ? nightSprites : daySprites;
   const direction = random() < 0.5 ? -1 : 1;
   const speed = direction * (9 + random() * 15);
   const sprite = sprites[Math.floor(random() * sprites.length)];
@@ -55,6 +60,7 @@ export function spawnFloater(
     y: random() * viewport.height,
     speed,
     phase: random() * Math.PI * 2,
+    night,
   };
 }
 
