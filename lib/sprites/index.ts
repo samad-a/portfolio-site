@@ -43,6 +43,17 @@ export const coin = defineSprite([
   "..KKKK..",
 ]);
 
+// A twinkle, for the sky background.
+export const spark = defineSprite([
+  "...Y...",
+  "...Y...",
+  "..YWY..",
+  "YYWWWYY",
+  "..YWY..",
+  "...Y...",
+  "...Y...",
+]);
+
 // LinkedIn-style badge, for the contact link.
 export const badge = defineSprite([
   "KKKKKKKKK",
@@ -67,7 +78,15 @@ export const arrow = defineSprite([
 ]);
 
 // Every sprite, so tests can check them all.
-export const sprites = { cloud, avatar, coin, arrow, badge, ...items };
+export const sprites = {
+  cloud,
+  avatar,
+  coin,
+  arrow,
+  badge,
+  spark,
+  ...items,
+};
 
 export type SpriteName = keyof typeof sprites;
 export const spriteNames = Object.keys(sprites) as [
