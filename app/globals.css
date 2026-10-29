@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
-@theme {
+/*
+ * `static` outputs every variable, even ones no class uses, because the sky
+ * canvas reads colours such as --color-sky-top straight from the page.
+ */
+@theme static {
   /* Only the site's own palette, so every colour comes from the design. */
   --color-*: initial;
 
@@ -87,6 +91,21 @@
 }
 
 @layer base {
+  /*
+   * For people who ask their device to reduce motion, nothing animates: no
+   * bobbing clouds, blinking text, lifting buttons or smooth scrolling. The
+   * sky canvas checks the same setting and draws a still picture.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   /* Pixelify Sans draws its "fi" ligature as a single glyph that reads as "A". */
   body {
     font-variant-ligatures: none;
