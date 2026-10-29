@@ -7,6 +7,13 @@ export function SiteFooter() {
       <div aria-hidden="true" className="grass-edge h-6 bg-grass" />
       <div className="mx-auto flex max-w-page flex-wrap justify-between gap-x-6 gap-y-2.5 px-4 pt-7 pb-8 font-label text-[13px] tracking-wide">
         <span>© {new Date().getFullYear()} Samad Ali</span>
+        {/* A hint for the Konami code, from the arcade games it comes from. */}
+        <span>
+          psst: <span aria-hidden="true">↑↑↓↓←→←→ B A</span>
+          <span className="sr-only">
+            up up down down left right left right B A
+          </span>
+        </span>
         <a href={`${contact.github}/portfolio-site`} className="text-paper">
           view source
         </a>

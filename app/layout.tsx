@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SkyCanvas } from "@/components/background/sky-canvas";
 import { SiteHeader } from "@/components/nav/site-header";
+import { Konami } from "@/components/konami";
 import { SiteFooter } from "@/components/site-footer";
 import { pixelifySans, silkscreen } from "./fonts";
 import "./globals.css";
@@ -39,6 +40,7 @@ export default function RootLayout({
         <SiteHeader />
         {children}
         <SiteFooter />
+        <Konami />
       </body>
     </html>
   );
