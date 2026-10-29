@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
+import { ContactSection } from "@/components/contact/contact-section";
 import { ExperienceSection } from "@/components/experience/experience-section";
 import { Hero } from "@/components/home/hero";
 import { ProjectsSection } from "@/components/projects/projects-section";
@@ -21,6 +22,7 @@ export default function Home() {
       <ExperienceSection roles={experience} />
       <SkillsSection skills={skills} projects={projects} />
       <ProjectsSection projects={projects} />
+      <ContactSection />
     </main>
   );
 }
