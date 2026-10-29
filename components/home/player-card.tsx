@@ -3,7 +3,7 @@ import { avatar } from "@/lib/sprites";
 
 const stats = [
   ["class", "CS student"],
-  ["level", "3rd year"],
+  ["level", "4th year"],
   ["base", "Edinburgh"],
   ["status", "open to work"],
 ] as const;

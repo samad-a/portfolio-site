@@ -8,6 +8,18 @@ test("homepage loads", async ({ page }) => {
   await expect(page.getByRole("main")).toBeAttached();
 });
 
+test("the CV button downloads a PDF", async ({ page }) => {
+  await page.goto("/");
+
+  const downloadPromise = page.waitForEvent("download");
+  await page.getByRole("link", { name: "save file (CV)" }).click();
+  const download = await downloadPromise;
+
+  expect(download.suggestedFilename()).toBe("Samad-Ali-CV.pdf");
+  const response = await page.request.get("/Samad-Ali-CV.pdf");
+  expect(response.headers()["content-type"]).toContain("application/pdf");
+});
+
 test("skip link moves focus to the main content", async ({ page }) => {
   await page.goto("/");
 
