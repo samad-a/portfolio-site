@@ -19,10 +19,10 @@ describe("Hero", () => {
   });
 
   it("offers the CV as a download when there is one", () => {
-    render(<Hero cvHref="/cv.pdf" />);
+    render(<Hero cvHref="/Samad-Ali-CV.pdf" />);
 
     const link = screen.getByRole("link", { name: "save file (CV)" });
-    expect(link).toHaveAttribute("href", "/cv.pdf");
+    expect(link).toHaveAttribute("href", "/Samad-Ali-CV.pdf");
     expect(link).toHaveAttribute("download", "Samad-Ali-CV.pdf");
   });
 

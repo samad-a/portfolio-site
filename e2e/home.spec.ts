@@ -16,7 +16,7 @@ test("the CV button downloads a PDF", async ({ page }) => {
   const download = await downloadPromise;
 
   expect(download.suggestedFilename()).toBe("Samad-Ali-CV.pdf");
-  const response = await page.request.get("/cv.pdf");
+  const response = await page.request.get("/Samad-Ali-CV.pdf");
   expect(response.headers()["content-type"]).toContain("application/pdf");
 });
 
