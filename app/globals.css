@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
-@theme {
+/*
+ * `static` outputs every variable, even ones no class uses, because the sky
+ * canvas reads colours such as --color-sky-top straight from the page.
+ */
+@theme static {
   /* Only the site's own palette, so every colour comes from the design. */
   --color-*: initial;
 

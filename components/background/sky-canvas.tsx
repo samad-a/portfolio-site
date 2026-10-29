@@ -11,6 +11,12 @@ import {
   spawnFloater,
   type Viewport,
 } from "@/lib/background/floaters";
+import {
+  nightAmount,
+  type SkyLayout,
+  skyGradient,
+  skyLayout,
+} from "@/lib/background/sky";
 import { spriteImage } from "@/lib/background/sprite-image";
 import { type SpriteName, sprites } from "@/lib/sprites";
 
@@ -28,6 +34,8 @@ function themeColour(name: string) {
 
 // A canvas fixed behind the whole page, redrawn every frame. It paints the sky
 // itself, so it sits above the body's background but below everything else.
+// The sky is a gradient fixed to the page, so scrolling down to the contact
+// section takes it from day through dusk to night.
 export function SkyCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -36,7 +44,12 @@ export function SkyCanvas() {
     const context = canvas?.getContext("2d");
     if (!canvas || !context) return;
 
-    const sky = themeColour("sky");
+    const colours = {
+      skyTop: themeColour("sky-top"),
+      sky: themeColour("sky"),
+      dusk: themeColour("dusk"),
+      night: themeColour("night"),
+    };
     const images = new Map<SpriteName, HTMLCanvasElement>();
     const imageOf = (name: SpriteName) => {
       if (!images.has(name)) images.set(name, spriteImage(sprites[name]));
@@ -44,6 +57,7 @@ export function SkyCanvas() {
     };
 
     const viewport: Viewport = { width: 0, height: 0 };
+    let layout: SkyLayout | undefined;
     let floaters: Floater[] = [];
     let frameId = 0;
     let lastTime: number | undefined;
@@ -64,22 +78,47 @@ export function SkyCanvas() {
       floaters = floaters.slice(0, count);
     }
 
+    // Finds the contact section, where night falls. Pages without one stay day.
+    function measure() {
+      const contact = document.getElementById("contact");
+      layout = contact
+        ? skyLayout(contact.getBoundingClientRect().top + scrollY)
+        : undefined;
+    }
+
+    function drawSky() {
+      const { end, stops } = skyGradient(layout, colours);
+      const gradient = context!.createLinearGradient(
+        0,
+        -scrollY,
+        0,
+        end - scrollY,
+      );
+      for (const [offset, colour] of stops)
+        gradient.addColorStop(offset, colour);
+      context!.globalAlpha = 1;
+      context!.fillStyle = gradient;
+      context!.fillRect(0, 0, viewport.width, viewport.height);
+    }
+
     function frame(time: number) {
       // Capped so a long pause (a background tab, say) doesn't jump everything.
       const seconds = Math.min((time - (lastTime ?? time)) / 1000, 0.1);
       lastTime = time;
 
-      context!.globalAlpha = 1;
-      context!.fillStyle = sky;
-      context!.fillRect(0, 0, viewport.width, viewport.height);
+      drawSky();
 
       const scale = floaterScale(viewport);
-      context!.globalAlpha = floaterOpacity;
       floaters = floaters.map((floater) => {
         floater.x += floater.speed * seconds;
         if (isOffScreen(floater, viewport)) {
           return spawnFloater(Math.random, viewport, daySprites, false);
         }
+        // Day sprites fade out as they reach the night sky.
+        const opacity =
+          floaterOpacity * (1 - nightAmount(scrollY + floater.y, layout));
+        if (opacity < 0.02) return floater;
+        context!.globalAlpha = opacity;
         const image = imageOf(floater.sprite);
         context!.drawImage(
           image,
@@ -95,12 +134,20 @@ export function SkyCanvas() {
     }
 
     resize();
+    measure();
     addEventListener("resize", resize);
+    // Images, fonts and the window size all move the contact section.
+    const pageObserver = new ResizeObserver(measure);
+    pageObserver.observe(document.body);
     frameId = requestAnimationFrame(frame);
+    // Lets the night section hand its background over to the canvas.
+    document.documentElement.dataset.sky = "canvas";
 
     return () => {
       cancelAnimationFrame(frameId);
       removeEventListener("resize", resize);
+      pageObserver.disconnect();
+      delete document.documentElement.dataset.sky;
     };
   }, []);
 
