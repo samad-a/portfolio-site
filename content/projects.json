@@ -1,0 +1,48 @@
+[
+  {
+    "id": "blockr",
+    "name": "Blockr",
+    "summary": "A privacy-first website blocker for Chrome that keeps all its data on your device.",
+    "stack": [
+      "TypeScript",
+      "React",
+      "Vite",
+      "Chrome Extensions (MV3)",
+      "Vitest",
+      "Figma"
+    ],
+    "highlights": [
+      "Built and published a privacy-first extension on the Chrome Web Store, keeping all data local with no backend.",
+      "Blocked sites via Manifest V3's declarativeNetRequest API, with schedules, daily time limits and a password lock.",
+      "Wrote Vitest suites covering blocking rules, schedules, usage tracking and storage migrations.",
+      "Designed the UI in Figma, with light and dark themes audited to ensure they meet WCAG AA contrast."
+    ],
+    "colour": "red",
+    "links": {
+      "code": "https://github.com/samad-a/blockr-chrome-extension",
+      "play": "https://chromewebstore.google.com/detail/blockr-website-blocker/lndfkhpkbcnjhkedfoaedkboipijebji"
+    }
+  },
+  {
+    "id": "zen",
+    "name": "Zen",
+    "summary": "A focus and productivity app for Android, designed in Figma first.",
+    "stack": [
+      "Kotlin",
+      "Android SDK",
+      "Room",
+      "MVVM",
+      "Espresso",
+      "GitHub Actions",
+      "Figma"
+    ],
+    "highlights": [
+      "Designed the app in Figma from stakeholder feedback, then built it in Kotlin with a pomodoro timer, task reminders and streak stats, earning the Edinburgh Award (Digital Skills Specialist).",
+      "Set up GitHub Actions CI running lint, unit tests and Espresso UI tests on an emulator, with automated accessibility checks on every UI interaction."
+    ],
+    "colour": "green",
+    "links": {
+      "code": "https://github.com/samad-a/zen-productivity-app"
+    }
+  }
+]

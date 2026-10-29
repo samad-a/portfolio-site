@@ -33,7 +33,8 @@ export const experienceSchema = z
     id: slug,
     role: text,
     org: text,
-    location: text,
+    // Optional, since not every role has one worth showing.
+    location: text.optional(),
     start: month,
     // Leave out for a role that's still going.
     end: month.optional(),

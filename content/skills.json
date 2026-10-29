@@ -1,0 +1,21 @@
+[
+  { "name": "Python", "category": "language" },
+  { "name": "JavaScript", "category": "language" },
+  { "name": "TypeScript", "category": "language" },
+  { "name": "Java", "category": "language" },
+  { "name": "PHP", "category": "language" },
+  { "name": "Haskell", "category": "language" },
+  { "name": "pandas", "category": "framework" },
+  { "name": "NumPy", "category": "framework" },
+  { "name": "Matplotlib", "category": "framework" },
+  { "name": "Tkinter", "category": "framework" },
+  { "name": "React", "category": "framework" },
+  { "name": "Spring Boot", "category": "framework" },
+  { "name": "Git", "category": "tool" },
+  { "name": "GitHub", "category": "tool" },
+  { "name": "VS Code", "category": "tool" },
+  { "name": "Figma", "category": "tool" },
+  { "name": "Postman", "category": "tool" },
+  { "name": "Docker", "category": "tool" },
+  { "name": "Excel", "category": "tool" }
+]
