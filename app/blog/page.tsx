@@ -3,12 +3,21 @@ import Link from "next/link";
 import { PostMeta } from "@/components/blog/post-meta";
 import { PixelPanel } from "@/components/ui/pixel-panel";
 import { getPosts } from "@/lib/blog/posts";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+const page = pageMetadata({
   title: "Dev log",
   description: "Notes on what I'm building and what I'm learning.",
+  path: "/blog",
+});
+
+export const metadata: Metadata = {
+  ...page,
   // Lets feed readers find the RSS feed from this page.
-  alternates: { types: { "application/rss+xml": "/blog/rss.xml" } },
+  alternates: {
+    ...page.alternates,
+    types: { "application/rss+xml": "/blog/rss.xml" },
+  },
 };
 
 export default function BlogPage() {
