@@ -28,7 +28,7 @@ export function Hero({ cvHref }: HeroProps) {
         </p>
         <div className="mt-6.5 flex flex-wrap items-center gap-4.5">
           {cvHref && (
-            <PixelButton href={cvHref} download>
+            <PixelButton href={cvHref} download="Samad-Ali-CV.pdf">
               <span aria-hidden="true">▼</span> save file (CV)
             </PixelButton>
           )}

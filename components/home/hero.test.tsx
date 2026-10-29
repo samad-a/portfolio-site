@@ -23,7 +23,7 @@ describe("Hero", () => {
 
     const link = screen.getByRole("link", { name: "save file (CV)" });
     expect(link).toHaveAttribute("href", "/cv.pdf");
-    expect(link).toHaveAttribute("download");
+    expect(link).toHaveAttribute("download", "Samad-Ali-CV.pdf");
   });
 
   it("hides the CV button when there is no CV", () => {
