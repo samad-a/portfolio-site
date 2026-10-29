@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { itemNames } from "@/lib/sprites/items";
 
 // Months are written as "2026-05" so they sort as plain strings.
 const monthPattern = /^\d{4}-(0[1-9]|1[0-2])$/;
@@ -85,6 +86,8 @@ export const skillCategories = ["language", "framework", "tool"] as const;
 export const skillSchema = z.strictObject({
   name: text,
   category: z.enum(skillCategories),
+  // The inventory sprite shown for this skill.
+  item: z.enum(itemNames),
 });
 
 export const skillListSchema = z
