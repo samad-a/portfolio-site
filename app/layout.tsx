@@ -1,17 +1,22 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { SkyCanvas } from "@/components/background/sky-canvas";
 import { SiteHeader } from "@/components/nav/site-header";
+import { Konami } from "@/components/konami";
 import { SiteFooter } from "@/components/site-footer";
 import { pixelifySans, silkscreen } from "./fonts";
 import "./globals.css";
+import { pageMetadata, siteDescription, siteName, siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
+  // Lets pages give relative URLs for canonical links and preview images.
+  metadataBase: new URL(siteUrl),
+  ...pageMetadata({ description: siteDescription, path: "/" }),
   title: {
-    default: "Samad Ali",
-    template: "%s · Samad Ali",
+    default: siteName,
+    template: `%s · ${siteName}`,
   },
-  description:
-    "Samad Ali, a computer science student at the University of Edinburgh. Experience, projects and a dev log, in retro pixel art.",
 };
 
 export default function RootLayout({
@@ -37,6 +42,10 @@ export default function RootLayout({
         <SiteHeader />
         {children}
         <SiteFooter />
+        <Konami />
+        {/* Cookieless page view counts and real-visitor speed scores, on Vercel. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -8,6 +8,7 @@ import { ProjectsSection } from "@/components/projects/projects-section";
 import { SkillsSection } from "@/components/skills/skills-section";
 import { getPosts } from "@/lib/blog/posts";
 import { experience, projects, skills } from "@/lib/content";
+import { pageMetadata, siteDescription } from "@/lib/site";
 
 // Vercel names downloads after the file itself, so this is the name visitors get.
 const cvFile = "Samad-Ali-CV.pdf";
@@ -16,6 +17,11 @@ const cvFile = "Samad-Ali-CV.pdf";
 const cvHref = existsSync(path.join(process.cwd(), "public", cvFile))
   ? `/${cvFile}`
   : undefined;
+
+export const metadata = pageMetadata({
+  description: siteDescription,
+  path: "/",
+});
 
 export default function Home() {
   return (

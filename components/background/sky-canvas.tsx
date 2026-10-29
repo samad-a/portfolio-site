@@ -18,6 +18,7 @@ import {
 } from "@/lib/background/sky";
 import { spriteImage } from "@/lib/background/sprite-image";
 import { makeStars, type Star, starOpacity } from "@/lib/background/stars";
+import { konamiEvent } from "@/lib/konami";
 import { type SpriteName, sprites } from "@/lib/sprites";
 
 // Faint, so text that a floater drifts behind stays easy to read.
@@ -181,6 +182,26 @@ export function SkyCanvas() {
       frameId = requestAnimationFrame(frame);
     }
 
+    // The Konami code's reward: a burst of fast coins that clears after a few
+    // seconds. With reduced motion, only the message shows.
+    let showerTimer: ReturnType<typeof setTimeout> | undefined;
+    function onKonami() {
+      if (still) return;
+      const night = isNight();
+      for (let i = 0; i < 30; i++) {
+        const coin = spawnFloater(Math.random, viewport, night, true);
+        floaters.push({
+          ...coin,
+          sprite: "coin",
+          speed: Math.sign(coin.speed) * (90 + Math.random() * 150),
+        });
+      }
+      clearTimeout(showerTimer);
+      showerTimer = setTimeout(() => {
+        floaters = floaters.slice(0, floaterCount(viewport));
+      }, 5000);
+    }
+
     function onScroll() {
       if (still) redraw();
     }
@@ -202,6 +223,7 @@ export function SkyCanvas() {
     resize();
     addEventListener("resize", resize);
     addEventListener("scroll", onScroll, { passive: true });
+    addEventListener(konamiEvent, onKonami);
     motionQuery.addEventListener("change", onMotionChange);
     document.addEventListener("visibilitychange", onVisibilityChange);
     // Images, fonts and the window size all move the contact section.
@@ -215,6 +237,8 @@ export function SkyCanvas() {
       cancelAnimationFrame(frameId);
       removeEventListener("resize", resize);
       removeEventListener("scroll", onScroll);
+      removeEventListener(konamiEvent, onKonami);
+      clearTimeout(showerTimer);
       motionQuery.removeEventListener("change", onMotionChange);
       document.removeEventListener("visibilitychange", onVisibilityChange);
       pageObserver.disconnect();

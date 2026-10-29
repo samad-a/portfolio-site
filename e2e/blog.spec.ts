@@ -26,7 +26,7 @@ test("the dev log lists every post and links to the feed", async ({ page }) => {
   await expect(page.getByRole("article").first()).toBeVisible();
   await expect(
     page.locator('link[rel="alternate"][type="application/rss+xml"]'),
-  ).toHaveAttribute("href", "/blog/rss.xml");
+  ).toHaveAttribute("href", /\/blog\/rss\.xml$/);
 });
 
 test("the RSS feed is valid XML with an item per post", async ({ page }) => {

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { PostMeta } from "@/components/blog/post-meta";
 import { PixelPanel } from "@/components/ui/pixel-panel";
 import { getPost, getPosts } from "@/lib/blog/posts";
+import { pageMetadata } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -16,7 +17,14 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPost((await params).slug);
-  return post ? { title: post.title, description: post.summary } : {};
+  return post
+    ? pageMetadata({
+        title: post.title,
+        description: post.summary,
+        path: `/blog/${post.slug}`,
+        published: post.published,
+      })
+    : {};
 }
 
 export default async function PostPage({ params }: Props) {
