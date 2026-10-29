@@ -1,1 +1,48 @@
 @import "tailwindcss";
+
+@theme {
+  /* Only the site's own palette, so every colour comes from the design. */
+  --color-*: initial;
+
+  /* Sky, from the top of the page down to the night-time contact section */
+  --color-sky-top: #8fd0ea;
+  --color-sky: #a9dbee;
+  --color-dusk: #7b6fc9;
+  --color-night: #121238;
+  --color-night-deep: #0a0a24;
+
+  /* Text and surfaces */
+  --color-ink: #1b1b2f;
+  --color-ink-soft: #33405a;
+  --color-paper: #ffffff;
+  --color-moon: #f3efff;
+
+  /* Ground. Grass is darker than the prototype so white text passes WCAG AA. */
+  --color-grass: #2b7d35;
+  --color-grass-hi: #4caf50;
+  --color-dirt: #83502f;
+  --color-dirt-dark: #6a3f24;
+
+  /* Accents */
+  --color-gold: #ffd43b;
+  --color-gold-dark: #e8a317;
+
+  /* Handheld console bodies. Green is darkened for the same contrast reason. */
+  --color-console-purple: #43308f;
+  --color-console-red: #a3262b;
+  --color-console-green: #2f7a33;
+  --color-screen-bezel: #0f1a10;
+  --color-screen: #c4d9a8;
+
+  /* Skills inventory */
+  --color-inventory: #2a2a48;
+  --color-slot: #3d3d66;
+
+  /* One art pixel. Corners, outlines and offsets snap to multiples of this. */
+  --spacing-pixel: 4px;
+
+  /* Hard, unblurred shadows in the style of old game sprites */
+  --shadow-hard-sm: 3px 3px 0 0 rgb(27 27 47 / 0.55);
+  --shadow-hard: 6px 6px 0 0 rgb(27 27 47 / 0.55);
+  --drop-shadow-hard: 6px 6px 0 rgb(27 27 47 / 0.55);
+}
