@@ -1,0 +1,44 @@
+---
+title: Building this site, one save point at a time
+summary: How I planned a pixel-art portfolio as a roadmap of small pull requests, and what I learned shipping it with Next.js, Zod and Playwright.
+published: 2026-10-29
+---
+
+I wanted a portfolio that shows how I work, not just what I've made. So instead of building it in one go, I wrote a roadmap: thirteen phases, each on its own branch, each made of small commits and merged by pull request once every check passed. This post walks through the parts I enjoyed most.
+
+## Sprites as code
+
+Every sprite on the site, from the clouds to the inventory items, is a grid of letters, one per colour:
+
+```ts title="lib/sprites/index.ts"
+export const coin = defineSprite([
+  "..KKKK..",
+  ".KYYYYK.",
+  "KYWYYOYK",
+  "KYWYYOYK",
+  "KYWYYOYK",
+  "KYYYYOYK",
+  ".KYOOOK.",
+  "..KKKK..",
+]);
+```
+
+`defineSprite` uses TypeScript template literal types, so a letter that isn't in the palette is a compile error, and a test checks every row is the same width. Each sprite renders as an SVG, with runs of same-coloured pixels merged into single rectangles, so it stays sharp at any size.
+
+## Content that can't break the site
+
+My experience, projects and skills live in JSON files, and these blog posts in MDX. Zod checks all of them in CI. A misspelt field, a date that doesn't exist or a console colour too light for white text fails the build with a message saying exactly what to fix, instead of quietly breaking the live site.
+
+## Tests that run against the real thing
+
+Every pull request runs lint, type checks, formatting, unit tests and a build. Then Playwright runs against the Vercel preview of that exact commit. That caught a bug I'd never have seen locally: Vercel's download headers override a link's `download` attribute, so my CV was arriving as `cv.pdf`.
+
+## Keeping it smooth
+
+The sky behind this page is a canvas: drifting sprites by day, then dusk and twinkling stars as you scroll down. My first version dropped to about 35 frames a second on a throttled phone. Drawing the canvas at one pixel per CSS pixel, and letting the browser scale it up with `image-rendering: pixelated`, brought it back to a steady 60, and pixel art looks exactly the same.
+
+## What I'd tell myself at the start
+
+- Small pull requests are easier to review, easier to revert and much easier to explain.
+- Look at every change at phone width. Screenshots caught things no test did, like a font ligature that turned "fi" into an "A".
+- Accessibility is easier to build in than to add later: contrast checks, focus outlines and reduced motion are all part of the design here, not an afterthought.
