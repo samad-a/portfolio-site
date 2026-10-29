@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ComponentProps } from "react";
+import { cn } from "@/lib/cn";
 
 type LinkProps = ComponentProps<typeof Link> & { href: string };
 type ButtonProps = ComponentProps<"button"> & { href?: undefined };
@@ -16,7 +17,7 @@ const faceClass =
   "pixel-corners inline-flex cursor-pointer items-center gap-2.5 bg-gold px-4.5 py-3 font-label text-[15px] tracking-wide text-ink no-underline focus-visible:outline-ink focus-visible:outline-offset-[-7px]";
 
 export function PixelButton({ className, ...props }: PixelButtonProps) {
-  const face = className ? `${faceClass} ${className}` : faceClass;
+  const face = cn(faceClass, className);
 
   return (
     <span className={wrapperClass}>
