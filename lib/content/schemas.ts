@@ -78,8 +78,20 @@ export const projectSchema = z.strictObject({
   highlights: z.array(text).min(1),
   // The console's body colour, ideally taken from the project's own branding.
   colour: consoleColour,
-  // Drawn on the console's screen.
+  // Drawn on the console's screen when there's no screenshot.
   sprite: z.enum(spriteNames),
+  // A 4:3 image in public/projects/, shown on the console's screen.
+  screenshot: z
+    .strictObject({
+      src: z
+        .string()
+        .regex(
+          /^\/projects\/[a-z0-9-]+\.(png|jpg|webp|svg)$/,
+          'Use a path like "/projects/blockr.png"',
+        ),
+      alt: text,
+    })
+    .optional(),
   links: z
     .strictObject({
       code: z.url().optional(),

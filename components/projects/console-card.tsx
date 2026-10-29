@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useId } from "react";
 import { Sprite } from "@/components/sprite";
 import { PixelPanel } from "@/components/ui/pixel-panel";
@@ -66,8 +67,18 @@ export function ConsoleCard({ project }: { project: Project }) {
       style={{ backgroundColor: project.colour }}
     >
       <div className="bg-screen-bezel p-2.5 pixel-corners">
-        <div className="grid aspect-4/3 place-items-center bg-screen pixel-corners">
-          <Sprite grid={sprites[project.sprite]} className="w-16" />
+        <div className="relative grid aspect-4/3 place-items-center overflow-hidden bg-screen pixel-corners">
+          {project.screenshot ? (
+            <Image
+              src={project.screenshot.src}
+              alt={project.screenshot.alt}
+              fill
+              sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 85vw"
+              className="object-cover"
+            />
+          ) : (
+            <Sprite grid={sprites[project.sprite]} className="w-16" />
+          )}
         </div>
       </div>
       <div>
