@@ -45,7 +45,7 @@ describe("Hero", () => {
     render(<Hero />);
 
     expect(
-      screen.getByText(/3rd year computer science student/),
+      screen.getByText(/4th year computer science student/),
     ).toBeInTheDocument();
   });
 });
