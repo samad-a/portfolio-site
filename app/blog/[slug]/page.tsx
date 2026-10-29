@@ -30,7 +30,7 @@ export default async function PostPage({ params }: Props) {
     <main
       id="main"
       tabIndex={-1}
-      className="mx-auto grid max-w-page gap-8 px-4 pt-10 pb-16"
+      className="mx-auto grid w-full max-w-page gap-8 px-4 pt-10 pb-16"
     >
       <Link
         href="/blog"

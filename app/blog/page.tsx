@@ -18,7 +18,7 @@ export default function BlogPage() {
     <main
       id="main"
       tabIndex={-1}
-      className="mx-auto grid max-w-page gap-8 px-4 pt-10 pb-16"
+      className="mx-auto grid w-full max-w-page gap-8 px-4 pt-10 pb-16"
     >
       <header className="grid gap-3">
         <h1 className="flex flex-wrap items-center gap-x-3.5 gap-y-2 text-[clamp(40px,7vw,64px)] leading-[1.1] font-bold">
