@@ -41,6 +41,13 @@ and type-check the staged files, and commit messages must follow
 [Conventional Commits](https://www.conventionalcommits.org/), for example
 `feat(nav): add mobile menu`.
 
+### Environment variables
+
+The contact form sends email with [Resend](https://resend.com). To try it
+locally, copy `.env.example` to `.env.local` and add a Resend API key. On
+Vercel, set the same variables under Settings > Environment Variables. Without
+a key, the form shows a friendly error and the rest of the site works.
+
 ## Scripts
 
 | Command                | What it does                            |
