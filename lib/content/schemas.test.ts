@@ -88,15 +88,15 @@ describe("projectSchema", () => {
 describe("skillListSchema", () => {
   it("rejects the same skill twice, ignoring case", () => {
     const result = skillListSchema.safeParse([
-      { name: "React", category: "framework" },
-      { name: "react", category: "framework" },
+      { name: "React", category: "framework", item: "key" },
+      { name: "react", category: "framework", item: "key" },
     ]);
     expect(messages(result)).toEqual(['Duplicate skill "react"']);
   });
 
   it("rejects an unknown category", () => {
     const result = skillListSchema.safeParse([
-      { name: "Git", category: "tools" },
+      { name: "Git", category: "tools", item: "key" },
     ]);
     expect(result.success).toBe(false);
   });
