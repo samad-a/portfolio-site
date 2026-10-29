@@ -139,6 +139,33 @@
     drop-shadow(0 -3px 0 var(--color-ink)) drop-shadow(var(--drop-shadow-hard));
 }
 
+/*
+ * The top of a grass block: a light strip along the top edge and a row of
+ * square teeth hanging over the dirt below.
+ */
+@utility grass-edge {
+  position: relative;
+  box-shadow: inset 0 var(--spacing-pixel) 0 var(--color-grass-hi);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    height: calc(2 * var(--spacing-pixel));
+    background: linear-gradient(90deg, var(--color-grass) 50%, transparent 0) 0
+      0 / calc(4 * var(--spacing-pixel)) 100% repeat-x;
+  }
+}
+
+/*
+ * Darker clods scattered over the dirt. They're only ever darker than the dirt,
+ * so text on top keeps its contrast wherever it lands.
+ */
+@utility dirt-texture {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='44' shape-rendering='crispEdges'%3E%3Cg fill='%236a3f24'%3E%3Crect x='6' y='10' width='6' height='6'/%3E%3Crect x='32' y='26' width='6' height='6'/%3E%3Crect x='46' y='6' width='4' height='4'/%3E%3Crect x='18' y='34' width='4' height='4'/%3E%3Crect x='24' y='4' width='4' height='4'/%3E%3C/g%3E%3C/svg%3E");
+}
+
 /* Fonts are loaded by next/font in app/fonts.ts, which sets these variables. */
 @theme inline {
   --font-sans: var(--font-pixelify-sans), "Courier New", monospace;
