@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { PixelButton } from "@/components/ui/pixel-button";
 import { PixelPanel } from "@/components/ui/pixel-panel";
 import { projects } from "@/lib/content";
+import { pageMetadata } from "@/lib/site";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -21,7 +22,13 @@ function findProject(id: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const project = findProject((await params).id);
-  return project ? { title: project.name, description: project.summary } : {};
+  return project
+    ? pageMetadata({
+        title: project.name,
+        description: project.summary,
+        path: `/projects/${project.id}`,
+      })
+    : {};
 }
 
 export default async function CaseStudyPage({ params }: Props) {

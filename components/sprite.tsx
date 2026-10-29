@@ -9,7 +9,7 @@ import {
 type Run = { x: number; y: number; width: number; colour: string };
 
 // Joins neighbouring pixels of the same colour in a row into one rectangle.
-function toRuns(grid: SpriteGrid): Run[] {
+export function toRuns(grid: SpriteGrid): Run[] {
   const runs: Run[] = [];
 
   grid.forEach((row, y) => {
