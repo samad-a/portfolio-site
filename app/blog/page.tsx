@@ -7,6 +7,8 @@ import { getPosts } from "@/lib/blog/posts";
 export const metadata: Metadata = {
   title: "Dev log",
   description: "Notes on what I'm building and what I'm learning.",
+  // Lets feed readers find the RSS feed from this page.
+  alternates: { types: { "application/rss+xml": "/blog/rss.xml" } },
 };
 
 export default function BlogPage() {
