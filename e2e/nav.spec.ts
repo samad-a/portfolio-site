@@ -20,6 +20,18 @@ test.describe("on a phone", () => {
   });
 });
 
+test("clouds bob unless the visitor prefers reduced motion", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const cloud = page.getByRole("link", { name: "samad ali" });
+
+  await expect(cloud).toHaveCSS("animation-name", "bob");
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(cloud).toHaveCSS("animation-name", "none");
+});
+
 test("on a desktop the clouds link straight to each section", async ({
   page,
 }) => {

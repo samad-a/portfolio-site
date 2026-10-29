@@ -7,7 +7,7 @@ import { cloud } from "@/lib/sprites";
 // Shared by cloud links and the mobile menu's cloud button.
 // The cloud keeps its 24×11 shape at any width.
 export const cloudClassName =
-  "group relative grid aspect-[24/11] w-[150px] cursor-pointer place-items-center pt-1 text-xl font-medium text-ink no-underline";
+  "group relative grid aspect-[24/11] w-[150px] animate-bob cursor-pointer place-items-center pt-1 text-xl font-medium text-ink no-underline motion-reduce:animate-none";
 
 export function CloudArt({ children }: { children: ReactNode }) {
   return (

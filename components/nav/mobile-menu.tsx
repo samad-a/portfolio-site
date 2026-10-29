@@ -49,7 +49,10 @@ export function MobileMenu({ links, className }: MobileMenuProps) {
         aria-expanded={open}
         aria-controls={menuId}
         onClick={() => setOpen((wasOpen) => !wasOpen)}
-        className={cn(cloudClassName, "w-[118px] text-base")}
+        className={cn(
+          cloudClassName,
+          "w-[118px] text-base [animation-delay:-2.2s]",
+        )}
       >
         <CloudArt>{open ? "close" : "menu"}</CloudArt>
       </button>
