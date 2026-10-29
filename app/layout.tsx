@@ -21,7 +21,7 @@ export default function RootLayout({
       lang="en"
       className={`${pixelifySans.variable} ${silkscreen.variable}`}
     >
-      <body className="bg-sky text-ink">
+      <body className="bg-sky text-[17px] text-ink sm:text-[19px]">
         {/* Hidden until focused, so keyboard users can jump past the navigation. */}
         <a
           href="#main"
