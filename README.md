@@ -1,5 +1,7 @@
 # Portfolio Site
 
+[![CI](https://github.com/samad-a/portfolio-site/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/samad-a/portfolio-site/actions/workflows/ci.yml)
+
 My personal portfolio: a retro pixel-art site where the sky turns from day to
 night as you scroll. It brings together my experience, projects, case studies
 and a blog, and doubles as a showcase of how I build and ship a production web
