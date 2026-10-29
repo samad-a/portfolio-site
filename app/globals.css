@@ -55,6 +55,51 @@
   }
 }
 
+/*
+ * Stepped corners, cut two art pixels deep, like a sprite with no anti-aliasing.
+ * `pixel-corners-2` doubles the step for bigger shapes.
+ */
+@utility pixel-corners {
+  --corner: var(--spacing-pixel);
+  clip-path: polygon(
+    0 calc(2 * var(--corner)),
+    var(--corner) calc(2 * var(--corner)),
+    var(--corner) var(--corner),
+    calc(2 * var(--corner)) var(--corner),
+    calc(2 * var(--corner)) 0,
+    calc(100% - 2 * var(--corner)) 0,
+    calc(100% - 2 * var(--corner)) var(--corner),
+    calc(100% - var(--corner)) var(--corner),
+    calc(100% - var(--corner)) calc(2 * var(--corner)),
+    100% calc(2 * var(--corner)),
+    100% calc(100% - 2 * var(--corner)),
+    calc(100% - var(--corner)) calc(100% - 2 * var(--corner)),
+    calc(100% - var(--corner)) calc(100% - var(--corner)),
+    calc(100% - 2 * var(--corner)) calc(100% - var(--corner)),
+    calc(100% - 2 * var(--corner)) 100%,
+    calc(2 * var(--corner)) 100%,
+    calc(2 * var(--corner)) calc(100% - var(--corner)),
+    var(--corner) calc(100% - var(--corner)),
+    var(--corner) calc(100% - 2 * var(--corner)),
+    0 calc(100% - 2 * var(--corner))
+  );
+}
+
+@utility pixel-corners-* {
+  --corner: calc(var(--spacing-pixel) * --value(integer));
+}
+
+/*
+ * An ink outline plus a hard shadow that follows the stepped corners.
+ * Put it on a wrapper around the `pixel-corners` element: clip-path would cut
+ * off a border or box-shadow on the element itself.
+ */
+@utility pixel-outline {
+  filter: drop-shadow(3px 0 0 var(--color-ink))
+    drop-shadow(-3px 0 0 var(--color-ink)) drop-shadow(0 3px 0 var(--color-ink))
+    drop-shadow(0 -3px 0 var(--color-ink)) drop-shadow(var(--drop-shadow-hard));
+}
+
 /* Fonts are loaded by next/font in app/fonts.ts, which sets these variables. */
 @theme inline {
   --font-sans: var(--font-pixelify-sans), "Courier New", monospace;
