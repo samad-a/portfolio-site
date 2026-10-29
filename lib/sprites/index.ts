@@ -1,4 +1,5 @@
 import { defineSprite } from "./grid";
+import { items } from "./items";
 
 export const cloud = defineSprite([
   "........KKKK............",
@@ -43,4 +44,4 @@ export const coin = defineSprite([
 ]);
 
 // Every sprite, so tests can check them all.
-export const sprites = { cloud, avatar, coin };
+export const sprites = { cloud, avatar, coin, ...items };
