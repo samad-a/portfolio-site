@@ -27,6 +27,9 @@
   --color-gold: #ffd43b;
   --color-gold-dark: #e8a317;
 
+  /* Form errors: 7.3:1 on white. */
+  --color-error: #a3262b;
+
   /* Handheld console screens. Each body colour comes from content/projects.json. */
   --color-screen-bezel: #0f1a10;
   --color-screen: #c4d9a8;
