@@ -24,7 +24,8 @@ export default function RootLayout({
       lang="en"
       className={`${pixelifySans.variable} ${silkscreen.variable}`}
     >
-      <body className="bg-sky text-[17px] text-ink sm:text-[19px]">
+      {/* A column at least as tall as the screen, so the footer sits at the bottom of short pages. */}
+      <body className="flex min-h-dvh flex-col bg-sky text-[17px] text-ink sm:text-[19px]">
         {/* Hidden until focused, so keyboard users can jump past the navigation. */}
         <a
           href="#main"

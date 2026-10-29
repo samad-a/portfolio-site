@@ -7,7 +7,7 @@ const bobDelays = ["-1s", "-2.2s", "-3s", "-1.6s"];
 
 export function SiteHeader() {
   return (
-    <header className="mx-auto max-w-page px-4 pt-4.5">
+    <header className="mx-auto w-full max-w-page px-4 pt-4.5">
       <nav aria-label="Main" className="flex flex-wrap items-end gap-x-3.5">
         <CloudLink
           href="/"
