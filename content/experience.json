@@ -1,0 +1,40 @@
+[
+  {
+    "id": "natwest-software-engineering-intern",
+    "role": "Software Engineering Intern",
+    "org": "NatWest Group",
+    "start": "2026-05",
+    "end": "2026-08",
+    "highlights": [
+      "Developed the React/TypeScript front-end for a prototype dashboard visualising a 5-year enterprise architecture transformation across 700+ outcomes and 2,500+ applications.",
+      "Built reusable UI components with Tailwind CSS and Framer Motion across 10 feature areas, implementing global dark mode and resolving styling conflicts across independently built modules.",
+      "Delivered a prototype walkthrough to a senior judging panel, with usability testers unanimously favouring our new interface over the existing system.",
+      "Conducted an individual research project on 'Banking without Barriers', pitching 3 AI and accessibility aligned concepts to improve digital banking for underbanked customers."
+    ]
+  },
+  {
+    "id": "uoe-web-content-supervisor-intern",
+    "role": "Web Content Supervisor Intern",
+    "org": "The University of Edinburgh",
+    "location": "Edinburgh",
+    "start": "2025-05",
+    "end": "2026-05",
+    "highlights": [
+      "Led the successful rebuild of over 7,000 web pages, four times the original target, and enhanced 15% of the University's web estate with a focus on accessibility, consistency, and content quality.",
+      "Rehired to support a new intern cohort and lead a major website rebuild.",
+      "Coordinated with lead publishers, mentored interns and authored a promotional blog post."
+    ]
+  },
+  {
+    "id": "uoe-web-content-migration-intern",
+    "role": "Web Content Migration Intern",
+    "org": "The University of Edinburgh",
+    "location": "Edinburgh",
+    "start": "2024-05",
+    "end": "2024-12",
+    "highlights": [
+      "Aided the migration of over 50,000 university web pages and enhanced accessibility for 4.5 million annual users.",
+      "Audited and created web pages using a Drupal-based content management system."
+    ]
+  }
+]
