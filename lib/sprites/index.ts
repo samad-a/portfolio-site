@@ -43,5 +43,22 @@ export const coin = defineSprite([
   "..KKKK..",
 ]);
 
+// Points right. Flip it with CSS to point left.
+export const arrow = defineSprite([
+  "...K...",
+  "...KK..",
+  "KKKKKK.",
+  "KKKKKKK",
+  "KKKKKK.",
+  "...KK..",
+  "...K...",
+]);
+
 // Every sprite, so tests can check them all.
-export const sprites = { cloud, avatar, coin, ...items };
+export const sprites = { cloud, avatar, coin, arrow, ...items };
+
+export type SpriteName = keyof typeof sprites;
+export const spriteNames = Object.keys(sprites) as [
+  SpriteName,
+  ...SpriteName[],
+];

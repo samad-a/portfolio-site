@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { ExperienceSection } from "@/components/experience/experience-section";
 import { Hero } from "@/components/home/hero";
+import { ProjectsSection } from "@/components/projects/projects-section";
 import { SkillsSection } from "@/components/skills/skills-section";
 import { experience, projects, skills } from "@/lib/content";
 
@@ -19,6 +20,7 @@ export default function Home() {
       <Hero cvHref={cvHref} />
       <ExperienceSection roles={experience} />
       <SkillsSection skills={skills} projects={projects} />
+      <ProjectsSection projects={projects} />
     </main>
   );
 }
