@@ -20,9 +20,6 @@ import { spriteImage } from "@/lib/background/sprite-image";
 import { makeStars, type Star, starOpacity } from "@/lib/background/stars";
 import { type SpriteName, sprites } from "@/lib/sprites";
 
-// Dense phone screens would otherwise draw up to 9 canvas pixels per CSS pixel.
-const maxPixelRatio = 2;
-
 // Faint, so text that a floater drifts behind stays easy to read.
 const floaterOpacity = 0.55;
 
@@ -69,12 +66,14 @@ export function SkyCanvas() {
     let still = motionQuery.matches;
 
     function resize() {
-      const ratio = Math.min(devicePixelRatio || 1, maxPixelRatio);
+      // One canvas pixel per CSS pixel, scaled up by the browser without
+      // smoothing. Everything drawn is chunky pixels or flat colour, so it
+      // looks the same as drawing at the screen's full density, for as little
+      // as a quarter of the work on phones.
       viewport.width = innerWidth;
       viewport.height = innerHeight;
-      canvas!.width = Math.round(viewport.width * ratio);
-      canvas!.height = Math.round(viewport.height * ratio);
-      context!.setTransform(ratio, 0, 0, ratio, 0, 0);
+      canvas!.width = viewport.width;
+      canvas!.height = viewport.height;
       context!.imageSmoothingEnabled = false;
       measure();
 
@@ -227,7 +226,7 @@ export function SkyCanvas() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 size-full"
+      className="pointer-events-none fixed inset-0 -z-10 size-full [image-rendering:pixelated]"
     />
   );
 }
