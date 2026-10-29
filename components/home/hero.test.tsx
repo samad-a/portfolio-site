@@ -19,11 +19,11 @@ describe("Hero", () => {
   });
 
   it("offers the CV as a download when there is one", () => {
-    render(<Hero cvHref="/cv.pdf" />);
+    render(<Hero cvHref="/Samad-Ali-CV.pdf" />);
 
     const link = screen.getByRole("link", { name: "save file (CV)" });
-    expect(link).toHaveAttribute("href", "/cv.pdf");
-    expect(link).toHaveAttribute("download");
+    expect(link).toHaveAttribute("href", "/Samad-Ali-CV.pdf");
+    expect(link).toHaveAttribute("download", "Samad-Ali-CV.pdf");
   });
 
   it("hides the CV button when there is no CV", () => {
@@ -45,7 +45,7 @@ describe("Hero", () => {
     render(<Hero />);
 
     expect(
-      screen.getByText(/3rd year computer science student/),
+      screen.getByText(/4th year computer science student/),
     ).toBeInTheDocument();
   });
 });

@@ -21,14 +21,14 @@ export function Hero({ cvHref }: HeroProps) {
           hi there!
         </h1>
         <p className="mt-4.5 max-w-[34ch] text-[19px] sm:text-[22px]">
-          I&apos;m Samad, a 3rd year computer science student at the University
+          I&apos;m Samad, a 4th year computer science student at the University
           of Edinburgh. I build web tools and Android apps, and I like making
           things feel playful. Below you&apos;ll find where I&apos;ve worked and
           what I&apos;ve made.
         </p>
         <div className="mt-6.5 flex flex-wrap items-center gap-4.5">
           {cvHref && (
-            <PixelButton href={cvHref} download>
+            <PixelButton href={cvHref} download="Samad-Ali-CV.pdf">
               <span aria-hidden="true">▼</span> save file (CV)
             </PixelButton>
           )}
