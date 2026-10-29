@@ -41,6 +41,9 @@
   /* One art pixel. Corners, outlines and offsets snap to multiples of this. */
   --spacing-pixel: 4px;
 
+  /* Width of the header and page sections */
+  --container-page: 1040px;
+
   /* Hard, unblurred shadows in the style of old game sprites */
   --shadow-hard-sm: 3px 3px 0 0 rgb(27 27 47 / 0.55);
   --shadow-hard: 6px 6px 0 0 rgb(27 27 47 / 0.55);
