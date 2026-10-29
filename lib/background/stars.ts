@@ -29,7 +29,14 @@ export function makeStars(
   }));
 }
 
-// From 0.1 to 1, scaled by how night the sky is where the star sits.
-export function starOpacity(star: Star, seconds: number, night: number) {
+// From 0.1 to 1, scaled by how night the sky is where the star sits. Without
+// `twinkle`, for reduced motion, every star holds steady at 0.9.
+export function starOpacity(
+  star: Star,
+  seconds: number,
+  night: number,
+  twinkle = true,
+) {
+  if (!twinkle) return night * 0.9;
   return night * (0.55 + 0.45 * Math.sin(seconds * 2 + star.phase));
 }

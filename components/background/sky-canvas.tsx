@@ -20,9 +20,6 @@ import { spriteImage } from "@/lib/background/sprite-image";
 import { makeStars, type Star, starOpacity } from "@/lib/background/stars";
 import { type SpriteName, sprites } from "@/lib/sprites";
 
-// Dense phone screens would otherwise draw up to 9 canvas pixels per CSS pixel.
-const maxPixelRatio = 2;
-
 // Faint, so text that a floater drifts behind stays easy to read.
 const floaterOpacity = 0.55;
 
@@ -63,14 +60,20 @@ export function SkyCanvas() {
     let stars: Star[] = [];
     let frameId = 0;
     let lastTime: number | undefined;
+    // With reduced motion, nothing moves: the sky is drawn as a still picture
+    // and only redrawn when the page scrolls or resizes.
+    const motionQuery = matchMedia("(prefers-reduced-motion: reduce)");
+    let still = motionQuery.matches;
 
     function resize() {
-      const ratio = Math.min(devicePixelRatio || 1, maxPixelRatio);
+      // One canvas pixel per CSS pixel, scaled up by the browser without
+      // smoothing. Everything drawn is chunky pixels or flat colour, so it
+      // looks the same as drawing at the screen's full density, for as little
+      // as a quarter of the work on phones.
       viewport.width = innerWidth;
       viewport.height = innerHeight;
-      canvas!.width = Math.round(viewport.width * ratio);
-      canvas!.height = Math.round(viewport.height * ratio);
-      context!.setTransform(ratio, 0, 0, ratio, 0, 0);
+      canvas!.width = viewport.width;
+      canvas!.height = viewport.height;
       context!.imageSmoothingEnabled = false;
       measure();
 
@@ -79,6 +82,7 @@ export function SkyCanvas() {
         floaters.push(spawnFloater(Math.random, viewport, isNight(), true));
       }
       floaters = floaters.slice(0, count);
+      if (still) redraw();
     }
 
     // Whether the middle of the screen is on the night sky, which decides
@@ -109,7 +113,12 @@ export function SkyCanvas() {
       for (const star of stars) {
         const y = star.y - scrollY;
         if (y < -star.size || y > viewport.height) continue;
-        const opacity = starOpacity(star, seconds, nightAmount(star.y, layout));
+        const opacity = starOpacity(
+          star,
+          seconds,
+          nightAmount(star.y, layout),
+          !still,
+        );
         if (opacity <= 0) continue;
         context!.globalAlpha = opacity;
         context!.fillRect(star.x, y, star.size, star.size);
@@ -133,7 +142,9 @@ export function SkyCanvas() {
 
     function frame(time: number) {
       // Capped so a long pause (a background tab, say) doesn't jump everything.
-      const seconds = Math.min((time - (lastTime ?? time)) / 1000, 0.1);
+      const seconds = still
+        ? 0
+        : Math.min((time - (lastTime ?? time)) / 1000, 0.1);
       lastTime = time;
 
       drawSky();
@@ -154,18 +165,45 @@ export function SkyCanvas() {
         context!.drawImage(
           image,
           Math.round(floater.x),
-          Math.round(floater.y + bobOffset(floater, time / 1000)),
+          Math.round(floater.y + (still ? 0 : bobOffset(floater, time / 1000))),
           image.width * scale,
           image.height * scale,
         );
         return floater;
       });
 
+      if (!still) frameId = requestAnimationFrame(frame);
+    }
+
+    // Draws one frame soon, replacing any already waiting.
+    function redraw() {
+      cancelAnimationFrame(frameId);
       frameId = requestAnimationFrame(frame);
+    }
+
+    function onScroll() {
+      if (still) redraw();
+    }
+
+    function onMotionChange() {
+      still = motionQuery.matches;
+      lastTime = undefined;
+      redraw();
+    }
+
+    // Stops drawing while the tab is hidden, and picks up where it left off.
+    function onVisibilityChange() {
+      cancelAnimationFrame(frameId);
+      if (document.hidden) return;
+      lastTime = undefined;
+      redraw();
     }
 
     resize();
     addEventListener("resize", resize);
+    addEventListener("scroll", onScroll, { passive: true });
+    motionQuery.addEventListener("change", onMotionChange);
+    document.addEventListener("visibilitychange", onVisibilityChange);
     // Images, fonts and the window size all move the contact section.
     const pageObserver = new ResizeObserver(measure);
     pageObserver.observe(document.body);
@@ -176,6 +214,9 @@ export function SkyCanvas() {
     return () => {
       cancelAnimationFrame(frameId);
       removeEventListener("resize", resize);
+      removeEventListener("scroll", onScroll);
+      motionQuery.removeEventListener("change", onMotionChange);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       pageObserver.disconnect();
       delete document.documentElement.dataset.sky;
     };
@@ -185,7 +226,7 @@ export function SkyCanvas() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 size-full"
+      className="pointer-events-none fixed inset-0 -z-10 size-full [image-rendering:pixelated]"
     />
   );
 }
