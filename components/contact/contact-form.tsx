@@ -7,6 +7,7 @@ import {
   type ContactAction,
   type ContactField,
   type ContactFormState,
+  honeypotField,
   maxLengths,
 } from "@/lib/contact-form";
 
@@ -40,7 +41,7 @@ export function ContactForm({ action }: { action: ContactAction }) {
           {error.message}
         </p>
       )}
-      <form action={formAction} noValidate className="grid gap-4">
+      <form action={formAction} noValidate className="relative grid gap-4">
         {fields.map(({ name, label, type }) => {
           const inputId = `${id}-${name}`;
           const errorId = `${inputId}-error`;
@@ -77,6 +78,16 @@ export function ContactForm({ action }: { action: ContactAction }) {
             </div>
           );
         })}
+        {/* Hidden from people, including screen reader users, but not from bots. */}
+        <div aria-hidden="true" className="absolute -left-[9999px]">
+          <label htmlFor={`${id}-${honeypotField}`}>leave this empty</label>
+          <input
+            id={`${id}-${honeypotField}`}
+            name={honeypotField}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
         <div>
           <PixelButton type="submit" disabled={pending}>
             {pending ? "sending..." : "send"}

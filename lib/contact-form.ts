@@ -20,6 +20,9 @@ export type ContactAction = (
   formData: FormData,
 ) => Promise<ContactFormState>;
 
+// A field people never see. Bots that fill in every field give themselves away.
+export const honeypotField = "website";
+
 export const maxLengths: Record<ContactField, number> = {
   name: 100,
   email: 254,

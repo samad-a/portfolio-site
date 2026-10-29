@@ -3,10 +3,11 @@
 import { Resend } from "resend";
 import { z } from "zod";
 import { contact } from "@/lib/contact";
-import type {
-  ContactField,
-  ContactFormState,
-  ContactValues,
+import {
+  type ContactField,
+  type ContactFormState,
+  type ContactValues,
+  honeypotField,
 } from "@/lib/contact-form";
 import { contactSchema } from "@/lib/contact-schema";
 
@@ -32,6 +33,11 @@ export async function sendContactMessage(
   _state: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> {
+  // Only bots fill in the honeypot. Tell them it worked so they move on.
+  if (String(formData.get(honeypotField) ?? "") !== "") {
+    return { status: "sent" };
+  }
+
   const values = readValues(formData);
   const parsed = contactSchema.safeParse(values);
   if (!parsed.success) {
