@@ -66,18 +66,27 @@ export function parsePost(fileName: string, source: string): Post {
   return { ...result.data, slug, body: source.slice(match[0].length) };
 }
 
-// Every published post, newest first.
+// Every published post, newest first. Posts are read while the site builds,
+// never at runtime, so the reads are marked for Turbopack not to trace.
 export function getPosts(directory = postsDirectory): Post[] {
   let fileNames: string[];
   try {
-    fileNames = readdirSync(directory).filter((name) => name.endsWith(".mdx"));
+    fileNames = readdirSync(/* turbopackIgnore: true */ directory).filter(
+      (name) => name.endsWith(".mdx"),
+    );
   } catch {
     return [];
   }
 
   return fileNames
     .map((name) =>
-      parsePost(name, readFileSync(path.join(directory, name), "utf8")),
+      parsePost(
+        name,
+        readFileSync(
+          path.join(/* turbopackIgnore: true */ directory, name),
+          "utf8",
+        ),
+      ),
     )
     .filter((post) => !post.draft)
     .sort((a, b) => b.published.localeCompare(a.published));
