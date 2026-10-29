@@ -164,8 +164,17 @@ export function SkyCanvas() {
       frameId = requestAnimationFrame(frame);
     }
 
+    // Stops drawing while the tab is hidden, and picks up where it left off.
+    function onVisibilityChange() {
+      cancelAnimationFrame(frameId);
+      if (document.hidden) return;
+      lastTime = undefined;
+      frameId = requestAnimationFrame(frame);
+    }
+
     resize();
     addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", onVisibilityChange);
     // Images, fonts and the window size all move the contact section.
     const pageObserver = new ResizeObserver(measure);
     pageObserver.observe(document.body);
@@ -176,6 +185,7 @@ export function SkyCanvas() {
     return () => {
       cancelAnimationFrame(frameId);
       removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       pageObserver.disconnect();
       delete document.documentElement.dataset.sky;
     };

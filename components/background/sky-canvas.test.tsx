@@ -1,6 +1,34 @@
 import { render } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { SkyCanvas } from "./sky-canvas";
+
+// A 2D context whose every method does nothing, since jsdom can't draw.
+function stubCanvas() {
+  const context = new Proxy(
+    {},
+    {
+      get: (target: Record<string, unknown>, key: string) =>
+        (target[key] ??=
+          key === "createLinearGradient"
+            ? () => ({ addColorStop: () => {} })
+            : () => {}),
+      set: () => true,
+    },
+  );
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
+    context as unknown as CanvasRenderingContext2D,
+  );
+}
+
+function setHidden(hidden: boolean) {
+  vi.spyOn(document, "hidden", "get").mockReturnValue(hidden);
+  document.dispatchEvent(new Event("visibilitychange"));
+}
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
+});
 
 describe("SkyCanvas", () => {
   it("is a decorative canvas behind the page", () => {
@@ -12,7 +40,35 @@ describe("SkyCanvas", () => {
   });
 
   it("renders without a 2D context, as in browsers that block canvas", () => {
-    // jsdom has no canvas drawing, so getContext returns null here.
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null);
+
     expect(() => render(<SkyCanvas />)).not.toThrow();
+    expect(document.documentElement.dataset.sky).toBeUndefined();
+  });
+
+  it("takes over the night sky while it's running", () => {
+    stubCanvas();
+    const { unmount } = render(<SkyCanvas />);
+
+    expect(document.documentElement.dataset.sky).toBe("canvas");
+    unmount();
+    expect(document.documentElement.dataset.sky).toBeUndefined();
+  });
+
+  it("stops drawing while the tab is hidden and resumes after", () => {
+    stubCanvas();
+    const request = vi.fn(() => 1);
+    const cancel = vi.fn();
+    vi.stubGlobal("requestAnimationFrame", request);
+    vi.stubGlobal("cancelAnimationFrame", cancel);
+    render(<SkyCanvas />);
+    expect(request).toHaveBeenCalledTimes(1);
+
+    setHidden(true);
+    expect(cancel).toHaveBeenCalled();
+    expect(request).toHaveBeenCalledTimes(1);
+
+    setHidden(false);
+    expect(request).toHaveBeenCalledTimes(2);
   });
 });
