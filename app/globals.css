@@ -87,6 +87,11 @@
 }
 
 @layer base {
+  /* Pixelify Sans draws its "fi" ligature as a single glyph that reads as "A". */
+  body {
+    font-variant-ligatures: none;
+  }
+
   /* A chunky dashed outline that stays visible on every background. */
   :focus-visible {
     outline: 3px dashed var(--color-gold-dark);
