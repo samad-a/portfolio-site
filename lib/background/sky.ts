@@ -29,9 +29,18 @@ export function nightAmount(pageY: number, layout: SkyLayout | undefined) {
 export type SkyColours = {
   skyTop: string;
   sky: string;
+  // The afternoon sky warms through these on the way to dusk.
+  skyLate: string;
+  blush: string;
+  sunset: string;
   dusk: string;
   night: string;
 };
+
+// How far down the day the sky starts to warm, and where each warmer colour
+// is fully in, as fractions of the way to `dayEnd`. Spread over most of the
+// page, so the light changes a little with every screen you scroll.
+const warming = { start: 0.25, skyLate: 0.5, blush: 0.76 } as const;
 
 // The same sky as a CSS background for the page, in page pixels. It sits
 // behind the canvas, so it's what tools like axe measure text against, and
@@ -63,15 +72,23 @@ export function skyGradient(
     };
   }
 
-  const end = layout.nightStart;
-  return {
-    end,
-    stops: [
-      [0, colours.skyTop],
-      [topGlowHeight / end, colours.sky],
-      [layout.dayEnd / end, colours.sky],
-      [(layout.dayEnd + layout.nightStart) / 2 / end, colours.dusk],
-      [1, colours.night],
-    ],
-  };
+  const { dayEnd, nightStart } = layout;
+  const pixels: [number, string][] = [
+    [0, colours.skyTop],
+    [topGlowHeight, colours.sky],
+    [dayEnd * warming.start, colours.sky],
+    [dayEnd * warming.skyLate, colours.skyLate],
+    [dayEnd * warming.blush, colours.blush],
+    [dayEnd, colours.sunset],
+    [(dayEnd + nightStart) / 2, colours.dusk],
+    [nightStart, colours.night],
+  ];
+  // On a short page the warming would start inside the top glow, so no stop
+  // is allowed above the one before it.
+  let previous = 0;
+  const stops = pixels.map(([y, colour]): [number, string] => {
+    previous = Math.max(previous, y);
+    return [previous / nightStart, colour];
+  });
+  return { end: nightStart, stops };
 }

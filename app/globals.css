@@ -11,6 +11,9 @@
   /* Sky, from the top of the page down to the night-time contact section */
   --color-sky-top: #8fd0ea;
   --color-sky: #a9dbee;
+  --color-sky-late: #c6cbee;
+  --color-blush: #f0c3c8;
+  --color-sunset: #f4ab84;
   --color-dusk: #7b6fc9;
   --color-night: #121238;
   --color-night-deep: #0a0a24;

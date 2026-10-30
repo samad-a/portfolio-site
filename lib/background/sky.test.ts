@@ -4,6 +4,9 @@ import { nightAmount, skyBackground, skyGradient, skyLayout } from "./sky";
 const colours = {
   skyTop: "#8fd0ea",
   sky: "#a9dbee",
+  skyLate: "#c6cbee",
+  blush: "#f0c3c8",
+  sunset: "#f4ab84",
   dusk: "#7b6fc9",
   night: "#121238",
 };
@@ -36,23 +39,33 @@ describe("nightAmount", () => {
 describe("skyBackground", () => {
   it("is the same gradient in page pixels, for CSS", () => {
     expect(skyBackground(skyLayout(3000), colours)).toBe(
-      "linear-gradient(#8fd0ea 0px, #a9dbee 400px, #a9dbee 2800px, #7b6fc9 2980px, #121238 3160px)",
+      "linear-gradient(#8fd0ea 0px, #a9dbee 400px, #a9dbee 700px, #c6cbee 1400px, #f0c3c8 2128px, #f4ab84 2800px, #7b6fc9 2980px, #121238 3160px)",
     );
   });
 });
 
 describe("skyGradient", () => {
-  it("runs from the light top through day and dusk to night", () => {
+  it("warms slowly through the day, then turns through dusk to night", () => {
     expect(skyGradient(skyLayout(3000), colours)).toEqual({
       end: 3160,
       stops: [
         [0, "#8fd0ea"],
         [400 / 3160, "#a9dbee"],
-        [2800 / 3160, "#a9dbee"],
+        [700 / 3160, "#a9dbee"],
+        [1400 / 3160, "#c6cbee"],
+        [2128 / 3160, "#f0c3c8"],
+        [2800 / 3160, "#f4ab84"],
         [2980 / 3160, "#7b6fc9"],
         [1, "#121238"],
       ],
     });
+  });
+
+  it("keeps the stops in order on a short page", () => {
+    const offsets = skyGradient(skyLayout(800), colours).stops.map(
+      ([offset]) => offset * 960,
+    );
+    expect(offsets).toEqual([0, 400, 400, 400, 456, 600, 780, 960]);
   });
 
   it("is only the day sky without a contact section", () => {

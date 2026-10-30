@@ -2,6 +2,13 @@
 
 import { useEffect, useRef } from "react";
 import {
+  celestialProgress,
+  moonPosition,
+  type Point,
+  sunPosition,
+  sunsetAmount,
+} from "@/lib/background/celestial";
+import {
   bobOffset,
   type Floater,
   floaterCount,
@@ -24,6 +31,7 @@ import { type SpriteName, sprites } from "@/lib/sprites";
 
 // Faint, so text that a floater drifts behind stays easy to read.
 const floaterOpacity = 0.55;
+const moonOpacity = 0.6;
 
 function themeColour(name: string) {
   return getComputedStyle(document.documentElement)
@@ -46,6 +54,9 @@ export function SkyCanvas() {
     const colours = {
       skyTop: themeColour("sky-top"),
       sky: themeColour("sky"),
+      skyLate: themeColour("sky-late"),
+      blush: themeColour("blush"),
+      sunset: themeColour("sunset"),
       dusk: themeColour("dusk"),
       night: themeColour("night"),
     };
@@ -146,6 +157,48 @@ export function SkyCanvas() {
       context!.fillRect(0, 0, viewport.width, viewport.height);
     }
 
+    // A size up from the floaters, so they read as far bigger things.
+    function drawSprite(name: SpriteName, { x, y }: Point, opacity: number) {
+      if (opacity <= 0) return;
+      const image = imageOf(name);
+      const scale = floaterScale(viewport) + 1;
+      context!.globalAlpha = opacity;
+      context!.drawImage(
+        image,
+        Math.round(x),
+        Math.round(y),
+        image.width * scale,
+        image.height * scale,
+      );
+    }
+
+    // The sun and moon follow the scroll. With reduced motion they stay put
+    // on the page instead: the sun at the top and the moon at the bottom, so
+    // they scroll past like everything else.
+    function drawSunAndMoon() {
+      const lastScroll =
+        document.documentElement.scrollHeight - viewport.height;
+      const progress = still
+        ? { sun: 0, moon: layout ? 1 : 0 }
+        : celestialProgress(
+            scrollY + viewport.height / 2,
+            layout,
+            lastScroll + viewport.height / 2,
+          );
+
+      const sun = sunPosition(progress.sun, viewport);
+      if (still) sun.y -= scrollY;
+      const red = sunsetAmount(progress.sun);
+      drawSprite("sunset", sun, red);
+      drawSprite("sun", sun, 1 - red);
+
+      const moon = moonPosition(progress.moon, viewport);
+      if (still) moon.y += lastScroll - scrollY;
+      // Dimmed like the floaters, since on phones it rises behind the
+      // contact section's light text.
+      drawSprite("moon", moon, progress.moon > 0 ? moonOpacity : 0);
+    }
+
     function frame(time: number) {
       // Capped so a long pause (a background tab, say) doesn't jump everything.
       const seconds = still
@@ -155,6 +208,7 @@ export function SkyCanvas() {
 
       drawSky();
       drawStars(time / 1000);
+      drawSunAndMoon();
 
       const scale = floaterScale(viewport);
       floaters = floaters.map((floater) => {
