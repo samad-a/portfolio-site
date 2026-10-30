@@ -28,6 +28,18 @@ describe("PixelButton", () => {
     expect(onClick).toHaveBeenCalledOnce();
   });
 
+  it("renders a plain link for a download, so it isn't prefetched as a page", () => {
+    render(
+      <PixelButton href="/cv.pdf" download="cv.pdf">
+        save file
+      </PixelButton>,
+    );
+
+    const link = screen.getByRole("link", { name: "save file" });
+    expect(link).toHaveAttribute("href", "/cv.pdf");
+    expect(link).toHaveAttribute("download", "cv.pdf");
+  });
+
   it("renders a link when given an href", () => {
     render(<PixelButton href="/cv.pdf">save file</PixelButton>);
 
