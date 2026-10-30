@@ -6,8 +6,10 @@ import { avatar } from "@/lib/sprites";
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
-// The avatar drawn 12px per sprite pixel on the day sky, like the favicon.
-const scale = 12;
+// The avatar on the day sky, as large as whole pixels allow with a margin.
+const scale = Math.floor(
+  156 / Math.max(avatar.length, ...avatar.map((row) => row.length)),
+);
 
 export default function AppleIcon() {
   const width = Math.max(...avatar.map((row) => row.length)) * scale;

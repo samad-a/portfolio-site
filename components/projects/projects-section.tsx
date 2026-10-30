@@ -9,9 +9,7 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
       aria-labelledby="projects-heading"
       className="mx-auto max-w-page scroll-mt-4 px-4 py-14"
     >
-      <SectionHeading id="projects-heading" tag="cartridges">
-        projects
-      </SectionHeading>
+      <SectionHeading id="projects-heading">projects</SectionHeading>
       <div className="mt-7">
         <ProjectCarousel projects={projects} />
       </div>

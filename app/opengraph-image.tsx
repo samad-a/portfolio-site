@@ -13,6 +13,6 @@ export default function Image() {
     subtitle:
       "Computer science student at the University of Edinburgh. Web tools, Android apps and pixel art.",
     sprite: avatar,
-    spriteScale: 22,
+    spriteScale: 17,
   });
 }

@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { PixelPanel } from "@/components/ui/pixel-panel";
 import { cn } from "@/lib/cn";
-import { CloudArt, cloudClassName } from "./cloud-link";
+import { cloudPuffy } from "@/lib/sprites";
+import { CloudArt, cloudClassName, cloudStyle } from "./cloud-link";
 
 type MobileMenuProps = {
   links: readonly { href: string; label: string }[];
@@ -53,8 +54,9 @@ export function MobileMenu({ links, className }: MobileMenuProps) {
           cloudClassName,
           "w-[118px] text-base [animation-delay:-2.2s]",
         )}
+        style={cloudStyle(cloudPuffy)}
       >
-        <CloudArt>{open ? "close" : "menu"}</CloudArt>
+        <CloudArt sprite={cloudPuffy}>{open ? "close" : "menu"}</CloudArt>
       </button>
       {open && (
         <PixelPanel

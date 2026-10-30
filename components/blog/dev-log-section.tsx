@@ -7,7 +7,7 @@ import { PostMeta } from "./post-meta";
 // How many of the newest posts the homepage shows.
 export const latestPostCount = 3;
 
-// The newest posts as save points, linking on to the full dev log. Pages with
+// The newest posts, linking on to the full dev log. Pages with
 // no posts yet leave the section out.
 export function DevLogSection({ posts }: { posts: Post[] }) {
   if (posts.length === 0) return null;
@@ -18,9 +18,7 @@ export function DevLogSection({ posts }: { posts: Post[] }) {
       aria-labelledby="dev-log-heading"
       className="mx-auto max-w-page scroll-mt-4 px-4 py-14"
     >
-      <SectionHeading id="dev-log-heading" tag="save points">
-        dev log
-      </SectionHeading>
+      <SectionHeading id="dev-log-heading">dev log</SectionHeading>
       <ul
         role="list"
         className="mt-7 grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4"

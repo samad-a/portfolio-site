@@ -18,6 +18,18 @@ export const palette = {
   V: "#9b6bff",
   D: "#83502f",
   E: "#bbbbbb",
+  // For the avatar: curl highlights, skin, its shadow and blush, a striped
+  // green polo, light jeans and dark shoes.
+  h: "#4e3d32",
+  F: "#dda57d",
+  T: "#c28a63",
+  N: "#e8907e",
+  Q: "#2f6650",
+  q: "#24503f",
+  Z: "#e8efe9",
+  J: "#8eabcf",
+  I: "#7392b8",
+  o: "#2a2a33",
 } as const;
 
 export type PaletteKey = keyof typeof palette;

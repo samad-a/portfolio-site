@@ -25,9 +25,7 @@ export function SkillsSection({ skills, projects }: SkillsSectionProps) {
       aria-labelledby="skills-heading"
       className="mx-auto max-w-page scroll-mt-4 px-4 py-14"
     >
-      <SectionHeading id="skills-heading" tag="inventory">
-        skills
-      </SectionHeading>
+      <SectionHeading id="skills-heading">skills</SectionHeading>
       <div className="mt-7">
         <InventoryGrid items={items} />
       </div>
