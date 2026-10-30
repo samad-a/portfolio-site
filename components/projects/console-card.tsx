@@ -6,6 +6,37 @@ import { PixelPanel } from "@/components/ui/pixel-panel";
 import type { Project } from "@/lib/content";
 import { sprites } from "@/lib/sprites";
 
+// The "A" on the console's button, drawn in pixels rather than as text so the
+// link's visible label is just "play", matching its name. It takes the text
+// colour, so it turns ink when the button lights up gold.
+const letterA = [".###.", "#...#", "#...#", "#####", "#...#", "#...#", "#...#"];
+
+function ButtonLetter() {
+  return (
+    <svg
+      viewBox="0 0 5 7"
+      shapeRendering="crispEdges"
+      aria-hidden="true"
+      className="h-3.5 w-2.5"
+    >
+      {letterA.flatMap((row, y) =>
+        [...row].map((pixel, x) =>
+          pixel === "#" ? (
+            <rect
+              key={`${x},${y}`}
+              x={x}
+              y={y}
+              width={1}
+              height={1}
+              fill="currentColor"
+            />
+          ) : null,
+        ),
+      )}
+    </svg>
+  );
+}
+
 // A plus-shaped D-pad, cut from a square.
 const dpadShape =
   "[clip-path:polygon(33%_0,67%_0,67%_33%,100%_33%,100%_67%,67%_67%,67%_100%,33%_100%,33%_67%,0_67%,0_33%,33%_33%)]";
@@ -42,9 +73,9 @@ function ConsoleControls({ project }: { project: Project }) {
           className={`ml-auto ${controlClass}`}
         >
           <span
-            className={`grid size-13 place-items-center text-lg pixel-corners-2 ${buttonClass}`}
+            className={`grid size-13 place-items-center pixel-corners-2 ${buttonClass}`}
           >
-            A
+            <ButtonLetter />
           </span>
           play
         </a>

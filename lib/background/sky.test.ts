@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { nightAmount, skyGradient, skyLayout } from "./sky";
+import { nightAmount, skyBackground, skyGradient, skyLayout } from "./sky";
 
 const colours = {
   skyTop: "#8fd0ea",
@@ -30,6 +30,14 @@ describe("nightAmount", () => {
 
   it("is always day on pages without a contact section", () => {
     expect(nightAmount(5000, undefined)).toBe(0);
+  });
+});
+
+describe("skyBackground", () => {
+  it("is the same gradient in page pixels, for CSS", () => {
+    expect(skyBackground(skyLayout(3000), colours)).toBe(
+      "linear-gradient(#8fd0ea 0px, #a9dbee 400px, #a9dbee 2800px, #7b6fc9 2980px, #121238 3160px)",
+    );
   });
 });
 

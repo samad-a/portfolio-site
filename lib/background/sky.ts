@@ -33,6 +33,20 @@ export type SkyColours = {
   night: string;
 };
 
+// The same sky as a CSS background for the page, in page pixels. It sits
+// behind the canvas, so it's what tools like axe measure text against, and
+// what shows if the canvas ever stops drawing.
+export function skyBackground(
+  layout: SkyLayout | undefined,
+  colours: SkyColours,
+) {
+  const { end, stops } = skyGradient(layout, colours);
+  const parts = stops.map(
+    ([offset, colour]) => `${colour} ${Math.round(offset * end)}px`,
+  );
+  return `linear-gradient(${parts.join(", ")})`;
+}
+
 // Colour stops for one gradient running from the top of the page to full
 // night, as [offset from 0 to 1, colour]. `end` is where the gradient stops.
 export function skyGradient(
