@@ -43,9 +43,17 @@ export default function RootLayout({
         {children}
         <SiteFooter />
         <Konami />
-        {/* Cookieless page view counts and real-visitor speed scores, on Vercel. */}
-        <Analytics />
-        <SpeedInsights />
+        {/*
+          Cookieless page view counts and real-visitor speed scores. Their
+          scripts are only served on Vercel, so other builds (local, CI) leave
+          them out rather than loading code that fails with a 404.
+        */}
+        {process.env.VERCEL && (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        )}
       </body>
     </html>
   );
