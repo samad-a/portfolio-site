@@ -33,7 +33,7 @@ export function SiteHeader() {
                   href={href}
                   sprite={sprite}
                   sized
-                  className="text-lg"
+                  className="text-xl"
                   style={{ animationDuration: duration, animationDelay: delay }}
                 >
                   {label}
