@@ -56,8 +56,8 @@
   --shadow-hard: 6px 6px 0 0 rgb(27 27 47 / 0.55);
   --drop-shadow-hard: 6px 6px 0 rgb(27 27 47 / 0.55);
 
-  /* Clouds float up and down in four jumps, like an old game loop. */
-  --animate-bob: bob 4s steps(4) infinite;
+  /* Clouds drift gently up and down in small jumps, like an old game loop. */
+  --animate-bob: bob 8s steps(4) infinite;
 
   @keyframes bob {
     0%,
@@ -65,7 +65,7 @@
       translate: 0 0;
     }
     50% {
-      translate: 0 -6px;
+      translate: 0 -4px;
     }
   }
 

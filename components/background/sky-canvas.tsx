@@ -157,18 +157,21 @@ export function SkyCanvas() {
       context!.fillRect(0, 0, viewport.width, viewport.height);
     }
 
-    // A size up from the floaters, so they read as far bigger things.
+    // Centred on the point, a size up from the floaters, so they read as far
+    // bigger things.
     function drawSprite(name: SpriteName, { x, y }: Point, opacity: number) {
       if (opacity <= 0) return;
       const image = imageOf(name);
       const scale = floaterScale(viewport) + 1;
       context!.globalAlpha = opacity;
+      const width = image.width * scale;
+      const height = image.height * scale;
       context!.drawImage(
         image,
-        Math.round(x),
-        Math.round(y),
-        image.width * scale,
-        image.height * scale,
+        Math.round(x - width / 2),
+        Math.round(y - height / 2),
+        width,
+        height,
       );
     }
 
@@ -183,6 +186,7 @@ export function SkyCanvas() {
         : celestialProgress(
             scrollY + viewport.height / 2,
             layout,
+            viewport.height / 2,
             lastScroll + viewport.height / 2,
           );
 

@@ -3,13 +3,14 @@ import { CloudLink } from "./cloud-link";
 import { MobileMenu } from "./mobile-menu";
 import { navLinks } from "./nav-links";
 
-// Each link gets its own cloud, bob speed and start point, so the row looks
-// like a sky rather than four copies. Negative delays start partway through.
+// Each link gets its own cloud, height, bob speed and start point, so the row
+// looks like a sky rather than four copies in a line. Negative delays start
+// partway through.
 const clouds = [
-  { sprite: cloudPair, duration: "4.4s", delay: "-1s" },
-  { sprite: cloudTall, duration: "3.6s", delay: "-2.2s" },
-  { sprite: cloudLong, duration: "4.8s", delay: "-3s" },
-  { sprite: cloudPuffy, duration: "4s", delay: "-1.6s" },
+  { sprite: cloudPair, lift: 4, duration: "9s", delay: "-2s" },
+  { sprite: cloudTall, lift: 16, duration: "7.5s", delay: "-5s" },
+  { sprite: cloudLong, lift: 0, duration: "10s", delay: "-7s" },
+  { sprite: cloudPuffy, lift: 11, duration: "8.5s", delay: "-3s" },
 ];
 
 export function SiteHeader() {
@@ -18,27 +19,28 @@ export function SiteHeader() {
       <nav aria-label="Main" className="flex flex-wrap items-end gap-x-3.5">
         <CloudLink
           href="/"
-          className="mr-auto w-[200px] text-[26px] font-bold [animation-duration:5s] sm:w-[260px] sm:text-[34px]"
+          className="mr-auto w-[200px] text-[26px] font-bold [animation-duration:9.5s] sm:w-[260px] sm:text-[34px]"
         >
           samad ali
         </CloudLink>
         <ul className="hidden flex-wrap items-end gap-x-3.5 gap-y-1.5 sm:flex">
-          {navLinks.map(({ href, label }, index) => (
-            <li key={href}>
-              <CloudLink
-                href={href}
-                sprite={clouds[index % clouds.length].sprite}
-                sized
-                className="text-lg"
-                style={{
-                  animationDuration: clouds[index % clouds.length].duration,
-                  animationDelay: clouds[index % clouds.length].delay,
-                }}
-              >
-                {label}
-              </CloudLink>
-            </li>
-          ))}
+          {navLinks.map(({ href, label }, index) => {
+            const { sprite, lift, duration, delay } =
+              clouds[index % clouds.length];
+            return (
+              <li key={href} style={{ marginBottom: lift }}>
+                <CloudLink
+                  href={href}
+                  sprite={sprite}
+                  sized
+                  className="text-lg"
+                  style={{ animationDuration: duration, animationDelay: delay }}
+                >
+                  {label}
+                </CloudLink>
+              </li>
+            );
+          })}
         </ul>
         <MobileMenu links={navLinks} className="sm:hidden" />
       </nav>

@@ -12,7 +12,8 @@ export const cloud = defineSprite([
   "KWWLLWWWWWWWWWWWWWLLWWWK",
   "KLLLLLLWWWWWWLLLLLLLLLLK",
   ".KLLLLLLLLLLLLLLLLLLLLK.",
-  "..KKKKKKKKKKKKKKKKKKKK..",
+  "..KKLLLLLLKKKKKLLLLLKK..",
+  "....KKKKKK.....KKKKK....",
 ]);
 
 // More clouds, so the navigation isn't a row of copies.
@@ -28,7 +29,8 @@ export const cloudPuffy = defineSprite([
   "KWWWWWWWWWWWWWWWWWWWWWK",
   "KLLLLLLLLLLLLLLLLLLLLLK",
   ".KLLLLLLLLLLLLLLLLLLLK.",
-  "..KKKKKKKKKKKKKKKKKKK..",
+  "..KLLLLLKKKLLLLKKKLLK..",
+  "...KKKKK...KKKK...KK...",
 ]);
 
 // Long and low.
@@ -42,7 +44,8 @@ export const cloudLong = defineSprite([
   "KWWWWWWWWWWWWWWWWWWWWWWWWWWK",
   "KLLLLLLLLLLLLLLLLLLLLLLLLLLK",
   ".KLLLLLLLLLLLLLLLLLLLLLLLLK.",
-  "..KKKKKKKKKKKKKKKKKKKKKKKK..",
+  "..KKKLLLLLLKKKKKLLLLLLLLKK..",
+  ".....KKKKKK.....KKKKKKKK....",
 ]);
 
 // One tall puff in the middle.
@@ -58,7 +61,8 @@ export const cloudTall = defineSprite([
   "KWWWWWWWWWWWWWWWWWWWK",
   "KLLLLLLLLLLLLLLLLLLLK",
   ".KLLLLLLLLLLLLLLLLLK.",
-  "..KKKKKKKKKKKKKKKKK..",
+  "..KKLLLLLLKKKLLLLKK..",
+  "....KKKKKK...KKKK....",
 ]);
 
 // Two big puffs, heavier on the left.
@@ -73,11 +77,11 @@ export const cloudPair = defineSprite([
   "KWWWWWWWWWWWWWWWWWWWWWWWWWK",
   "KLLLLLLLLLLLLLLLLLLLLLLLLLK",
   ".KLLLLLLLLLLLLLLLLLLLLLLLK.",
-  "..KKKKKKKKKKKKKKKKKKKKKKK..",
+  "..KKLLLLLLLLLKKKKKLLLLLKK..",
+  "....KKKKKKKKK.....KKKKK....",
 ]);
 
-// Curly dark hair, thick eyebrows, a big grin and a sage-green polo with
-// backpack straps.
+// Messy dark curls, flat brows, a small smile and a green striped polo.
 export const avatar = defineSprite([
   "...KK.KKK.KKK...",
   "..KHhKHhhKHhhK..",
