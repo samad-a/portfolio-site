@@ -23,6 +23,10 @@ export function PixelButton({ className, ...props }: PixelButtonProps) {
     <span className={wrapperClass}>
       {props.href === undefined ? (
         <button type="button" {...props} className={face} />
+      ) : props.download !== undefined ? (
+        // A file to save, not a page: Link would prefetch it as a route,
+        // which fails with a 404 on every visit.
+        <a {...props} className={face} />
       ) : (
         <Link {...props} className={face} />
       )}
