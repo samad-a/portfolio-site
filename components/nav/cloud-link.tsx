@@ -11,7 +11,7 @@ export const cloudClassName =
   "group relative grid w-[150px] animate-bob cursor-pointer text-xl font-medium text-ink no-underline motion-reduce:animate-none";
 
 // CSS pixels per sprite pixel for the smaller clouds, so their pixels match.
-const cloudPixelSize = 6.25;
+const cloudPixelSize = 6.75;
 
 function spriteSize(grid: SpriteGrid) {
   return { width: grid[0].length, height: grid.length };

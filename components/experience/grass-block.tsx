@@ -27,7 +27,7 @@ export function GrassBlock({ title, aside, children }: GrassBlockProps) {
           <div className="font-label text-[13px] tracking-wide">{aside}</div>
         )}
       </header>
-      <div className="px-5.5 pt-5.5 pb-6">{children}</div>
+      <div className="px-5.5 pt-9 pb-6">{children}</div>
     </PixelPanel>
   );
 }

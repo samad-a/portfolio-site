@@ -2,7 +2,9 @@
 // pixels from the top of the document, so the sky scrolls with the content.
 
 export type SkyLayout = {
-  // The sky is plain day above this.
+  // The top of the contact section, which the evening is placed around.
+  contactTop: number;
+  // The sky is daytime, warming towards sunset, above this.
   dayEnd: number;
   // And full night from here down.
   nightStart: number;
@@ -11,10 +13,29 @@ export type SkyLayout = {
 // The day sky lightens towards the top of the page over this distance.
 export const topGlowHeight = 400;
 
-// Starts turning 200px above the contact section and is fully night 160px in,
-// where its text begins, so that text is always on the night sky.
+type EveningColour =
+  "sunset" | "mauve" | "duskLight" | "dusk" | "duskDeep" | "night";
+
+// The evening, in pixels from the top of the contact section. It fades over a
+// long stretch rather than all in the gap between the sections, so it holds a
+// mid lavender across that gap: light enough for the dark "all posts" link
+// above it, and dark enough for the light contact heading below. It's deep
+// dusk by the contact text and full night once past it.
+const evening: readonly (readonly [number, EveningColour])[] = [
+  [-560, "sunset"],
+  [-300, "mauve"],
+  [-60, "duskLight"],
+  [150, "dusk"],
+  [220, "duskDeep"],
+  [420, "night"],
+];
+
 export function skyLayout(contactTop: number): SkyLayout {
-  return { dayEnd: contactTop - 200, nightStart: contactTop + 160 };
+  return {
+    contactTop,
+    dayEnd: contactTop + evening[0][0],
+    nightStart: contactTop + evening[evening.length - 1][0],
+  };
 }
 
 // How night it is at a point on the page: 0 for day, 1 for night. It stays 0
@@ -33,7 +54,11 @@ export type SkyColours = {
   skyLate: string;
   blush: string;
   sunset: string;
+  // And darkens through these into night.
+  mauve: string;
+  duskLight: string;
   dusk: string;
+  duskDeep: string;
   night: string;
 };
 
@@ -72,16 +97,17 @@ export function skyGradient(
     };
   }
 
-  const { dayEnd, nightStart } = layout;
+  const { contactTop, dayEnd, nightStart } = layout;
   const pixels: [number, string][] = [
     [0, colours.skyTop],
     [topGlowHeight, colours.sky],
     [dayEnd * warming.start, colours.sky],
     [dayEnd * warming.skyLate, colours.skyLate],
     [dayEnd * warming.blush, colours.blush],
-    [dayEnd, colours.sunset],
-    [(dayEnd + nightStart) / 2, colours.dusk],
-    [nightStart, colours.night],
+    ...evening.map(([offset, colour]): [number, string] => [
+      contactTop + offset,
+      colours[colour],
+    ]),
   ];
   // On a short page the warming would start inside the top glow, so no stop
   // is allowed above the one before it.

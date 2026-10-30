@@ -14,7 +14,10 @@
   --color-sky-late: #c6cbee;
   --color-blush: #f0c3c8;
   --color-sunset: #f4ab84;
+  --color-mauve: #c495b8;
+  --color-dusk-light: #8b7fd3;
   --color-dusk: #7b6fc9;
+  --color-dusk-deep: #4a3f8f;
   --color-night: #121238;
   --color-night-deep: #0a0a24;
 
@@ -56,8 +59,8 @@
   --shadow-hard: 6px 6px 0 0 rgb(27 27 47 / 0.55);
   --drop-shadow-hard: 6px 6px 0 rgb(27 27 47 / 0.55);
 
-  /* Clouds float up and down in four jumps, like an old game loop. */
-  --animate-bob: bob 4s steps(4) infinite;
+  /* Clouds drift gently up and down in small jumps, like an old game loop. */
+  --animate-bob: bob 8s steps(4) infinite;
 
   @keyframes bob {
     0%,
@@ -65,7 +68,7 @@
       translate: 0 0;
     }
     50% {
-      translate: 0 -6px;
+      translate: 0 -4px;
     }
   }
 
@@ -167,8 +170,8 @@
 }
 
 /*
- * The top of a grass block: a light strip along the top edge and a row of
- * square teeth hanging over the dirt below.
+ * The top of a grass block: a light strip along the top edge, and ragged turf
+ * hanging over the dirt below in drips of different lengths with darker tips.
  */
 @utility grass-edge {
   position: relative;
@@ -179,9 +182,9 @@
     position: absolute;
     inset-inline: 0;
     top: 100%;
-    height: calc(2 * var(--spacing-pixel));
-    background: linear-gradient(90deg, var(--color-grass) 50%, transparent 0) 0
-      0 / calc(4 * var(--spacing-pixel)) 100% repeat-x;
+    height: calc(7 * var(--spacing-pixel));
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='7' shape-rendering='crispEdges'%3E%3Cg fill='%232b7d35'%3E%3Crect x='0' width='3' height='5'/%3E%3Crect x='3' width='2' height='3'/%3E%3Crect x='5' width='3' height='5'/%3E%3Crect x='8' width='3' height='6'/%3E%3Crect x='11' width='1' height='5'/%3E%3Crect x='12' width='1' height='3'/%3E%3Crect x='13' width='2' height='5'/%3E%3Crect x='15' width='6' height='3'/%3E%3Crect x='21' width='1' height='7'/%3E%3Crect x='22' width='1' height='2'/%3E%3Crect x='23' width='3' height='5'/%3E%3Crect x='26' width='2' height='7'/%3E%3Crect x='28' width='3' height='2'/%3E%3Crect x='31' width='4' height='7'/%3E%3Crect x='35' width='1' height='3'/%3E%3Crect x='36' width='1' height='2'/%3E%3Crect x='37' width='2' height='3'/%3E%3Crect x='39' width='3' height='2'/%3E%3Crect x='42' width='2' height='4'/%3E%3Crect x='44' width='3' height='6'/%3E%3Crect x='47' width='1' height='5'/%3E%3Crect x='48' width='4' height='4'/%3E%3Crect x='52' width='1' height='3'/%3E%3Crect x='53' width='1' height='7'/%3E%3Crect x='54' width='1' height='5'/%3E%3Crect x='55' width='4' height='7'/%3E%3Crect x='59' width='2' height='5'/%3E%3Crect x='61' width='1' height='2'/%3E%3Crect x='62' width='1' height='3'/%3E%3Crect x='63' width='7' height='5'/%3E%3Crect x='70' width='1' height='6'/%3E%3Crect x='71' width='4' height='2'/%3E%3Crect x='75' width='2' height='4'/%3E%3Crect x='77' width='1' height='3'/%3E%3Crect x='78' width='2' height='7'/%3E%3C/g%3E%3Cg fill='%231f5e28'%3E%3Crect x='0' y='4' width='3' height='1'/%3E%3Crect x='3' y='2' width='2' height='1'/%3E%3Crect x='5' y='4' width='3' height='1'/%3E%3Crect x='8' y='5' width='3' height='1'/%3E%3Crect x='11' y='4' width='1' height='1'/%3E%3Crect x='12' y='2' width='1' height='1'/%3E%3Crect x='13' y='4' width='2' height='1'/%3E%3Crect x='15' y='2' width='6' height='1'/%3E%3Crect x='21' y='6' width='1' height='1'/%3E%3Crect x='23' y='4' width='3' height='1'/%3E%3Crect x='26' y='6' width='2' height='1'/%3E%3Crect x='31' y='6' width='4' height='1'/%3E%3Crect x='35' y='2' width='1' height='1'/%3E%3Crect x='37' y='2' width='2' height='1'/%3E%3Crect x='42' y='3' width='2' height='1'/%3E%3Crect x='44' y='5' width='3' height='1'/%3E%3Crect x='47' y='4' width='1' height='1'/%3E%3Crect x='48' y='3' width='4' height='1'/%3E%3Crect x='52' y='2' width='1' height='1'/%3E%3Crect x='53' y='6' width='1' height='1'/%3E%3Crect x='54' y='4' width='1' height='1'/%3E%3Crect x='55' y='6' width='4' height='1'/%3E%3Crect x='59' y='4' width='2' height='1'/%3E%3Crect x='62' y='2' width='1' height='1'/%3E%3Crect x='63' y='4' width='7' height='1'/%3E%3Crect x='70' y='5' width='1' height='1'/%3E%3Crect x='75' y='3' width='2' height='1'/%3E%3Crect x='77' y='2' width='1' height='1'/%3E%3Crect x='78' y='6' width='2' height='1'/%3E%3C/g%3E%3C/svg%3E")
+      0 0 / calc(80 * var(--spacing-pixel)) 100% repeat-x;
   }
 }
 

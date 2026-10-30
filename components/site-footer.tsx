@@ -5,7 +5,7 @@ export function SiteFooter() {
   return (
     <footer className="mt-auto bg-dirt dirt-texture text-paper">
       <div aria-hidden="true" className="grass-edge h-6 bg-grass" />
-      <div className="mx-auto flex max-w-page flex-wrap justify-between gap-x-6 gap-y-2.5 px-4 pt-7 pb-8 font-label text-[13px] tracking-wide">
+      <div className="mx-auto flex max-w-page flex-wrap justify-between gap-x-6 gap-y-2.5 px-4 pt-10 pb-8 font-label text-[13px] tracking-wide">
         <span>© {new Date().getFullYear()} Samad Ali</span>
         {/* A hint for the Konami code, from the arcade games it comes from. */}
         <span>
