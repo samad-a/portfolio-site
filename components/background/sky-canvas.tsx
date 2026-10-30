@@ -13,6 +13,7 @@ import {
 import {
   nightAmount,
   type SkyLayout,
+  skyBackground,
   skyGradient,
   skyLayout,
 } from "@/lib/background/sky";
@@ -107,6 +108,10 @@ export function SkyCanvas() {
             document.documentElement.scrollHeight,
           )
         : [];
+      // The browser positions the body's background against the whole page,
+      // so this lines up with the canvas as it scrolls.
+      document.body.style.backgroundImage = skyBackground(layout, colours);
+      document.body.style.backgroundRepeat = "no-repeat";
     }
 
     function drawStars(seconds: number) {
@@ -243,6 +248,8 @@ export function SkyCanvas() {
       document.removeEventListener("visibilitychange", onVisibilityChange);
       pageObserver.disconnect();
       delete document.documentElement.dataset.sky;
+      document.body.style.backgroundImage = "";
+      document.body.style.backgroundRepeat = "";
     };
   }, []);
 
