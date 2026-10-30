@@ -30,11 +30,8 @@ export default function BlogPage() {
       className="mx-auto grid w-full max-w-page gap-8 px-4 pt-10 pb-16"
     >
       <header className="grid gap-3">
-        <h1 className="flex flex-wrap items-center gap-x-3.5 gap-y-2 text-[clamp(40px,7vw,64px)] leading-[1.1] font-bold">
+        <h1 className="text-[clamp(40px,7vw,64px)] leading-[1.1] font-bold">
           dev log
-          <span className="bg-ink px-2 py-1 font-label text-[13px] font-normal tracking-wider text-paper">
-            save points
-          </span>
         </h1>
         <p className="max-w-[44ch] text-[19px] sm:text-[22px]">
           Notes on what I&apos;m building and what I&apos;m learning.
