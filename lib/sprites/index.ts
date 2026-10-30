@@ -15,21 +15,95 @@ export const cloud = defineSprite([
   "..KKKKKKKKKKKKKKKKKKKK..",
 ]);
 
+// More clouds, so the navigation isn't a row of copies.
+// Three even puffs.
+export const cloudPuffy = defineSprite([
+  "........KKKKKKK........",
+  "....KKKKWWWWWWWKKKK....",
+  "...KWWWWWWWWWWWWWWWK...",
+  "..KWWWWWWWWWWWWWWWWWK..",
+  "..KWWWWWWWWWWWWWWWWWK..",
+  ".KWWWWWWWWWWWWWWWWWWWK.",
+  "KWWWWWWWWWWWWWWWWWWWWWK",
+  "KWWWWWWWWWWWWWWWWWWWWWK",
+  "KLLLLLLLLLLLLLLLLLLLLLK",
+  ".KLLLLLLLLLLLLLLLLLLLK.",
+  "..KKKKKKKKKKKKKKKKKKK..",
+]);
+
+// Long and low.
+export const cloudLong = defineSprite([
+  "............KKKKKKK.........",
+  "......KKKKKKWWWWWWWKKKKK....",
+  ".....KWWWWWWWWWWWWWWWWWWK...",
+  "....KWWWWWWWWWWWWWWWWWWWWK..",
+  "....KWWWWWWWWWWWWWWWWWWWWK..",
+  ".KKKKWWWWWWWWWWWWWWWWWWWWKK.",
+  "KWWWWWWWWWWWWWWWWWWWWWWWWWWK",
+  "KLLLLLLLLLLLLLLLLLLLLLLLLLLK",
+  ".KLLLLLLLLLLLLLLLLLLLLLLLLK.",
+  "..KKKKKKKKKKKKKKKKKKKKKKKK..",
+]);
+
+// One tall puff in the middle.
+export const cloudTall = defineSprite([
+  ".......KKKKKKK.......",
+  "......KWWWWWWWK......",
+  ".....KWWWWWWWWWK.....",
+  "....KKWWWWWWWWWKK....",
+  "...KWWWWWWWWWWWWWK...",
+  "..KWWWWWWWWWWWWWWWK..",
+  ".KKWWWWWWWWWWWWWWWKK.",
+  "KWWWWWWWWWWWWWWWWWWWK",
+  "KWWWWWWWWWWWWWWWWWWWK",
+  "KLLLLLLLLLLLLLLLLLLLK",
+  ".KLLLLLLLLLLLLLLLLLK.",
+  "..KKKKKKKKKKKKKKKKK..",
+]);
+
+// Two big puffs, heavier on the left.
+export const cloudPair = defineSprite([
+  "......KKKKKKK...KKKK.......",
+  ".....KWWWWWWWK.KWWWWK......",
+  "....KWWWWWWWWWKWWWWWWK.....",
+  "....KWWWWWWWWWWWWWWWWWK....",
+  "....KWWWWWWWWWWWWWWWWWK....",
+  ".KKKKWWWWWWWWWWWWWWWWWKKKK.",
+  "KWWWWWWWWWWWWWWWWWWWWWWWWWK",
+  "KWWWWWWWWWWWWWWWWWWWWWWWWWK",
+  "KLLLLLLLLLLLLLLLLLLLLLLLLLK",
+  ".KLLLLLLLLLLLLLLLLLLLLLLLK.",
+  "..KKKKKKKKKKKKKKKKKKKKKKK..",
+]);
+
+// Curly dark hair, thick eyebrows, a big grin and a sage-green polo with
+// backpack straps.
 export const avatar = defineSprite([
-  "...KKKKKK...",
-  "..KHHHHHHK..",
-  ".KHHHHHHHHK.",
-  ".KHSSSSSSHK.",
-  ".KSSKSSKSSK.",
-  ".KSSSSSSSSK.",
-  "..KSSMMSSK..",
-  "...KKSSKK...",
-  "..KBBBBBBK..",
-  ".KBBBYYBBBK.",
-  ".KSBBBBBBSK.",
-  ".KSBBBBBBSK.",
-  "..KPPKKPPK..",
-  "..KKK..KKK..",
+  "...KK..KKK.KK...",
+  "..KhHK.KHhHKhKK.",
+  ".KHHhHKHHHhHHHhK",
+  "KhHHHHhHHHHhHHHK",
+  "KHHhHHHHHhHHhHHK",
+  "KHhHHHhHHHHHHHhK",
+  ".KHHhHHhHHHhHHK.",
+  ".KHHFhHFFHhFHHK.",
+  ".KHFHFFFFFFHFHK.",
+  ".KFFKKKFFKKKFFK.",
+  ".KFFFFFFFFFFFFK.",
+  ".KTFKKFFFFKKFTK.",
+  ".KFFFFFTTFFFFFK.",
+  "..KFKWWWWWWKFK..",
+  "..KFFKMMMMKFFK..",
+  "...KTFFFFFFTK...",
+  "....KKTFFTKK....",
+  "..KKQQqFFqQQKK..",
+  ".KQQQQQqqQQQQQK.",
+  "KQKQQQQqWQQQQKQK",
+  "KFKQQQQqQQQQQKFK",
+  "KFKqQQQQQQQQqKFK",
+  ".KPPPPPPPPPPPPK.",
+  "..KPPPPKKPPPPK..",
+  "..KKKKK..KKKKK..",
 ]);
 
 export const coin = defineSprite([
@@ -105,6 +179,10 @@ export const arrow = defineSprite([
 // Every sprite, so tests can check them all.
 export const sprites = {
   cloud,
+  cloudPuffy,
+  cloudLong,
+  cloudTall,
+  cloudPair,
   avatar,
   coin,
   arrow,

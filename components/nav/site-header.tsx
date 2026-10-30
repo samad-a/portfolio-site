@@ -1,9 +1,16 @@
+import { cloudLong, cloudPair, cloudPuffy, cloudTall } from "@/lib/sprites";
 import { CloudLink } from "./cloud-link";
 import { MobileMenu } from "./mobile-menu";
 import { navLinks } from "./nav-links";
 
-// Negative delays start each cloud partway through its bob, so they drift out of step.
-const bobDelays = ["-1s", "-2.2s", "-3s", "-1.6s"];
+// Each link gets its own cloud, bob speed and start point, so the row looks
+// like a sky rather than four copies. Negative delays start partway through.
+const clouds = [
+  { sprite: cloudPair, duration: "4.4s", delay: "-1s" },
+  { sprite: cloudTall, duration: "3.6s", delay: "-2.2s" },
+  { sprite: cloudLong, duration: "4.8s", delay: "-3s" },
+  { sprite: cloudPuffy, duration: "4s", delay: "-1.6s" },
+];
 
 export function SiteHeader() {
   return (
@@ -20,7 +27,13 @@ export function SiteHeader() {
             <li key={href}>
               <CloudLink
                 href={href}
-                style={{ animationDelay: bobDelays[index % bobDelays.length] }}
+                sprite={clouds[index % clouds.length].sprite}
+                sized
+                className="text-lg"
+                style={{
+                  animationDuration: clouds[index % clouds.length].duration,
+                  animationDelay: clouds[index % clouds.length].delay,
+                }}
               >
                 {label}
               </CloudLink>
