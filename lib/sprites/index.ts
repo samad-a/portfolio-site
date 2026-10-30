@@ -179,6 +179,61 @@ export const arrow = defineSprite([
   "...K...",
 ]);
 
+// The sun crossing the day sky, and the same sun reddening as it sets.
+export const sun = defineSprite([
+  ".......YY.......",
+  "..Y....YY....Y..",
+  "...Y........Y...",
+  ".....KKKKKK.....",
+  "....KYYYYYYK....",
+  "...KYWWYYYYOK...",
+  "...KYWYYYYYOK...",
+  "YY.KYYYYYYYOK.YY",
+  "YY.KYYYYYYYOK.YY",
+  "...KYYYYYYOOK...",
+  "...KOYYYYOOOK...",
+  "....KOOOOOOK....",
+  ".....KKKKKK.....",
+  "...Y........Y...",
+  "..Y....YY....Y..",
+  ".......YY.......",
+]);
+
+export const sunset = defineSprite([
+  ".......OO.......",
+  "..O....OO....O..",
+  "...O........O...",
+  ".....KKKKKK.....",
+  "....KOOOOOOK....",
+  "...KOYYOOOORK...",
+  "...KOYOOOOORK...",
+  "OO.KOOOOOOORK.OO",
+  "OO.KOOOOOOORK.OO",
+  "...KOOOOOORRK...",
+  "...KROOOORRRK...",
+  "....KRRRRRRK....",
+  ".....KKKKKK.....",
+  "...O........O...",
+  "..O....OO....O..",
+  ".......OO.......",
+]);
+
+// A full moon that rises as night falls.
+export const moon = defineSprite([
+  "....KKKK....",
+  "..KKWWWWKK..",
+  ".KWWWWWWWLK.",
+  ".KWLLWWWWLK.",
+  "KWWLLWWWWWLK",
+  "KWWWWWWLLWLK",
+  "KWWWWWWLLWLK",
+  "KWLWWWWWWLLK",
+  ".KWWWWWWLLK.",
+  ".KLWWWWLLLK.",
+  "..KKLLLLKK..",
+  "....KKKK....",
+]);
+
 // Every sprite, so tests can check them all.
 export const sprites = {
   cloud,
@@ -193,6 +248,9 @@ export const sprites = {
   spark,
   squid,
   rocket,
+  sun,
+  sunset,
+  moon,
   ...items,
 };
 
