@@ -57,7 +57,10 @@ export function SkyCanvas() {
       skyLate: themeColour("sky-late"),
       blush: themeColour("blush"),
       sunset: themeColour("sunset"),
+      mauve: themeColour("mauve"),
+      duskLight: themeColour("dusk-light"),
       dusk: themeColour("dusk"),
+      duskDeep: themeColour("dusk-deep"),
       night: themeColour("night"),
     };
     const starColour = themeColour("moon");

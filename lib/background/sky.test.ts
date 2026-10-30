@@ -7,13 +7,20 @@ const colours = {
   skyLate: "#c6cbee",
   blush: "#f0c3c8",
   sunset: "#f4ab84",
+  mauve: "#c495b8",
+  duskLight: "#8b7fd3",
   dusk: "#7b6fc9",
+  duskDeep: "#4a3f8f",
   night: "#121238",
 };
 
 describe("skyLayout", () => {
-  it("turns night by the time the contact text starts", () => {
-    expect(skyLayout(3000)).toEqual({ dayEnd: 2800, nightStart: 3160 });
+  it("fades from well above the contact section to past its text", () => {
+    expect(skyLayout(3000)).toEqual({
+      contactTop: 3000,
+      dayEnd: 2440,
+      nightStart: 3420,
+    });
   });
 });
 
@@ -22,10 +29,10 @@ describe("nightAmount", () => {
 
   it.each([
     [0, 0],
-    [2800, 0],
-    [2980, 0],
-    [3070, 0.5],
-    [3160, 1],
+    [2440, 0],
+    [2930, 0],
+    [3175, 0.5],
+    [3420, 1],
     [9000, 1],
   ])("is %s at page position %s", (pageY, amount) => {
     expect(nightAmount(pageY, layout)).toBe(amount);
@@ -39,33 +46,36 @@ describe("nightAmount", () => {
 describe("skyBackground", () => {
   it("is the same gradient in page pixels, for CSS", () => {
     expect(skyBackground(skyLayout(3000), colours)).toBe(
-      "linear-gradient(#8fd0ea 0px, #a9dbee 400px, #a9dbee 700px, #c6cbee 1400px, #f0c3c8 2128px, #f4ab84 2800px, #7b6fc9 2980px, #121238 3160px)",
+      "linear-gradient(#8fd0ea 0px, #a9dbee 400px, #a9dbee 610px, #c6cbee 1220px, #f0c3c8 1854px, #f4ab84 2440px, #c495b8 2700px, #8b7fd3 2940px, #7b6fc9 3150px, #4a3f8f 3220px, #121238 3420px)",
     );
   });
 });
 
 describe("skyGradient", () => {
-  it("warms slowly through the day, then turns through dusk to night", () => {
-    expect(skyGradient(skyLayout(3000), colours)).toEqual({
-      end: 3160,
-      stops: [
-        [0, "#8fd0ea"],
-        [400 / 3160, "#a9dbee"],
-        [700 / 3160, "#a9dbee"],
-        [1400 / 3160, "#c6cbee"],
-        [2128 / 3160, "#f0c3c8"],
-        [2800 / 3160, "#f4ab84"],
-        [2980 / 3160, "#7b6fc9"],
-        [1, "#121238"],
-      ],
-    });
+  it("warms slowly through the day, then darkens slowly into night", () => {
+    const { end, stops } = skyGradient(skyLayout(3000), colours);
+    expect(end).toBe(3420);
+    expect(stops.map(([offset, colour]) => [offset * end, colour])).toEqual([
+      [0, "#8fd0ea"],
+      [400, "#a9dbee"],
+      [610, "#a9dbee"],
+      [1220, "#c6cbee"],
+      [expect.closeTo(1854.4), "#f0c3c8"],
+      [2440, "#f4ab84"],
+      [2700, "#c495b8"],
+      [2940, "#8b7fd3"],
+      [3150, "#7b6fc9"],
+      [3220, "#4a3f8f"],
+      [3420, "#121238"],
+    ]);
   });
 
   it("keeps the stops in order on a short page", () => {
-    const offsets = skyGradient(skyLayout(800), colours).stops.map(
-      ([offset]) => offset * 960,
-    );
-    expect(offsets).toEqual([0, 400, 400, 400, 456, 600, 780, 960]);
+    const { end, stops } = skyGradient(skyLayout(1200), colours);
+    const offsets = stops.map(([offset]) => Math.round(offset * end));
+    expect(offsets).toEqual([
+      0, 400, 400, 400, 486, 640, 900, 1140, 1350, 1420, 1620,
+    ]);
   });
 
   it("is only the day sky without a contact section", () => {
