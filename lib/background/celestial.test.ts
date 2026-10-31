@@ -11,14 +11,14 @@ const viewport = { width: 1000, height: 800 };
 
 describe("celestialProgress", () => {
   // The middle of the screen runs from 400 to 3600. Day ends at 2440 and
-  // dusk is at 2930.
+  // dusk is at 2980.
   const layout = skyLayout(3000);
 
   it.each([
     [400, 0, 0],
-    [1665, 0.5, 0],
-    [2440, 2040 / 2530, 0],
-    [2930, 1, 490 / 1160],
+    [1690, 0.5, 0],
+    [2440, 2040 / 2580, 0],
+    [2980, 1, 540 / 1160],
     [3600, 1, 1],
   ])("at %s the sun is %s along and the moon %s", (centre, sun, moon) => {
     const progress = celestialProgress(centre, layout, 400, 3600);

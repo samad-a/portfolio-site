@@ -26,10 +26,6 @@ export const nightSprites: SpriteName[] = ["squid", "rocket", "spark"];
 // How far past either edge a floater goes before it respawns.
 const margin = 80;
 
-export function floaterCount({ width }: Viewport) {
-  return width < 640 ? 5 : 9;
-}
-
 // Drawn bigger on wide screens. Whole numbers keep the pixels crisp.
 export function floaterScale({ width }: Viewport) {
   return width < 640 ? 3 : 4;

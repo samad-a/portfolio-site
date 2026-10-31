@@ -11,7 +11,6 @@ import {
 import {
   bobOffset,
   type Floater,
-  floaterCount,
   floaterScale,
   isOffScreen,
   spawnFloater,
@@ -25,12 +24,13 @@ import {
   skyLayout,
 } from "@/lib/background/sky";
 import { spriteImage } from "@/lib/background/sprite-image";
+import { scenery, sceneryPosition } from "@/lib/background/scenery";
 import { makeStars, type Star, starOpacity } from "@/lib/background/stars";
 import { konamiEvent } from "@/lib/konami";
 import { type SpriteName, sprites } from "@/lib/sprites";
 
-// Faint, so text that a floater drifts behind stays easy to read.
-const floaterOpacity = 0.55;
+// Faint, so text near the scenery or under a passing coin stays easy to read.
+const spriteOpacity = 0.55;
 const moonOpacity = 0.6;
 
 function themeColour(name: string) {
@@ -72,7 +72,12 @@ export function SkyCanvas() {
 
     const viewport: Viewport = { width: 0, height: 0 };
     let layout: SkyLayout | undefined;
+    // Only the Konami code's coins drift across the sky now. They leave once
+    // they're off screen.
     let floaters: Floater[] = [];
+    // The scenery, placed in page pixels for the current screen width.
+    let placed: { sprite: SpriteName; x: number; y: number; night: boolean }[] =
+      [];
     let stars: Star[] = [];
     let frameId = 0;
     let lastTime: number | undefined;
@@ -92,17 +97,11 @@ export function SkyCanvas() {
       canvas!.height = viewport.height;
       context!.imageSmoothingEnabled = false;
       measure();
-
-      const count = floaterCount(viewport);
-      while (floaters.length < count) {
-        floaters.push(spawnFloater(Math.random, viewport, isNight(), true));
-      }
-      floaters = floaters.slice(0, count);
       if (still) redraw();
     }
 
     // Whether the middle of the screen is on the night sky, which decides
-    // what kind of floater spawns next.
+    // which sky the Konami coins fade with.
     function isNight() {
       return nightAmount(scrollY + viewport.height / 2, layout) > 0.5;
     }
@@ -122,10 +121,53 @@ export function SkyCanvas() {
             document.documentElement.scrollHeight,
           )
         : [];
+      placeScenery();
       // The browser positions the body's background against the whole page,
       // so this lines up with the canvas as it scrolls.
       document.body.style.backgroundImage = skyBackground(layout, colours);
       document.body.style.backgroundRepeat = "no-repeat";
+    }
+
+    // Works out where each piece of scenery goes beside its section.
+    function placeScenery() {
+      const scale = floaterScale(viewport);
+      placed = scenery.flatMap((item) => {
+        const element = document.getElementById(item.section);
+        if (!element) return [];
+        const box = element.getBoundingClientRect();
+        const image = imageOf(item.sprite);
+        const position = sceneryPosition(
+          item,
+          { top: box.top + scrollY, height: box.height },
+          { width: image.width * scale, height: image.height * scale },
+          viewport.width,
+        );
+        if (!position) return [];
+        return [{ sprite: item.sprite, ...position, night: !!item.night }];
+      });
+    }
+
+    // Draws a sprite at a point on screen, fading it out over the other kind
+    // of sky to its own.
+    function drawFaded(
+      sprite: SpriteName,
+      x: number,
+      y: number,
+      night: boolean,
+    ) {
+      const amount = nightAmount(scrollY + y, layout);
+      const opacity = spriteOpacity * (night ? amount : 1 - amount);
+      if (opacity < 0.02) return;
+      const image = imageOf(sprite);
+      const scale = floaterScale(viewport);
+      context!.globalAlpha = opacity;
+      context!.drawImage(
+        image,
+        Math.round(x),
+        Math.round(y),
+        image.width * scale,
+        image.height * scale,
+      );
     }
 
     function drawStars(seconds: number) {
@@ -160,7 +202,7 @@ export function SkyCanvas() {
       context!.fillRect(0, 0, viewport.width, viewport.height);
     }
 
-    // Centred on the point, a size up from the floaters, so they read as far
+    // Centred on the point, a size up from the scenery, so they read as far
     // bigger things.
     function drawSprite(name: SpriteName, { x, y }: Point, opacity: number) {
       if (opacity <= 0) return;
@@ -201,7 +243,7 @@ export function SkyCanvas() {
 
       const moon = moonPosition(progress.moon, viewport);
       if (still) moon.y += lastScroll - scrollY;
-      // Dimmed like the floaters, since on phones it rises behind the
+      // Dimmed like the scenery, since on phones it rises behind the
       // contact section's light text.
       drawSprite("moon", moon, progress.moon > 0 ? moonOpacity : 0);
     }
@@ -217,26 +259,21 @@ export function SkyCanvas() {
       drawStars(time / 1000);
       drawSunAndMoon();
 
-      const scale = floaterScale(viewport);
-      floaters = floaters.map((floater) => {
+      for (const { sprite, x, y, night } of placed) {
+        if (y - scrollY > viewport.height || y - scrollY < -100) continue;
+        drawFaded(sprite, x, y - scrollY, night);
+      }
+
+      floaters = floaters.filter((floater) => {
         floater.x += floater.speed * seconds;
-        if (isOffScreen(floater, viewport)) {
-          return spawnFloater(Math.random, viewport, isNight(), false);
-        }
-        // Each kind fades out as it drifts over the other kind of sky.
-        const night = nightAmount(scrollY + floater.y, layout);
-        const opacity = floaterOpacity * (floater.night ? night : 1 - night);
-        if (opacity < 0.02) return floater;
-        context!.globalAlpha = opacity;
-        const image = imageOf(floater.sprite);
-        context!.drawImage(
-          image,
-          Math.round(floater.x),
-          Math.round(floater.y + (still ? 0 : bobOffset(floater, time / 1000))),
-          image.width * scale,
-          image.height * scale,
+        if (isOffScreen(floater, viewport)) return false;
+        drawFaded(
+          floater.sprite,
+          floater.x,
+          floater.y + (still ? 0 : bobOffset(floater, time / 1000)),
+          floater.night,
         );
-        return floater;
+        return true;
       });
 
       if (!still) frameId = requestAnimationFrame(frame);
@@ -248,9 +285,8 @@ export function SkyCanvas() {
       frameId = requestAnimationFrame(frame);
     }
 
-    // The Konami code's reward: a burst of fast coins that clears after a few
-    // seconds. With reduced motion, only the message shows.
-    let showerTimer: ReturnType<typeof setTimeout> | undefined;
+    // The Konami code's reward: a burst of fast coins that fly off the screen.
+    // With reduced motion, only the message shows.
     function onKonami() {
       if (still) return;
       const night = isNight();
@@ -262,10 +298,6 @@ export function SkyCanvas() {
           speed: Math.sign(coin.speed) * (90 + Math.random() * 150),
         });
       }
-      clearTimeout(showerTimer);
-      showerTimer = setTimeout(() => {
-        floaters = floaters.slice(0, floaterCount(viewport));
-      }, 5000);
     }
 
     function onScroll() {
@@ -304,7 +336,6 @@ export function SkyCanvas() {
       removeEventListener("resize", resize);
       removeEventListener("scroll", onScroll);
       removeEventListener(konamiEvent, onKonami);
-      clearTimeout(showerTimer);
       motionQuery.removeEventListener("change", onMotionChange);
       document.removeEventListener("visibilitychange", onVisibilityChange);
       pageObserver.disconnect();
