@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { toRuns } from "@/components/sprite";
+import { isFontFile } from "@/lib/font-file";
 import type { SpriteGrid } from "@/lib/sprites/grid";
 
 // The size social sites expect for a large link preview.
@@ -30,7 +31,8 @@ function spriteUrl(grid: SpriteGrid) {
 
 // Fetches Pixelify Sans from Google Fonts while the image is built, trimmed to
 // just the letters it needs. The renderer can't use the site's web font file,
-// so on any failure the image falls back to the renderer's own font.
+// so on any failure, or a download that isn't a font, the image falls back to
+// the renderer's own font rather than failing the build.
 async function pixelFont(text: string) {
   try {
     const css = await fetch(
@@ -40,7 +42,10 @@ async function pixelFont(text: string) {
       css,
     )?.[1];
     if (!url) return undefined;
-    return await fetch(url).then((response) => response.arrayBuffer());
+    const response = await fetch(url);
+    if (!response.ok) return undefined;
+    const data = await response.arrayBuffer();
+    return isFontFile(data) ? data : undefined;
   } catch {
     return undefined;
   }
