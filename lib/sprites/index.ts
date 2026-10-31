@@ -160,16 +160,47 @@ export const rocket = defineSprite([
   "...O...",
 ]);
 
-// LinkedIn-style badge, for the contact link.
-export const badge = defineSprite([
+// The tail of the avatar's speech bubble. Its top row sits over the bubble's
+// border, opening it up.
+export const bubbleTail = defineSprite([
+  "KWWWWK",
+  "KWWWK.",
+  "KWWK..",
+  "KWK...",
+  "KK....",
+]);
+
+// Project console sprites.
+export const shield = defineSprite([
   "KKKKKKKKK",
-  "KBBBBBBBK",
-  "KBWBBBBBK",
-  "KBBBWWWBK",
-  "KBWBWBWBK",
-  "KBWBWBWBK",
-  "KBBBBBBBK",
-  "KKKKKKKKK",
+  "KEEEREEEK",
+  "KEEEREEEK",
+  "KRRRRRRRK",
+  "KEEEREEEK",
+  ".KEEREEK.",
+  "..KEEEK..",
+  "...KKK...",
+]);
+
+export const leaf = defineSprite([
+  "......KK",
+  "....KKgK",
+  "..KKggGK",
+  ".KggGGGK",
+  ".KgGGGK.",
+  "KgGGKK..",
+  "KGKK....",
+  "K.......",
+]);
+
+export const heart = defineSprite([
+  ".KK.KK.",
+  "KRRKRRK",
+  "KRWRRRK",
+  "KRRRRRK",
+  ".KRRRK.",
+  "..KRK..",
+  "...K...",
 ]);
 
 // Points right. Flip it with CSS to point left.
@@ -274,7 +305,10 @@ export const sprites = {
   avatar,
   coin,
   arrow,
-  badge,
+  bubbleTail,
+  heart,
+  shield,
+  leaf,
   spark,
   squid,
   rocket,

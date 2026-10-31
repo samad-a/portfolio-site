@@ -4,14 +4,14 @@ import { skillListSchema } from "./schemas";
 
 describe("parseContent", () => {
   it("returns the parsed data when it's valid", () => {
-    const data = [{ name: "Git", category: "tool", item: "key" }];
+    const data = [{ name: "Git", category: "tool", item: "git" }];
     expect(parseContent("skills.json", skillListSchema, data)).toEqual(data);
   });
 
   it("names the file and the problem when it isn't", () => {
     expect(() =>
       parseContent("skills.json", skillListSchema, [
-        { name: "Git", category: "tools", item: "key" },
+        { name: "Git", category: "tools", item: "git" },
       ]),
     ).toThrow(/^skills\.json is invalid:\n[\s\S]*\[0\]\.category/);
   });

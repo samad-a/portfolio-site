@@ -10,7 +10,7 @@ type ItemSpriteProps = {
   scale?: number;
 };
 
-export function ItemSprite({ item, scale = 4 }: ItemSpriteProps) {
+export function ItemSprite({ item, scale = 3 }: ItemSpriteProps) {
   const grid = items[item];
 
   return (
@@ -37,7 +37,7 @@ export function InventorySlot({ skill, active, ...props }: InventorySlotProps) {
       className="grid h-full w-full cursor-pointer justify-items-center gap-2 bg-slot px-1.5 pt-3.5 pb-2.5 text-center font-label text-[11px] tracking-wide text-paper pixel-corners focus-visible:outline-offset-[-6px] focus-visible:outline-gold data-active:shadow-[inset_0_0_0_3px_var(--color-gold)] sm:text-xs"
       {...props}
     >
-      <span className="grid h-8 place-items-end">
+      <span className="grid h-12 place-items-end">
         <ItemSprite item={skill.item} />
       </span>
       <span>{skill.name}</span>
