@@ -13,7 +13,7 @@
   { "name": "React", "category": "framework", "item": "heart" },
   { "name": "Spring Boot", "category": "framework", "item": "leaf" },
   { "name": "Git", "category": "tool", "item": "key" },
-  { "name": "GitHub", "category": "tool", "item": "star" },
+  { "name": "GitHub", "category": "tool", "item": "github" },
   { "name": "VS Code", "category": "tool", "item": "code" },
   { "name": "Figma", "category": "tool", "item": "brush" },
   { "name": "Postman", "category": "tool", "item": "mail" },

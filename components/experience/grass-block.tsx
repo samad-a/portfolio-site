@@ -20,11 +20,11 @@ export function GrassBlock({ title, aside, children }: GrassBlockProps) {
       className="bg-dirt dirt-texture p-0 text-paper"
     >
       <header className="grass-edge flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 bg-grass px-5.5 pt-3.5 pb-2.5">
-        <h3 id={titleId} className="text-2xl leading-tight font-bold">
+        <h3 id={titleId} className="text-[28px] leading-tight font-bold">
           {title}
         </h3>
         {aside && (
-          <div className="font-label text-[13px] tracking-wide">{aside}</div>
+          <div className="font-label text-[15px] tracking-wide">{aside}</div>
         )}
       </header>
       <div className="px-5.5 pt-9 pb-6">{children}</div>

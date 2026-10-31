@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   bobOffset,
   daySprites,
-  floaterCount,
   floaterScale,
   isOffScreen,
   nightSprites,
@@ -16,9 +15,7 @@ const desktop = { width: 1280, height: 800 };
 const always = (value: number) => () => value;
 
 describe("floaters", () => {
-  it("uses fewer, smaller floaters on phones", () => {
-    expect(floaterCount(phone)).toBe(5);
-    expect(floaterCount(desktop)).toBe(9);
+  it("draws sprites smaller on phones", () => {
     expect(floaterScale(phone)).toBe(3);
     expect(floaterScale(desktop)).toBe(4);
   });

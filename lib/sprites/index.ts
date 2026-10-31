@@ -238,6 +238,32 @@ export const moon = defineSprite([
   "....KKKK....",
 ]);
 
+// Scenery for the sky: three birds flying home, and a hot air balloon.
+export const birds = defineSprite([
+  "KK.KK..........",
+  "..K............",
+  "........KK.KK..",
+  "..........K....",
+  "...KK.KK.......",
+  ".....K.........",
+]);
+
+export const balloon = defineSprite([
+  "..KKKKK..",
+  ".KRRWRRK.",
+  "KRRRWRRRK",
+  "KRRRWRRRK",
+  "KRRRWRRRK",
+  ".KRRWRRK.",
+  "..KRWRK..",
+  "...KKK...",
+  "...K.K...",
+  "...K.K...",
+  "..KDDDK..",
+  "..KDDDK..",
+  "...KKK...",
+]);
+
 // Every sprite, so tests can check them all.
 export const sprites = {
   cloud,
@@ -255,6 +281,8 @@ export const sprites = {
   sun,
   sunset,
   moon,
+  birds,
+  balloon,
   ...items,
 };
 

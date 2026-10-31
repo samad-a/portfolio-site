@@ -9,7 +9,7 @@ import { CopyEmail } from "./copy-email";
 
 const links = [
   { label: "email", href: `mailto:${contact.email}`, sprite: items.mail },
-  { label: "github", href: contact.github, sprite: items.star },
+  { label: "github", href: contact.github, sprite: items.github },
   { label: "linkedin", href: contact.linkedin, sprite: badge },
 ];
 
