@@ -38,7 +38,7 @@ export const faces = {
     "..KFFFFFFFFMFK..",
     "..KFFFFMMMMFFK..",
   ]),
-  surprised: defineSprite([
+  shock: defineSprite([
     "KHHFKKFFFFKKFHHK",
     ".KHFFFFFFFFFFHK.",
     ".KFFFFFFFFFFFFK.",
@@ -58,6 +58,39 @@ export const faces = {
     ]),
     ...smile.slice(6),
   ],
+  // Brows raised in the middle, a frown and a tear.
+  sad: defineSprite([
+    "KHHFFKFFFFKFFHHK",
+    ".KHFKFFFFFFKFHK.",
+    ".KFFFFFFFFFFFFK.",
+    ".KFFFKFFFFKFFFK.",
+    ".KFFFKFFFFKFFFK.",
+    ".KFNFCFFFFFFNFK.",
+    "..KFFFMMMMFFFK..",
+    "..KFFMFFFFMFFK..",
+  ]),
+  // Big shiny eyes and a wobbly little mouth.
+  plead: defineSprite([
+    "KHHFFKFFFFKFFHHK",
+    ".KHFKFFFFFFKFHK.",
+    ".KFFFFFFFFFFFFK.",
+    ".KFFWKFFFFWKFFK.",
+    ".KFFKKFFFFKKFFK.",
+    ".KFNFFFFFFFFNFK.",
+    "..KFFFFMMFFFFK..",
+    "..KFFFMFFMFFFK..",
+  ]),
+  // Brows pulled down to the middle and red cheeks.
+  angry: defineSprite([
+    "KHHFFFFFFFFFFHHK",
+    ".KHFKFFFFFFKFHK.",
+    ".KFFFKKFFKKFFFK.",
+    ".KFFFFFFFFFFFFK.",
+    ".KFFFKFFFFKFFFK.",
+    ".KFRFFFFFFFFRFK.",
+    "..KFFFMMMMFFFK..",
+    "..KFFMFFFFMFFK..",
+  ]),
 } satisfies Record<string, SpriteGrid>;
 
 export const outfits = {
@@ -86,7 +119,7 @@ export const outfits = {
     "..KUUUdKKUUUdK..",
     "..KooooKKooooK..",
   ]),
-  "grad gown": defineSprite([
+  grad: defineSprite([
     "..KKPYYFFYYPKK..",
     ".KPPPYYPPYYPPPK.",
     "KPPPPYYPPYYPPPPK",
@@ -101,7 +134,9 @@ export const outfits = {
 } satisfies Record<string, SpriteGrid>;
 
 // Drawn over the hair. `top` is the row the hat starts on, counting from the
-// top of the head, so a negative one pokes up into the headroom.
+// top of the head, so a negative one pokes up into the headroom. A shaved
+// head replaces the hair outright, turns the sideburns to skin and narrows
+// the top of the face to the jaw's width, as the curls no longer bulk it out.
 export const hats = {
   curls: { top: 0, rows: [] },
   cap: {
@@ -115,7 +150,7 @@ export const hats = {
       "KrrrrrrrrrrrrrrK",
     ]),
   },
-  mortarboard: {
+  grad: {
     top: -3,
     rows: defineSprite([
       ".....KKKKKK.....",
@@ -126,7 +161,20 @@ export const hats = {
       "...KKKKKKKKKK.O.",
     ]),
   },
-} satisfies Record<string, { top: number; rows: SpriteGrid }>;
+  bald: {
+    top: 0,
+    shave: true,
+    rows: defineSprite([
+      "................",
+      "................",
+      ".....KKKKKK.....",
+      "...KKFFFFFFKK...",
+      "..KFWWFFFFFFFK..",
+      ".KFWFFFFFFFFFFK.",
+      ".KFFFFFFFFFFFFK.",
+    ]),
+  },
+} satisfies Record<string, { top: number; rows: SpriteGrid; shave?: true }>;
 
 export type Look = {
   hair: keyof typeof hats;
@@ -188,13 +236,20 @@ export function dressAvatar(look: Look): SpriteGrid {
     ...rows,
   ];
   const hat = hats[look.hair];
+  const shave = "shave" in hat;
   hat.rows.forEach((hatRow, index) => {
     const y = headroom + hat.top + index;
-    dressed[y] = [...dressed[y]]
-      .map((pixel, x) => (hatRow[x] === "." ? pixel : hatRow[x]))
-      .join("");
+    dressed[y] = shave
+      ? hatRow
+      : [...dressed[y]]
+          .map((pixel, x) => (hatRow[x] === "." ? pixel : hatRow[x]))
+          .join("");
   });
-  return dressed;
+  if (!shave) return dressed;
+  const shaved = dressed.map((row) => row.replace(/[Hh]/g, "F"));
+  const temples = headroom + faceRows.from;
+  shaved[temples] = `.K${shaved[temples].slice(2, -2)}K.`;
+  return shaved;
 }
 
 // Reads a look saved earlier, keeping only the parts that still exist, so an

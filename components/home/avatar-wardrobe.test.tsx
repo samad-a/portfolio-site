@@ -32,7 +32,7 @@ describe("AvatarWardrobe", () => {
       "polo",
       "hoodie",
       "suit",
-      "grad gown",
+      "grad",
     ]);
     expect(screen.getByRole("button", { name: "polo" })).toHaveAttribute(
       "aria-pressed",
