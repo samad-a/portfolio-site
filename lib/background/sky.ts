@@ -20,15 +20,15 @@ type EveningColour =
 // near-even pace over a long stretch rather than all in the gap between the
 // sections. Across that gap it's a mid lavender: light enough for the dark
 // "all posts" link above it, and dark enough for the light contact heading
-// 220px in. It's deep dusk by the contact text below that, and full night
+// 160px in. It's deep dusk by the contact text below that, and full night
 // further down.
 const evening: readonly (readonly [number, EveningColour])[] = [
   [-560, "sunset"],
   [-300, "mauve"],
   [-60, "duskLight"],
-  [120, "dusk"],
-  [300, "duskDeep"],
-  [520, "night"],
+  [90, "dusk"],
+  [240, "duskDeep"],
+  [460, "night"],
 ];
 
 export function skyLayout(contactTop: number): SkyLayout {

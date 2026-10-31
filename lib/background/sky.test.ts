@@ -19,7 +19,7 @@ describe("skyLayout", () => {
     expect(skyLayout(3000)).toEqual({
       contactTop: 3000,
       dayEnd: 2440,
-      nightStart: 3520,
+      nightStart: 3460,
     });
   });
 });
@@ -30,9 +30,9 @@ describe("nightAmount", () => {
   it.each([
     [0, 0],
     [2440, 0],
-    [2980, 0],
-    [3250, 0.5],
-    [3520, 1],
+    [2950, 0],
+    [3205, 0.5],
+    [3460, 1],
     [9000, 1],
   ])("is %s at page position %s", (pageY, amount) => {
     expect(nightAmount(pageY, layout)).toBe(amount);
@@ -46,7 +46,7 @@ describe("nightAmount", () => {
 describe("skyBackground", () => {
   it("is the same gradient in page pixels, for CSS", () => {
     expect(skyBackground(skyLayout(3000), colours)).toBe(
-      "linear-gradient(#8fd0ea 0px, #a9dbee 400px, #a9dbee 610px, #c6cbee 1220px, #f0c3c8 1854px, #f4ab84 2440px, #c495b8 2700px, #8b7fd3 2940px, #7b6fc9 3120px, #4a3f8f 3300px, #121238 3520px)",
+      "linear-gradient(#8fd0ea 0px, #a9dbee 400px, #a9dbee 610px, #c6cbee 1220px, #f0c3c8 1854px, #f4ab84 2440px, #c495b8 2700px, #8b7fd3 2940px, #7b6fc9 3090px, #4a3f8f 3240px, #121238 3460px)",
     );
   });
 });
@@ -54,7 +54,7 @@ describe("skyBackground", () => {
 describe("skyGradient", () => {
   it("warms slowly through the day, then darkens slowly into night", () => {
     const { end, stops } = skyGradient(skyLayout(3000), colours);
-    expect(end).toBe(3520);
+    expect(end).toBe(3460);
     expect(stops.map(([offset, colour]) => [offset * end, colour])).toEqual([
       [0, "#8fd0ea"],
       [400, "#a9dbee"],
@@ -64,9 +64,9 @@ describe("skyGradient", () => {
       [2440, "#f4ab84"],
       [2700, "#c495b8"],
       [2940, "#8b7fd3"],
-      [3120, "#7b6fc9"],
-      [3300, "#4a3f8f"],
-      [3520, "#121238"],
+      [3090, "#7b6fc9"],
+      [3240, "#4a3f8f"],
+      [3460, "#121238"],
     ]);
   });
 
@@ -74,7 +74,7 @@ describe("skyGradient", () => {
     const { end, stops } = skyGradient(skyLayout(1200), colours);
     const offsets = stops.map(([offset]) => Math.round(offset * end));
     expect(offsets).toEqual([
-      0, 400, 400, 400, 486, 640, 900, 1140, 1320, 1500, 1720,
+      0, 400, 400, 400, 486, 640, 900, 1140, 1290, 1440, 1660,
     ]);
   });
 
