@@ -2,7 +2,6 @@ import { Sprite } from "@/components/sprite";
 import { PixelPanel } from "@/components/ui/pixel-panel";
 import { sendContactMessage } from "@/lib/actions/contact";
 import { contact } from "@/lib/contact";
-import { badge } from "@/lib/sprites";
 import { items } from "@/lib/sprites/items";
 import { ContactForm } from "./contact-form";
 import { CopyEmail } from "./copy-email";
@@ -10,7 +9,7 @@ import { CopyEmail } from "./copy-email";
 const links = [
   { label: "email", href: `mailto:${contact.email}`, sprite: items.mail },
   { label: "github", href: contact.github, sprite: items.github },
-  { label: "linkedin", href: contact.linkedin, sprite: badge },
+  { label: "linkedin", href: contact.linkedin, sprite: items.linkedin },
 ];
 
 // The night sky at the bottom of the page. The gradient at the top fades the

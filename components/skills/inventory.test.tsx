@@ -8,13 +8,13 @@ import { SkillsSection } from "./skills-section";
 const git: InventoryItem = {
   name: "Git",
   category: "tool",
-  item: "key",
+  item: "git",
   usedIn: [],
 };
 const react: InventoryItem = {
   name: "React",
   category: "framework",
-  item: "heart",
+  item: "react",
   usedIn: ["Blockr"],
 };
 
@@ -42,15 +42,18 @@ describe("InventorySlot", () => {
 });
 
 describe("InventoryGrid", () => {
-  it("lists a slot for each skill", () => {
+  it("sorts the skills into a headed list for each kind, in a set order", () => {
     render(<InventoryGrid items={[git, react]} />);
 
-    const list = screen.getByRole("list", { name: "Skills" });
     expect(
-      within(list)
+      screen.getAllByRole("heading").map((heading) => heading.textContent),
+    ).toEqual(["frameworks & libraries1", "tools1"]);
+    const slots = (name: string) =>
+      within(screen.getByRole("list", { name: new RegExp(name) }))
         .getAllByRole("button")
-        .map((b) => b.textContent),
-    ).toEqual(["Git", "React"]);
+        .map((button) => button.textContent);
+    expect(slots("frameworks")).toEqual(["React"]);
+    expect(slots("tools")).toEqual(["Git"]);
   });
 
   it("gives each slot its details as a description", () => {
@@ -104,8 +107,8 @@ describe("InventoryGrid", () => {
 
 describe("SkillsSection", () => {
   const skills: Skill[] = [
-    { name: "TypeScript", category: "language", item: "shield" },
-    { name: "Haskell", category: "language", item: "gem" },
+    { name: "TypeScript", category: "language", item: "typescript" },
+    { name: "Haskell", category: "language", item: "haskell" },
   ];
   const projects = [
     { name: "Blockr", stack: ["typescript", "React"] },
