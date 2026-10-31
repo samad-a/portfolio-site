@@ -1,6 +1,6 @@
-// Where visitors can reach me. The email matches the one on the CV.
+// Where visitors can reach me. The email forwards to my inbox.
 export const contact = {
-  email: "samadali2103@gmail.com",
+  email: "hello@samadali.dev",
   github: "https://github.com/samad-a",
   linkedin: "https://www.linkedin.com/in/samad-ali-/",
 } as const;
