@@ -61,8 +61,9 @@ describe("parseLook", () => {
   });
 
   it("keeps the parts that still exist and resets the rest", () => {
-    expect(
-      parseLook(JSON.stringify({ hair: "mortarboard", face: "angry" })),
-    ).toEqual({ ...defaultLook, hair: "mortarboard" });
+    expect(parseLook(JSON.stringify({ hair: "grad", face: "frown" }))).toEqual({
+      ...defaultLook,
+      hair: "grad",
+    });
   });
 });

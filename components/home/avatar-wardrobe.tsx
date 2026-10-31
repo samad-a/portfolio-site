@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  type CSSProperties,
   useEffect,
   useId,
   useRef,
@@ -8,9 +9,11 @@ import {
   useSyncExternalStore,
 } from "react";
 import { Sprite } from "@/components/sprite";
+import { cn } from "@/lib/cn";
 import { bubbleTail } from "@/lib/sprites";
 import {
   dressAvatar,
+  headroom,
   type Look,
   parseLook,
   parts,
@@ -53,6 +56,10 @@ function saveLook(look: Look) {
 }
 
 const rows = dressAvatar(parseLook(null)).length;
+// The bubble's tail points at the mouth, the avatar's 17th row down. Its
+// middle sits 18.5px below the bubble's top: the 3px border, then 8px, then
+// half of the tail.
+const bubbleTop = `calc(${((headroom + 14) / rows) * 100}% - 18.5px)`;
 
 // Whites out one part of the avatar, to show which part a click would change.
 function highlight(grid: readonly string[], from: number, to: number) {
@@ -115,7 +122,15 @@ export function AvatarWardrobe() {
         role={openPart ? "group" : undefined}
         aria-label={openPart ? `${openPart.name} options` : undefined}
         aria-hidden={openPart ? undefined : true}
-        className="absolute top-4 left-full z-20 ml-5 w-max max-w-[calc(100vw-160px)] border-3 border-ink bg-paper px-3 py-2 font-label text-xs tracking-wide text-ink md:right-full md:left-auto md:mr-5 md:ml-0 md:max-w-85"
+        style={{ "--bubble-top": bubbleTop } as CSSProperties}
+        className={cn(
+          "absolute z-20 w-max border-3 border-ink bg-paper px-3 py-2 font-label text-sm tracking-wide text-ink md:top-(--bubble-top) md:right-full md:left-auto md:mr-5 md:max-w-85",
+          // On phones the open bubble sits above the avatar, where it has the
+          // page's full width, rather than squeezing in beside it.
+          openPart
+            ? "bottom-full left-0 mb-6 max-w-[calc(100vw-32px)] md:bottom-auto md:mb-0"
+            : "top-(--bubble-top) left-full ml-5 md:ml-0",
+        )}
       >
         {openPart ? (
           <>
@@ -125,7 +140,7 @@ export function AvatarWardrobe() {
                 type="button"
                 aria-label="Close"
                 onClick={close}
-                className="cursor-pointer px-1 text-sm"
+                className="cursor-pointer px-1 text-base"
               >
                 ×
               </button>
@@ -141,7 +156,7 @@ export function AvatarWardrobe() {
                     onClick={() =>
                       saveLook({ ...look, [openPart.name]: option })
                     }
-                    className="grid w-16 cursor-pointer justify-items-center gap-1 bg-sky px-1 pt-2 pb-1 text-[10px] aria-pressed:shadow-[inset_0_0_0_3px_var(--color-gold-dark)]"
+                    className="grid w-16 cursor-pointer justify-items-center gap-1 bg-sky px-1 pt-2 pb-1 text-[11px] aria-pressed:shadow-[inset_0_0_0_3px_var(--color-gold-dark)]"
                   >
                     <Sprite
                       grid={dressAvatar({ ...look, [openPart.name]: option })}
@@ -158,7 +173,10 @@ export function AvatarWardrobe() {
         )}
         <Sprite
           grid={bubbleTail}
-          className="absolute top-2 left-[-16.5px] w-4.5 rotate-90 md:right-[-16.5px] md:left-auto md:-rotate-90"
+          className={cn(
+            "absolute w-4.5 md:top-2 md:right-[-16.5px] md:left-auto md:-rotate-90",
+            openPart ? "top-full left-6" : "top-2 left-[-16.5px] rotate-90",
+          )}
         />
       </div>
 
