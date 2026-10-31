@@ -75,6 +75,20 @@ describe("sendContactMessage", () => {
   });
 
   it.each([
+    ["a trailing line break", "Portfolio <contact@samadali.dev>\n"],
+    ["surrounding spaces", "  Portfolio <contact@samadali.dev> "],
+    ["quotes", '"Portfolio <contact@samadali.dev>"'],
+  ])("cleans %s off the configured sender", async (_case, configured) => {
+    vi.stubEnv("CONTACT_FROM_EMAIL", configured);
+
+    await sendContactMessage(idle, form(valid));
+
+    expect(send).toHaveBeenCalledWith(
+      expect.objectContaining({ from: "Portfolio <contact@samadali.dev>" }),
+    );
+  });
+
+  it.each([
     ["an empty name", { name: "" }, "name", "Enter your name."],
     [
       "a name over two lines",
