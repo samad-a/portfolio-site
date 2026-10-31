@@ -15,6 +15,16 @@ import { contactSchema } from "@/lib/contact-schema";
 // deliver to the address that owns the Resend account.
 const defaultFrom = "Portfolio contact form <onboarding@resend.dev>";
 
+// The sender from the environment, without stray spaces, line breaks or
+// quotes that pasting it into a dashboard can add, which Resend rejects.
+function sender() {
+  const configured = process.env.CONTACT_FROM_EMAIL?.trim().replace(
+    /^(["'])(.*)\1$/,
+    "$2",
+  );
+  return configured || defaultFrom;
+}
+
 const unavailable =
   "Sorry, the form isn't working right now. Please email me instead.";
 
@@ -63,8 +73,9 @@ export async function sendContactMessage(
     return { status: "error", message: unavailable, values };
   }
 
+  const from = sender();
   const { error } = await new Resend(apiKey).emails.send({
-    from: process.env.CONTACT_FROM_EMAIL || defaultFrom,
+    from,
     to: contact.email,
     replyTo: email,
     subject: `New message from ${name}`,
@@ -72,7 +83,11 @@ export async function sendContactMessage(
   });
 
   if (error) {
-    console.error("Contact form: Resend couldn't send the message.", error);
+    // The sender isn't secret, and naming it shows when it's the problem.
+    console.error(
+      `Contact form: Resend couldn't send the message from ${JSON.stringify(from)}.`,
+      error,
+    );
     return { status: "error", message: unavailable, values };
   }
 
