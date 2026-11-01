@@ -200,4 +200,5 @@
 @theme inline {
   --font-sans: var(--font-pixelify-sans), "Courier New", monospace;
   --font-label: var(--font-silkscreen), "Courier New", monospace;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }

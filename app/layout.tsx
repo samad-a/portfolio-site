@@ -5,7 +5,7 @@ import { SkyCanvas } from "@/components/background/sky-canvas";
 import { SiteHeader } from "@/components/nav/site-header";
 import { Konami } from "@/components/konami";
 import { SiteFooter } from "@/components/site-footer";
-import { pixelifySans, silkscreen } from "./fonts";
+import { jetbrainsMono, pixelifySans, silkscreen } from "./fonts";
 import "./globals.css";
 import { pageMetadata, siteDescription, siteName, siteUrl } from "@/lib/site";
 
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${pixelifySans.variable} ${silkscreen.variable}`}
+      className={`${pixelifySans.variable} ${silkscreen.variable} ${jetbrainsMono.variable}`}
     >
       {/* A column at least as tall as the screen, so the footer sits at the bottom of short pages. */}
       <body className="flex min-h-dvh flex-col bg-sky text-[17px] text-ink sm:text-[19px]">

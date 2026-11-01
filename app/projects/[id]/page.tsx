@@ -92,7 +92,8 @@ export default async function CaseStudyPage({ params }: Props) {
       </header>
 
       <PixelPanel as="article" className="px-6 py-7 sm:px-9 sm:py-9">
-        <div className="max-w-[65ch]">
+        {/* Long reading is in the monospace font; headings stay pixel. */}
+        <div className="max-w-[65ch] font-mono text-[15px] leading-[1.7] sm:text-[17px]">
           <CaseStudy />
         </div>
       </PixelPanel>
