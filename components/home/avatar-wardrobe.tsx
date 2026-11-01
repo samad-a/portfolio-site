@@ -61,6 +61,13 @@ const rows = dressAvatar(parseLook(null)).length;
 // half of the tail.
 const bubbleTop = `calc(${((headroom + 14) / rows) * 100}% - 18.5px)`;
 
+// An option's picture: just the head for hats and faces, which keeps the
+// bubble short, and the whole avatar for outfits.
+function preview(part: keyof Look, look: Look) {
+  const dressed = dressAvatar(look);
+  return part === "outfit" ? dressed : dressed.slice(0, headroom + 16);
+}
+
 // Whites out one part of the avatar, to show which part a click would change.
 function highlight(grid: readonly string[], from: number, to: number) {
   return grid.map((row, y) =>
@@ -127,9 +134,13 @@ export function AvatarWardrobe() {
           "absolute z-20 w-max border-3 border-ink bg-paper px-3 py-2 font-label text-sm tracking-wide text-ink md:top-(--bubble-top) md:right-full md:left-auto md:mr-5 md:max-w-85",
           // On phones the open bubble sits above the avatar, where it has the
           // page's full width, rather than squeezing in beside it.
+          // Beside the avatar it rises a little, so the grid doesn't hang far
+          // below the mouth, but not so far that it hides the rising sun.
           openPart
-            ? "bottom-full left-0 mb-6 max-w-[calc(100vw-32px)] md:bottom-auto md:mb-0"
-            : "top-(--bubble-top) left-full ml-5 md:ml-0",
+            ? "bottom-full left-0 mb-6 max-w-[calc(100vw-32px)] md:bottom-auto md:mb-0 md:-translate-y-4"
+            : // On phones the stats box sits below the mouth, so the closed
+              // bubble points at the brows instead.
+              "top-8 left-full ml-5 md:ml-0",
         )}
       >
         {openPart ? (
@@ -159,7 +170,10 @@ export function AvatarWardrobe() {
                     className="grid w-16 cursor-pointer justify-items-center gap-1 bg-sky px-1 pt-2 pb-1 text-[11px] aria-pressed:shadow-[inset_0_0_0_3px_var(--color-gold-dark)]"
                   >
                     <Sprite
-                      grid={dressAvatar({ ...look, [openPart.name]: option })}
+                      grid={preview(openPart.name, {
+                        ...look,
+                        [openPart.name]: option,
+                      })}
                       className="w-8"
                     />
                     {option}
@@ -174,8 +188,12 @@ export function AvatarWardrobe() {
         <Sprite
           grid={bubbleTail}
           className={cn(
-            "absolute w-4.5 md:top-2 md:right-[-16.5px] md:left-auto md:-rotate-90",
-            openPart ? "top-full left-6" : "top-2 left-[-16.5px] rotate-90",
+            "absolute w-4.5 md:right-[-16.5px] md:left-auto md:-rotate-90",
+            // The tail moves down by as much as the bubble rose, to stay
+            // pointing at the mouth.
+            openPart
+              ? "top-full left-6 md:top-6"
+              : "top-2 left-[-16.5px] rotate-90 md:top-2",
           )}
         />
       </div>
