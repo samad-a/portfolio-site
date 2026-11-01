@@ -54,7 +54,8 @@ export default async function PostPage({ params }: Props) {
           </h1>
           <PostMeta post={post} />
         </header>
-        <div className="max-w-[65ch]">
+        {/* Long reading is in the monospace font; headings stay pixel. */}
+        <div className="max-w-[65ch] font-mono text-[15px] leading-[1.7] sm:text-[17px]">
           <Content />
         </div>
       </PixelPanel>

@@ -5,12 +5,15 @@ import type { MDXComponents } from "mdx/types";
 const components: MDXComponents = {
   h2: (props) => (
     <h2
-      className="mt-10 mb-3 text-[28px] leading-tight font-bold first:mt-0"
+      className="mt-10 mb-3 font-sans text-[28px] leading-tight font-bold first:mt-0"
       {...props}
     />
   ),
   h3: (props) => (
-    <h3 className="mt-6 mb-2 text-[22px] leading-tight font-bold" {...props} />
+    <h3
+      className="mt-6 mb-2 font-sans text-[22px] leading-tight font-bold"
+      {...props}
+    />
   ),
   p: (props) => <p className="mt-3 first:mt-0" {...props} />,
   ul: (props) => (
