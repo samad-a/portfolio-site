@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   celestialProgress,
   moonPosition,
+  sunLowestStart,
   sunPosition,
   sunsetAmount,
 } from "./celestial";
@@ -38,7 +39,18 @@ describe("sunPosition", () => {
   it("starts beside the intro, clear of the navigation", () => {
     const { x, y } = sunPosition(0, viewport);
     expect(x).toBeCloseTo(589, 0);
-    expect(y).toBeCloseTo(234, 0);
+    expect(y).toBe(sunLowestStart);
+  });
+
+  it("starts no lower on a tall screen, but still sets below it", () => {
+    const tall = { width: 1920, height: 1080 };
+
+    expect(sunPosition(0, tall).y).toBe(sunLowestStart);
+    expect(sunPosition(1, tall).y).toBeGreaterThan(tall.height + 40);
+  });
+
+  it("starts where the arc puts it on a short screen", () => {
+    expect(sunPosition(0, { width: 1280, height: 700 }).y).toBeCloseTo(205, 0);
   });
 
   it("peaks below the navigation", () => {

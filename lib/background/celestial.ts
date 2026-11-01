@@ -68,9 +68,17 @@ export const moonArc: Arc = {
   to: 110,
 };
 
-// Where the middle of the sun is on screen.
+// The lowest the sun may start, in pixels from the top. The arc scales with
+// the screen but the page doesn't, so on a tall screen the sun would start
+// level with the avatar's mouth, behind its speech bubble.
+export const sunLowestStart = 230;
+
+// Where the middle of the sun is on screen. On a tall screen the whole arc
+// lifts, so the sun starts no lower than sunLowestStart.
 export function sunPosition(progress: number, viewport: Viewport) {
-  return onArc(sunArc, progress, viewport);
+  const lift = Math.max(0, onArc(sunArc, 0, viewport).y - sunLowestStart);
+  const { x, y } = onArc(sunArc, progress, viewport);
+  return { x, y: y - lift };
 }
 
 // Where the middle of the moon is on screen.
