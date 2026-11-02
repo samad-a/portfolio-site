@@ -153,6 +153,24 @@
     "tag": "team of 6",
     "event": "Hack the Burgh 2025",
     "sprite": "newspaper",
+    "screenshot": {
+      "src": "/projects/wikiwatch.png",
+      "alt": "WikiWatch's bubbles: live Wikipedia edits rewritten as headlines, coloured blue, gold or red by mood."
+    },
+    "gallery": [
+      {
+        "src": "/projects/wikiwatch/live.png",
+        "caption": "A burst of edits: each bubble is a generated headline, sized by the edit and coloured by its mood, with the latest headlines on the left."
+      },
+      {
+        "src": "/projects/wikiwatch/tooltip.png",
+        "caption": "Hovering a bubble shows the edit behind it: the editor, its size, the wiki, the edit comment and the headline's mood."
+      },
+      {
+        "src": "/projects/wikiwatch/edinburgh-mode.png",
+        "caption": "Edinburgh Mode only keeps articles a few links away from Edinburgh's page on Wikipedia."
+      }
+    ],
     "links": {
       "code": "https://github.com/aragamisonatina/bbm-htb-2025"
     }
