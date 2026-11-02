@@ -19,10 +19,12 @@ const controlClass =
 const roundClass =
   "grid size-12 place-items-center rounded-full text-[10px] tracking-wide shadow-[inset_0_-4px_0_rgb(0_0_0/0.3)] group-active:translate-y-[3px] group-active:shadow-none motion-reduce:group-active:translate-y-0";
 
-// B opens the code and A the demo. A is gold, as the main button; both light
-// up when pointed at or focused. With no demo, A is greyed out and inert.
+// B opens the code and A the demo: the live project if there is one, or else
+// the photos and videos on its page. A is gold, as the main button; both
+// light up when pointed at or focused. With no demo, A is greyed out and inert.
 function FaceButtons({ project }: { project: Project }) {
   const { code, play } = project.links;
+  const aClass = `${roundClass} bg-gold text-ink group-hover:bg-paper group-focus-visible:bg-paper`;
 
   return (
     <div className="flex -rotate-[18deg] items-end gap-2">
@@ -50,12 +52,16 @@ function FaceButtons({ project }: { project: Project }) {
           aria-label={`Play ${project.name}`}
           className={`mb-4 ${controlClass}`}
         >
-          <span
-            className={`${roundClass} bg-gold text-ink group-hover:bg-paper group-focus-visible:bg-paper`}
-          >
-            play
-          </span>
+          <span className={aClass}>play</span>
         </a>
+      ) : project.gallery ? (
+        <Link
+          href={`/projects/${project.id}#demo`}
+          aria-label={`Demo of ${project.name}`}
+          className={`mb-4 ${controlClass}`}
+        >
+          <span className={aClass}>demo</span>
+        </Link>
       ) : (
         <span
           className={`mb-4 ${roundClass} bg-[rgb(0_0_0/0.18)] text-center text-[8px] leading-tight text-[rgb(255_255_255/0.6)] shadow-none`}
@@ -74,7 +80,7 @@ function FaceButtons({ project }: { project: Project }) {
 // B the code and A the demo.
 export function ConsoleCard({ project }: { project: Project }) {
   const titleId = useId();
-  const hasDemo = Boolean(project.links.play);
+  const hasDemo = Boolean(project.links.play || project.gallery);
 
   return (
     // Lifts towards its shadow when pointed at or when a control has focus.

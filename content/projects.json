@@ -6,14 +6,15 @@
     "stack": [
       "Autodesk Inventor",
       "3D printing",
+      "Laser engraving",
       "Python",
       "Flask",
-      "ROS 2",
-      "Raspberry Pi"
+      "ROS 2"
     ],
     "highlights": [
       "Won Amazon's Runner-Up Prize with a team of 8, building an assistive shopping robot for older and mobility-impaired shoppers.",
-      "Modelled and 3D-printed parts of the supportive frame in Autodesk Inventor, prototyping handles in PLA and TPU and testing grip textures for comfort.",
+      "Modelled and 3D-printed every part of the frame except the screen arm in Autodesk Inventor, prototyping handles in PLA and TPU for grip and comfort.",
+      "Prototyped the hooks attaching the TurtleBot base to the frame, and laser-engraved the logo onto the acrylic walls.",
       "Worked as assistant project manager, acting as the technical bridge between the frame, base and robotics teams.",
       "In testing, 93% of users found it easy to use, and it reached its target in every end-to-end trial."
     ],
@@ -23,9 +24,39 @@
     "award": "Amazon runner-up",
     "sprite": "spark",
     "screenshot": {
-      "src": "/projects/caddymate.jpg",
-      "alt": "CaddyMate: a black trolley on an aluminium frame, with two handles and a touchscreen on an arm."
+      "src": "/projects/caddymate-render.jpg",
+      "alt": "CaddyMate: a black trolley on an aluminium frame, with two handles and a touchscreen on an arm, on a pink-to-orange background."
     },
+    "gallery": [
+      {
+        "src": "/projects/caddymate/prototype.jpg",
+        "caption": "The finished prototype: the supportive frame, textured handles and touchscreen on its arm."
+      },
+      {
+        "src": "/projects/caddymate/raising-base-loaded.mp4",
+        "poster": "/projects/caddymate/raising-base-loaded.jpg",
+        "caption": "The raising base lifting a bottle up to hand height, controlled from the screen."
+      },
+      {
+        "src": "/projects/caddymate/raising-base.mp4",
+        "poster": "/projects/caddymate/raising-base.jpg",
+        "caption": "The scissor-lift base going up and down inside the frame."
+      },
+      {
+        "src": "/projects/caddymate/arena-navigation.mp4",
+        "poster": "/projects/caddymate/arena-navigation.jpg",
+        "caption": "An early build of the robotic base driving itself towards a goal in the test arena."
+      },
+      {
+        "src": "/projects/caddymate/map-route.mp4",
+        "poster": "/projects/caddymate/map-route.jpg",
+        "caption": "The map screen planning a route to the bagels in aisle 3."
+      },
+      {
+        "src": "/projects/caddymate/team.jpg",
+        "caption": "Part of the team at the industry day, beside our poster."
+      }
+    ],
     "links": {
       "code": "https://github.com/JacksonW98/CaddyMate"
     }
@@ -36,18 +67,40 @@
     "summary": "A CAPTCHA that lets AI agents in, keeps humans out, and works out what kind of visitor just arrived.",
     "stack": ["Python", "FastAPI", "Playwright", "scikit-learn", "LLMs"],
     "highlights": [
-      "Classifies each visitor as a human, scraper, browser agent or vision agent from pointer paths, click offsets, key timings and browser signals.",
+      "Built solo at the Edinburgh AI Hackathon. Classifies each visitor as a human, scraper, browser agent or vision agent from pointer paths, click offsets, key timings and browser signals.",
       "Gives machine-like visitors a generated 1,900-word document and a 6-second question timed on the server, with a hidden instruction that separates agents reading the page's code from vision agents.",
       "Routes agents on demo sites to a structured JSON lane with no visible CAPTCHA, with a live dashboard and Pytest suites for the rules, features and API."
     ],
     "colour": "#c21d14",
     "tag": "solo",
-    "event": "Prove you're not human",
+    "event": "Edinburgh AI Hackathon",
     "sprite": "coin",
     "screenshot": {
       "src": "/projects/reverse-captcha.png",
       "alt": "Reverse CAPTCHA's gate: \"Prove you're not human\" above an \"I am not a human\" checkbox."
     },
+    "gallery": [
+      {
+        "src": "/projects/reverse-captcha/human-blocked.png",
+        "caption": "A person ticks the box and is turned away: their mouse moved too much like a human's."
+      },
+      {
+        "src": "/projects/reverse-captcha/challenge.png",
+        "caption": "Machine-like visitors get a 1,900-word document and 6 seconds to answer a question about it."
+      },
+      {
+        "src": "/projects/reverse-captcha/agent-granted.png",
+        "caption": "A browser agent passes in about 3 seconds and is shown every reason for its verdict."
+      },
+      {
+        "src": "/projects/reverse-captcha/flights-results.png",
+        "caption": "A mock flight site with no CAPTCHA, where the same checks quietly route agents to their own lane."
+      },
+      {
+        "src": "/projects/reverse-captcha/dashboard.png",
+        "caption": "The live dashboard: a human-to-machine meter, recent attempts and traffic in each lane."
+      }
+    ],
     "links": {
       "code": "https://github.com/samad-a/reverse-captcha"
     }
@@ -90,13 +143,36 @@
     "stack": ["TypeScript", "Next.js", "Python", "Ollama", "VADER"],
     "highlights": [
       "Built at Hack the Burgh 2025 in a team of 6.",
-      "Moved the interface to Next.js and React, and turned live Wikipedia edits into headlines with a local Llama model through Ollama.",
-      "Added sentiment analysis in TypeScript, with live positive, neutral and negative counts on the page."
+      "Built the front-end, moving the interface to a Next.js and React app.",
+      "Built the live headline feed and the positive, neutral and negative mood stats."
     ],
     "colour": "#0b5f8a",
     "tag": "team of 6",
     "event": "Hack the Burgh 2025",
     "sprite": "newspaper",
+    "screenshot": {
+      "src": "/projects/wikiwatch.png",
+      "alt": "WikiWatch's bubbles: live Wikipedia edits rewritten as headlines, coloured blue, gold or red by mood."
+    },
+    "gallery": [
+      {
+        "src": "/projects/wikiwatch/live.png",
+        "caption": "A burst of edits: each bubble is a generated headline, sized by the edit and coloured by its mood, with the latest headlines on the left."
+      },
+      {
+        "src": "/projects/wikiwatch/tooltip.png",
+        "caption": "Hovering a bubble shows the edit behind it: the editor, its size, the wiki, the edit comment and the headline's mood."
+      },
+      {
+        "src": "/projects/wikiwatch/edinburgh-mode.png",
+        "caption": "Edinburgh Mode only keeps articles a few links away from Edinburgh's page on Wikipedia."
+      },
+      {
+        "src": "/projects/wikiwatch/live-headlines.mp4",
+        "poster": "/projects/wikiwatch/live-headlines.jpg",
+        "caption": "Opening the page: it connects to Wikipedia's live edits, and headlines start filling the graph. The wait before the first one is sped up."
+      }
+    ],
     "links": {
       "code": "https://github.com/aragamisonatina/bbm-htb-2025"
     }
