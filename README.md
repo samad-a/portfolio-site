@@ -123,7 +123,8 @@ a key, the form shows a friendly error and the rest of the site works.
    - `colour` is the console's body. White text sits on it, so the check fails if it's lighter than a 4.5:1 contrast.
    - `tag`, `event` and `award` are optional: the console's top edge, the label above its screen and a gold sticker.
    - `screenshot` is optional: a 4:3 image in `public/projects/`. Without one, the screen shows `sprite`, any name from `lib/sprites`.
-   - Without a `play` link, the console's A button greys out and says "no demo".
+   - `gallery` is optional: photos, screenshots and short silent `.mp4` clips in `public/projects/my-project/`, each with a `caption` (and a `poster` still for a video). They appear in a demo section on the project's page.
+   - The console's A button opens the `play` link if there is one, or else the gallery. With neither, it greys out and says "no demo".
 
 2. Write its page in `content/projects/my-project.mdx`, with exactly these three `##` sections: `The problem`, `My approach` and `What I learned`. Use `###` for anything else.
 

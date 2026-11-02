@@ -65,9 +65,12 @@ export default async function CaseStudyPage({ params }: Props) {
           <p className="mt-3 font-label text-xs tracking-wide">
             {project.stack.join(" · ")}
           </p>
-          {(code || play) && (
+          {(code || play || project.gallery) && (
             <div className="mt-6 flex flex-wrap gap-4.5">
               {play && <PixelButton href={play}>play</PixelButton>}
+              {!play && project.gallery && (
+                <PixelButton href="#demo">watch the demo</PixelButton>
+              )}
               {code && <PixelButton href={code}>view code</PixelButton>}
             </div>
           )}
@@ -92,6 +95,57 @@ export default async function CaseStudyPage({ params }: Props) {
           </PixelPanel>
         )}
       </header>
+
+      {project.gallery && (
+        <section
+          id="demo"
+          aria-labelledby="demo-heading"
+          className="grid scroll-mt-4 gap-5"
+        >
+          <h2 id="demo-heading" className="text-[32px] leading-tight font-bold">
+            demo
+          </h2>
+          {/* role="list" keeps list semantics in Safari, which drops them without bullets. */}
+          <ul role="list" className="grid gap-6 sm:grid-cols-2">
+            {project.gallery.map(({ src, caption, poster }) => (
+              <li key={src}>
+                <PixelPanel
+                  as="figure"
+                  className="grid gap-3 p-3 pixel-corners-2"
+                  style={{ backgroundColor: project.colour }}
+                >
+                  <div className="relative aspect-4/3 overflow-hidden bg-screen-bezel pixel-corners">
+                    {src.endsWith(".mp4") ? (
+                      // Silent clips, so they need no captions track.
+                      <video
+                        src={src}
+                        poster={poster}
+                        controls
+                        muted
+                        loop
+                        playsInline
+                        preload="none"
+                        className="size-full object-contain"
+                      />
+                    ) : (
+                      <Image
+                        src={src}
+                        alt={caption}
+                        fill
+                        sizes="(min-width: 640px) 480px, 90vw"
+                        className="object-contain"
+                      />
+                    )}
+                  </div>
+                  <figcaption className="px-1 pb-1 font-mono text-[15px] leading-snug text-paper">
+                    {caption}
+                  </figcaption>
+                </PixelPanel>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <PixelPanel as="article" className="px-6 py-7 sm:px-9 sm:py-9">
         {/* Long reading is in the monospace font; headings stay pixel. */}

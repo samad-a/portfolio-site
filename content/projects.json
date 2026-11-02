@@ -23,9 +23,43 @@
     "award": "Amazon runner-up",
     "sprite": "spark",
     "screenshot": {
-      "src": "/projects/caddymate.jpg",
-      "alt": "CaddyMate: a black trolley on an aluminium frame, with two handles and a touchscreen on an arm."
+      "src": "/projects/caddymate-render.jpg",
+      "alt": "CaddyMate: a black trolley on an aluminium frame, with two handles and a touchscreen on an arm, on a pink-to-orange background."
     },
+    "gallery": [
+      {
+        "src": "/projects/caddymate/prototype.jpg",
+        "caption": "The finished prototype: the supportive frame, textured handles and touchscreen on its arm."
+      },
+      {
+        "src": "/projects/caddymate/raising-base-loaded.mp4",
+        "poster": "/projects/caddymate/raising-base-loaded.jpg",
+        "caption": "The raising base lifting a bottle up to hand height, controlled from the screen."
+      },
+      {
+        "src": "/projects/caddymate/raising-base.mp4",
+        "poster": "/projects/caddymate/raising-base.jpg",
+        "caption": "The scissor-lift base going up and down inside the frame."
+      },
+      {
+        "src": "/projects/caddymate/arena-navigation.mp4",
+        "poster": "/projects/caddymate/arena-navigation.jpg",
+        "caption": "An early build of the robotic base moving round the test arena."
+      },
+      {
+        "src": "/projects/caddymate/map-route.mp4",
+        "poster": "/projects/caddymate/map-route.jpg",
+        "caption": "The map screen planning a route to the bagels in aisle 3."
+      },
+      {
+        "src": "/projects/caddymate/screen-search.png",
+        "caption": "Searching for an item on the touchscreen, with its aisle shown beside each result."
+      },
+      {
+        "src": "/projects/caddymate/team.jpg",
+        "caption": "Part of the team at the industry day, beside our poster."
+      }
+    ],
     "links": {
       "code": "https://github.com/JacksonW98/CaddyMate"
     }
@@ -36,18 +70,40 @@
     "summary": "A CAPTCHA that lets AI agents in, keeps humans out, and works out what kind of visitor just arrived.",
     "stack": ["Python", "FastAPI", "Playwright", "scikit-learn", "LLMs"],
     "highlights": [
-      "Classifies each visitor as a human, scraper, browser agent or vision agent from pointer paths, click offsets, key timings and browser signals.",
+      "Built solo at the Edinburgh AI Hackathon. Classifies each visitor as a human, scraper, browser agent or vision agent from pointer paths, click offsets, key timings and browser signals.",
       "Gives machine-like visitors a generated 1,900-word document and a 6-second question timed on the server, with a hidden instruction that separates agents reading the page's code from vision agents.",
       "Routes agents on demo sites to a structured JSON lane with no visible CAPTCHA, with a live dashboard and Pytest suites for the rules, features and API."
     ],
     "colour": "#c21d14",
     "tag": "solo",
-    "event": "Prove you're not human",
+    "event": "Edinburgh AI Hackathon",
     "sprite": "coin",
     "screenshot": {
       "src": "/projects/reverse-captcha.png",
       "alt": "Reverse CAPTCHA's gate: \"Prove you're not human\" above an \"I am not a human\" checkbox."
     },
+    "gallery": [
+      {
+        "src": "/projects/reverse-captcha/human-blocked.png",
+        "caption": "A person ticks the box and is turned away: their mouse moved too much like a human's."
+      },
+      {
+        "src": "/projects/reverse-captcha/challenge.png",
+        "caption": "Machine-like visitors get a 1,900-word document and 6 seconds to answer a question about it."
+      },
+      {
+        "src": "/projects/reverse-captcha/agent-granted.png",
+        "caption": "A browser agent passes in about 3 seconds and is shown every reason for its verdict."
+      },
+      {
+        "src": "/projects/reverse-captcha/flights-results.png",
+        "caption": "A mock flight site with no CAPTCHA, where the same checks quietly route agents to their own lane."
+      },
+      {
+        "src": "/projects/reverse-captcha/dashboard.png",
+        "caption": "The live dashboard: a human-to-machine meter, recent attempts and traffic in each lane."
+      }
+    ],
     "links": {
       "code": "https://github.com/samad-a/reverse-captcha"
     }

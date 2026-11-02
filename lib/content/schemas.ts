@@ -104,6 +104,28 @@ export const projectSchema = z.strictObject({
       alt: text,
     })
     .optional(),
+  // Photos, screenshots and short videos for projects without a live demo,
+  // shown on the project's page. Each lives in public/projects/<id>/.
+  gallery: z
+    .array(
+      z.strictObject({
+        src: z
+          .string()
+          .regex(
+            /^\/projects\/[a-z0-9-]+\/[a-z0-9-]+\.(png|jpg|webp|mp4)$/,
+            'Use a path like "/projects/blockr/popup.png"',
+          ),
+        // What it shows, read out for images and printed under each one.
+        caption: text,
+        // A still shown before a video plays.
+        poster: z
+          .string()
+          .regex(/^\/projects\/[a-z0-9-]+\/[a-z0-9-]+\.(png|jpg|webp)$/)
+          .optional(),
+      }),
+    )
+    .min(1)
+    .optional(),
   links: z
     .strictObject({
       code: z.url().optional(),

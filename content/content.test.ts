@@ -32,12 +32,16 @@ describe("content files", () => {
     expect(files.toSorted()).toEqual(Object.keys(schemas).toSorted());
   });
 
-  it.each(projects.flatMap((project) => project.screenshot?.src ?? []))(
-    "%s exists in public/",
-    (src) => {
-      expect(existsSync(path.join(__dirname, "..", "public", src))).toBe(true);
-    },
-  );
+  it.each(
+    projects.flatMap((project) => [
+      ...(project.screenshot ? [project.screenshot.src] : []),
+      ...(project.gallery ?? []).flatMap(({ src, poster }) =>
+        poster ? [src, poster] : [src],
+      ),
+    ]),
+  )("%s exists in public/", (src) => {
+    expect(existsSync(path.join(__dirname, "..", "public", src))).toBe(true);
+  });
 
   it.each(files)("%s matches its schema", (file) => {
     const result = schemas[file].safeParse(readJson(file));

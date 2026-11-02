@@ -18,6 +18,18 @@ test("a console's title opens its case study", async ({ page }) => {
   }
 });
 
+test("a console without a live demo opens its gallery", async ({ page }) => {
+  await page.goto("/");
+
+  await page
+    .getByRole("region", { name: /projects/ })
+    .getByRole("link", { name: "Demo of CaddyMate" })
+    .click();
+
+  await expect(page).toHaveURL(/\/projects\/caddymate#demo$/);
+  await expect(page.getByRole("heading", { name: "demo" })).toBeVisible();
+});
+
 test("an unknown project is a 404", async ({ page }) => {
   const response = await page.goto("/projects/not-a-project");
   expect(response?.status()).toBe(404);
