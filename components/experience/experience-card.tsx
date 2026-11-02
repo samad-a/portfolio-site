@@ -18,7 +18,7 @@ export function ExperienceCard({ role }: { role: Experience }) {
         </>
       }
     >
-      <p className="mb-2 font-label text-[13px] tracking-wide text-gold">
+      <p className="mb-3 font-label text-base tracking-wide text-gold sm:text-lg">
         {[role.org, role.location].filter(Boolean).join(" · ")}
       </p>
       <ul className="grid gap-2.5 font-mono text-[15px] leading-relaxed sm:text-base">

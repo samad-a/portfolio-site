@@ -51,6 +51,24 @@ describe("experienceSchema", () => {
     expect(messages(result)).toEqual(["Ends before it starts"]);
   });
 
+  it("rejects more than 3 highlights", () => {
+    const result = experienceSchema.safeParse({
+      ...role,
+      highlights: ["One.", "Two.", "Three.", "Four."],
+    });
+    expect(messages(result)).toEqual(["Keep it to 3 highlights at most"]);
+  });
+
+  it("rejects a highlight too long for one line", () => {
+    const result = experienceSchema.safeParse({
+      ...role,
+      highlights: ["x".repeat(91)],
+    });
+    expect(messages(result)).toEqual([
+      "Keep it to one line, 90 characters at most",
+    ]);
+  });
+
   it("rejects a misspelt field", () => {
     const { highlights, ...rest } = role;
     const result = experienceSchema.safeParse({

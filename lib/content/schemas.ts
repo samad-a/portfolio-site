@@ -41,7 +41,12 @@ export const experienceSchema = z
     start: month,
     // Leave out for a role that's still going.
     end: month.optional(),
-    highlights: z.array(text).min(1),
+    // A short summary, not the whole CV: a few bullets that each fit on one
+    // line of a desktop card.
+    highlights: z
+      .array(text.max(90, "Keep it to one line, 90 characters at most"))
+      .min(1)
+      .max(3, "Keep it to 3 highlights at most"),
   })
   .refine((role) => !role.end || role.end >= role.start, {
     message: "Ends before it starts",
