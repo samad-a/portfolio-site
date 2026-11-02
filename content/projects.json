@@ -6,14 +6,15 @@
     "stack": [
       "Autodesk Inventor",
       "3D printing",
+      "Laser engraving",
       "Python",
       "Flask",
-      "ROS 2",
-      "Raspberry Pi"
+      "ROS 2"
     ],
     "highlights": [
       "Won Amazon's Runner-Up Prize with a team of 8, building an assistive shopping robot for older and mobility-impaired shoppers.",
-      "Modelled and 3D-printed parts of the supportive frame in Autodesk Inventor, prototyping handles in PLA and TPU and testing grip textures for comfort.",
+      "Modelled and 3D-printed every part of the frame except the screen arm in Autodesk Inventor, prototyping handles in PLA and TPU for grip and comfort.",
+      "Prototyped the hooks attaching the TurtleBot base to the frame, and laser-engraved the logo onto the acrylic walls.",
       "Worked as assistant project manager, acting as the technical bridge between the frame, base and robotics teams.",
       "In testing, 93% of users found it easy to use, and it reached its target in every end-to-end trial."
     ],
@@ -44,16 +45,12 @@
       {
         "src": "/projects/caddymate/arena-navigation.mp4",
         "poster": "/projects/caddymate/arena-navigation.jpg",
-        "caption": "An early build of the robotic base moving round the test arena."
+        "caption": "An early build of the robotic base driving itself towards a goal in the test arena."
       },
       {
         "src": "/projects/caddymate/map-route.mp4",
         "poster": "/projects/caddymate/map-route.jpg",
         "caption": "The map screen planning a route to the bagels in aisle 3."
-      },
-      {
-        "src": "/projects/caddymate/screen-search.png",
-        "caption": "Searching for an item on the touchscreen, with its aisle shown beside each result."
       },
       {
         "src": "/projects/caddymate/team.jpg",
@@ -146,8 +143,8 @@
     "stack": ["TypeScript", "Next.js", "Python", "Ollama", "VADER"],
     "highlights": [
       "Built at Hack the Burgh 2025 in a team of 6.",
-      "Moved the interface to Next.js and React, and turned live Wikipedia edits into headlines with a local Llama model through Ollama.",
-      "Added sentiment analysis in TypeScript, with live positive, neutral and negative counts on the page."
+      "Built the front-end, moving the interface to a Next.js and React app.",
+      "Built the live headline feed and the positive, neutral and negative mood stats."
     ],
     "colour": "#0b5f8a",
     "tag": "team of 6",
