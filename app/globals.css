@@ -163,6 +163,19 @@
  * Put it on a wrapper around the `pixel-corners` element: clip-path would cut
  * off a border or box-shadow on the element itself.
  */
+/* A lighter strip along a console's top edge and a darker one along its
+ * bottom, so the flat colour reads as moulded plastic. */
+@utility console-bevel {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.14), rgb(255 255 255 / 0.14)),
+    linear-gradient(rgb(0 0 0 / 0.18), rgb(0 0 0 / 0.18));
+  background-size:
+    100% 6px,
+    100% 8px;
+  background-position: top, bottom;
+  background-repeat: no-repeat;
+}
+
 @utility pixel-outline {
   filter: drop-shadow(3px 0 0 var(--color-ink))
     drop-shadow(-3px 0 0 var(--color-ink)) drop-shadow(0 3px 0 var(--color-ink))

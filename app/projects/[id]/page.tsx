@@ -37,6 +37,8 @@ export default async function CaseStudyPage({ params }: Props) {
   if (!project) notFound();
 
   const { default: CaseStudy } = await import(`@/content/projects/${id}.mdx`);
+  // The next project in the carousel's order, wrapping round to the first.
+  const next = projects[(projects.indexOf(project) + 1) % projects.length];
   const { code, play } = project.links;
 
   return (
@@ -97,6 +99,16 @@ export default async function CaseStudyPage({ params }: Props) {
           <CaseStudy />
         </div>
       </PixelPanel>
+
+      {next !== project && (
+        <Link
+          href={`/projects/${next.id}`}
+          className="justify-self-end font-label text-sm tracking-wider text-ink"
+        >
+          next project: {next.name}
+          <span aria-hidden="true"> →</span>
+        </Link>
+      )}
     </main>
   );
 }

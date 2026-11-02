@@ -1,0 +1,28 @@
+## The problem
+
+Over 2 million older people in the UK struggle with mobility, which turns a weekly food shop into a strain: lifting heavy items, bending down to a trolley and hunting for things in a big store. Many stop going, and lose an independent task and a social outing along with it. Supermarkets lose out too, with customers they can't serve and no assistive option that scales.
+
+CaddyMate is our answer: an assistive shopping trolley that supports you as you walk, guides you to each item and brings your shopping up to you. It was built by a team of 8 for our System Design Project, and won Amazon's Runner-Up Prize.
+
+### How it works
+
+- **Pick an item.** A 7-inch touchscreen on an adjustable arm lists the store by category, with search by touch or by voice, all in large, simple controls.
+- **Follow the route.** The trolley knows the store from a SLAM map and plans a path to the item with ROS 2 and Nav2, showing it live on the screen.
+- **Lean on it.** Two textured handles on a rigid aluminium frame give steady support while walking.
+- **No bending.** A scissor-lift base raises the shopping to hand height, so nothing has to be lifted from the bottom of a deep basket.
+
+## My approach
+
+- **The supportive frame.** I modelled parts for the frame in Autodesk Inventor and 3D-printed them.
+- **Ergonomic handles.** I prototyped grips in rigid PLA and flexible TPU, trying different textures and shapes until they were comfortable to hold and lean on.
+- **Holding the team together.** As assistant project manager, I was the technical bridge between the frame, lifting base and robotics teams, making sure their parts fitted together physically and in the plan.
+
+### Results
+
+In testing, 93% of users found CaddyMate easy and intuitive to use and navigate, and it reached its target in 100% of end-to-end trials. At the industry day it won Amazon's Runner-Up Prize. The code for the screen and navigation is [on GitHub](https://github.com/JacksonW98/CaddyMate).
+
+## What I learned
+
+- Designing for older users means designing for comfort first. A grip that feels fine for a minute can hurt after a whole shop, so I only trusted prototypes people had actually held and leant on.
+- 3D printing makes it cheap to be wrong. Printing a handle in PLA and in TPU and comparing them in hand settled questions faster than any amount of modelling.
+- In a team of 8, the hard part is the joins. Parts made by different teams only fit if someone keeps checking the measurements and the plan line up.

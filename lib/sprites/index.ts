@@ -160,6 +160,21 @@ export const rocket = defineSprite([
   "...O...",
 ]);
 
+// A newspaper with a red headline, for WikiWatch until it has a screenshot.
+export const newspaper = defineSprite([
+  "KKKKKKKKKKKKKK",
+  "KWWWWWWWWWWWWK",
+  "KWRRRRRRRRRRWK",
+  "KWWWWWWWWWWWWK",
+  "KWEEEEWEEEEEWK",
+  "KWEEEEWWWWWWWK",
+  "KWEEEEWEEEEEWK",
+  "KWWWWWWWWWWWWK",
+  "KWEEEEEEEEEEWK",
+  "KWWWWWWWWWWWWK",
+  "KKKKKKKKKKKKKK",
+]);
+
 // The tail of the avatar's speech bubble. Its top row sits over the bubble's
 // border, opening it up.
 export const bubbleTail = defineSprite([
@@ -306,6 +321,7 @@ export const sprites = {
   coin,
   arrow,
   bubbleTail,
+  newspaper,
   heart,
   shield,
   leaf,
