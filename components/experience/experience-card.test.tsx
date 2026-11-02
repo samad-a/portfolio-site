@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import type { Experience } from "@/lib/content";
 import { ExperienceCard } from "./experience-card";
@@ -63,5 +63,37 @@ describe("ExperienceSection", () => {
     expect(
       within(section).getByRole("article", { name: "Second Role" }),
     ).toBeInTheDocument();
+    expect(
+      within(section).queryByRole("button", { name: /more/ }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("folds away roles after the first two until asked for them", () => {
+    render(
+      <ExperienceSection
+        roles={["One", "Two", "Three", "Four"].map((name) => ({
+          ...role,
+          id: name,
+          role: name,
+        }))}
+      />,
+    );
+
+    const section = screen.getByRole("region", { name: /experience/ });
+    expect(
+      within(section)
+        .getAllByRole("article")
+        .map((card) => card.textContent),
+    ).toEqual([expect.stringContaining("One"), expect.stringContaining("Two")]);
+    const toggle = within(section).getByRole("button", {
+      name: "show 2 more roles",
+    });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(toggle);
+
+    expect(within(section).getAllByRole("article")).toHaveLength(4);
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(toggle).toHaveTextContent("show less");
   });
 });

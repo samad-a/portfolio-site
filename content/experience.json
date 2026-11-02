@@ -6,10 +6,9 @@
     "start": "2026-05",
     "end": "2026-08",
     "highlights": [
-      "Built the React and TypeScript front-end for a prototype dashboard mapping a 5-year architecture transformation across 700+ outcomes and 2,500+ applications.",
-      "Made reusable components with Tailwind CSS and Framer Motion across 10 feature areas, including a global dark mode.",
-      "Demoed the prototype to a senior judging panel. Usability testers unanimously preferred it to the existing system.",
-      "Pitched 3 AI and accessibility ideas for underbanked customers in a solo research project, 'Banking without Barriers'."
+      "Built the React and TypeScript front-end for a dashboard mapping 2,500+ applications.",
+      "Made reusable Tailwind and Framer Motion components across 10 features, incl. dark mode.",
+      "Demoed it to a senior panel; usability testers unanimously preferred it to the old system."
     ]
   },
   {
@@ -19,9 +18,9 @@
     "start": "2025-05",
     "end": "2026-05",
     "highlights": [
-      "Led the rebuild of over 7,000 web pages, four times the original target, improving 15% of the University's web estate.",
-      "Rehired to support a new intern cohort and lead a major website rebuild.",
-      "Mentored interns, coordinated with lead publishers and wrote a promotional blog post."
+      "Led the rebuild of 7,000+ web pages, four times the target and 15% of the web estate.",
+      "Rehired to lead a major website rebuild and support a new intern cohort.",
+      "Mentored interns and coordinated with the University's lead publishers."
     ]
   },
   {
@@ -31,7 +30,7 @@
     "start": "2024-05",
     "end": "2024-12",
     "highlights": [
-      "Helped migrate over 50,000 university web pages, improving accessibility for 4.5 million annual users.",
+      "Helped migrate 50,000+ pages, improving accessibility for 4.5 million annual users.",
       "Audited and built pages in a Drupal-based content management system."
     ]
   }

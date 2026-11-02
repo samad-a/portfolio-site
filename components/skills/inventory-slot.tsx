@@ -6,18 +6,21 @@ import { items } from "@/lib/sprites/items";
 type ItemSpriteProps = {
   item: Skill["item"];
   // CSS pixels per sprite pixel, so every item shares one pixel size however
-  // many pixels it has.
+  // many pixels it has. A --sprite-pixel set by a parent overrides it.
   scale?: number;
 };
 
 export function ItemSprite({ item, scale = 3 }: ItemSpriteProps) {
   const grid = items[item];
+  const pixel = `var(--sprite-pixel, ${scale}px)`;
 
   return (
     <Sprite
       grid={grid}
-      width={grid[0].length * scale}
-      height={grid.length * scale}
+      style={{
+        width: `calc(${grid[0].length} * ${pixel})`,
+        height: `calc(${grid.length} * ${pixel})`,
+      }}
     />
   );
 }
@@ -34,10 +37,11 @@ export function InventorySlot({ skill, active, ...props }: InventorySlotProps) {
     <button
       type="button"
       data-active={active || undefined}
-      className="grid h-full w-full cursor-pointer justify-items-center gap-2 bg-slot px-1.5 pt-3.5 pb-2.5 text-center font-label text-[11px] tracking-wide text-paper pixel-corners focus-visible:outline-offset-[-6px] focus-visible:outline-gold data-active:shadow-[inset_0_0_0_3px_var(--color-gold)] sm:text-xs"
+      className="grid h-full w-full cursor-pointer justify-items-center gap-1.5 bg-slot px-1.5 pt-2.5 pb-2 text-center font-label text-[11px] tracking-wide text-paper pixel-corners focus-visible:outline-offset-[-6px] focus-visible:outline-gold data-active:shadow-[inset_0_0_0_3px_var(--color-gold)] sm:gap-2 sm:pt-3.5 sm:pb-2.5 sm:text-xs"
       {...props}
     >
-      <span className="grid h-12 place-items-end">
+      {/* Phones draw items at two pixels to the sprite pixel instead of three, so the bag takes less scrolling. */}
+      <span className="grid h-8 place-items-end [--sprite-pixel:2px] sm:h-12 sm:[--sprite-pixel:3px]">
         <ItemSprite item={skill.item} />
       </span>
       <span>{skill.name}</span>
