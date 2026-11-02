@@ -43,4 +43,18 @@ test.describe("on a phone", () => {
     await projects.getByRole("button", { name: "Previous project" }).click();
     await expect.poll(scrollLeft).toBeGreaterThan(0);
   });
+
+  test("a dot jumps straight to its console", async ({ page }) => {
+    await page.goto("/");
+    const projects = page.getByRole("region", { name: /projects/ });
+    const track = projects.getByRole("list");
+    const last = projects.getByRole("button", { name: "Show This website" });
+
+    await last.click();
+
+    await expect(last).toHaveAttribute("aria-current", "true");
+    await expect
+      .poll(() => track.evaluate((list) => list.scrollLeft))
+      .toBeGreaterThan(0);
+  });
 });

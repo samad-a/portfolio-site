@@ -1,0 +1,20 @@
+## The problem
+
+For twenty years websites have made machines click on traffic lights. But the visitors are changing: AI agents now browse, book flights and fill in forms for people, and they have to squeeze through pages built for eyes. Reverse CAPTCHA flips the test. It lets agents in, keeps humans out, and works out what kind of visitor just arrived, so a site can give agents their own entrance.
+
+## My approach
+
+- **Silent telemetry.** The gate records the pointer's path, how far from the centre a click lands, key timings, pasting, scrolling and browser signals like `navigator.webdriver`. Ticking "I am not a human" sends them to a FastAPI backend for a behaviour check.
+- **A test no human can pass.** Machine-like visitors get a freshly generated 1,900-word fare-rules document and a refund question, with a 6-second limit timed on the server. Nothing about the challenge exists in the page beforehand.
+- **A trap that sorts the agents.** One line of the document is hidden from view but present in the page's code. Agents that read the page's code follow it, while vision agents that only see screenshots miss it, which is how the two are told apart.
+- **Explainable verdicts.** Transparent, weighted rules turn the telemetry into a label (human, scraper, browser agent or vision agent), a 0–100 machine score and the reasons behind it. Every attempt is also logged, so a scikit-learn classifier can be trained on real runs.
+- **Invisible routing.** On the demo sites, such as a mock flight search, there's no CAPTCHA at all: the same telemetry quietly sends agents to a structured JSON lane while people get the normal page.
+- **Real agents to test it.** Scraper, browser and vision agents built with Playwright and LLMs run against it, and a live dashboard shows each verdict as it happens. Pytest suites cover the rules, features and API without needing an LLM.
+
+The code is [on GitHub](https://github.com/samad-a/reverse-captcha).
+
+## What I learned
+
+- People and agents move differently in ways that are easy to measure: a curved, hesitant path and an off-centre click say more than any puzzle.
+- Rules you can explain beat a black box for a first version. Every verdict shows its reasons, which made the system easy to tune and to demo.
+- Timing has to live on the server. Anything the page measures by itself, a clever agent can fake.

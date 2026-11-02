@@ -93,6 +93,42 @@ locally, copy `.env.example` to `.env.local` and add a Resend API key. On
 Vercel, set the same variables under Settings > Environment Variables. Without
 a key, the form shows a friendly error and the rest of the site works.
 
+### Adding a project
+
+1. Add an entry to `content/projects.json`. Its place in the list is its place in the row of consoles.
+
+   ```json
+   {
+     "id": "my-project",
+     "name": "My project",
+     "summary": "One sentence for the console.",
+     "stack": ["TypeScript", "React"],
+     "highlights": ["What it does or what I did, one line each."],
+     "colour": "#2f6650",
+     "tag": "team of 4",
+     "event": "Hack the Burgh 2026",
+     "award": "First place",
+     "sprite": "rocket",
+     "screenshot": {
+       "src": "/projects/my-project.png",
+       "alt": "What the screenshot shows."
+     },
+     "links": {
+       "code": "https://github.com/…",
+       "play": "https://…"
+     }
+   }
+   ```
+
+   - `colour` is the console's body. White text sits on it, so the check fails if it's lighter than a 4.5:1 contrast.
+   - `tag`, `event` and `award` are optional: the console's top edge, the label above its screen and a gold sticker.
+   - `screenshot` is optional: a 4:3 image in `public/projects/`. Without one, the screen shows `sprite`, any name from `lib/sprites`.
+   - Without a `play` link, the console's A button greys out and says "no demo".
+
+2. Write its page in `content/projects/my-project.mdx`, with exactly these three `##` sections: `The problem`, `My approach` and `What I learned`. Use `###` for anything else.
+
+3. Run `npm test`. It checks the entry against the schema, that the screenshot exists and that the page has its sections.
+
 ### Writing a blog post
 
 Add `content/blog/my-post.mdx`, starting with:

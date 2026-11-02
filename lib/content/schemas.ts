@@ -83,6 +83,13 @@ export const projectSchema = z.strictObject({
   highlights: z.array(text).min(1),
   // The console's body colour, ideally taken from the project's own branding.
   colour: consoleColour,
+  // A few words on the console's top edge, such as "team of 8" or "solo".
+  tag: text.optional(),
+  // Where it was made or shown, such as "Hack the Burgh 2025", printed on the
+  // screen's border.
+  event: text.optional(),
+  // A prize, shown as a gold sticker on the console.
+  award: text.optional(),
   // Drawn on the console's screen when there's no screenshot.
   sprite: z.enum(spriteNames),
   // A 4:3 image in public/projects/, shown on the console's screen.

@@ -1,5 +1,58 @@
 [
   {
+    "id": "caddymate",
+    "name": "CaddyMate",
+    "summary": "An assistive shopping trolley that guides older shoppers to each item and lifts their groceries so they don't have to bend.",
+    "stack": [
+      "Autodesk Inventor",
+      "3D printing",
+      "Python",
+      "Flask",
+      "ROS 2",
+      "Raspberry Pi"
+    ],
+    "highlights": [
+      "Won Amazon's Runner-Up Prize with a team of 8, building an assistive shopping robot for older and mobility-impaired shoppers.",
+      "Modelled and 3D-printed parts of the supportive frame in Autodesk Inventor, prototyping handles in PLA and TPU and testing grip textures for comfort.",
+      "Worked as assistant project manager, acting as the technical bridge between the frame, base and robotics teams.",
+      "In testing, 93% of users found it easy to use, and it reached its target in every end-to-end trial."
+    ],
+    "colour": "#d81b60",
+    "tag": "team of 8",
+    "event": "SDP Industry Day",
+    "award": "Amazon runner-up",
+    "sprite": "spark",
+    "screenshot": {
+      "src": "/projects/caddymate.jpg",
+      "alt": "CaddyMate: a black trolley on an aluminium frame, with two handles and a touchscreen on an arm."
+    },
+    "links": {
+      "code": "https://github.com/JacksonW98/CaddyMate"
+    }
+  },
+  {
+    "id": "reverse-captcha",
+    "name": "Reverse CAPTCHA",
+    "summary": "A CAPTCHA that lets AI agents in, keeps humans out, and works out what kind of visitor just arrived.",
+    "stack": ["Python", "FastAPI", "Playwright", "scikit-learn", "LLMs"],
+    "highlights": [
+      "Classifies each visitor as a human, scraper, browser agent or vision agent from pointer paths, click offsets, key timings and browser signals.",
+      "Gives machine-like visitors a generated 1,900-word document and a 6-second question timed on the server, with a hidden instruction that separates agents reading the page's code from vision agents.",
+      "Routes agents on demo sites to a structured JSON lane with no visible CAPTCHA, with a live dashboard and Pytest suites for the rules, features and API."
+    ],
+    "colour": "#c21d14",
+    "tag": "solo",
+    "event": "Prove you're not human",
+    "sprite": "coin",
+    "screenshot": {
+      "src": "/projects/reverse-captcha.png",
+      "alt": "Reverse CAPTCHA's gate: \"Prove you're not human\" above an \"I am not a human\" checkbox."
+    },
+    "links": {
+      "code": "https://github.com/samad-a/reverse-captcha"
+    }
+  },
+  {
     "id": "blockr",
     "name": "Blockr",
     "summary": "A privacy-first website blocker for Chrome that keeps all its data on your device.",
@@ -18,6 +71,8 @@
       "Designed the UI in Figma, with light and dark themes audited to ensure they meet WCAG AA contrast."
     ],
     "colour": "#ce4145",
+    "tag": "solo",
+    "event": "Chrome Web Store",
     "sprite": "shield",
     "screenshot": {
       "src": "/projects/blockr.png",
@@ -26,6 +81,24 @@
     "links": {
       "code": "https://github.com/samad-a/blockr-chrome-extension",
       "play": "https://chromewebstore.google.com/detail/blockr-website-blocker/lndfkhpkbcnjhkedfoaedkboipijebji"
+    }
+  },
+  {
+    "id": "wikiwatch",
+    "name": "WikiWatch",
+    "summary": "Turns Wikipedia's live edit stream into newsroom-style headlines with a local LLM, then reads the mood of each one.",
+    "stack": ["TypeScript", "Next.js", "Python", "Ollama", "VADER"],
+    "highlights": [
+      "Built at Hack the Burgh 2025 in a team of 6.",
+      "Moved the interface to Next.js and React, and turned live Wikipedia edits into headlines with a local Llama model through Ollama.",
+      "Added sentiment analysis in TypeScript, with live positive, neutral and negative counts on the page."
+    ],
+    "colour": "#0b5f8a",
+    "tag": "team of 6",
+    "event": "Hack the Burgh 2025",
+    "sprite": "newspaper",
+    "links": {
+      "code": "https://github.com/aragamisonatina/bbm-htb-2025"
     }
   },
   {
@@ -46,6 +119,8 @@
       "Set up GitHub Actions CI running lint, unit tests and Espresso UI tests on an emulator, with automated accessibility checks on every UI interaction."
     ],
     "colour": "#2d601c",
+    "tag": "solo",
+    "event": "Edinburgh Award",
     "sprite": "leaf",
     "screenshot": {
       "src": "/projects/zen.svg",
@@ -73,6 +148,8 @@
       "Runs lint, type checks and unit tests on every pull request, and Playwright against each Vercel preview."
     ],
     "colour": "#43308f",
+    "tag": "solo",
+    "event": "You are here",
     "sprite": "cloud",
     "screenshot": {
       "src": "/projects/portfolio-site.png",
