@@ -33,5 +33,29 @@
       "Helped migrate 50,000+ pages, improving accessibility for 4.5 million annual users.",
       "Audited and built pages in a Drupal-based content management system."
     ]
+  },
+  {
+    "id": "west-lothian-council-service-design-placement",
+    "role": "Service Design Work Placement",
+    "org": "West Lothian Council",
+    "start": "2022-10",
+    "end": "2023-03",
+    "highlights": [
+      "Designed a mobile app for the council, wireframing it then building it in jQuery Mobile.",
+      "Pitched the app to the council, building my presenting and communication skills.",
+      "Suggested ways to make the council website's layout clearer and more user-friendly."
+    ]
+  },
+  {
+    "id": "heriot-watt-nuffield-research-placement",
+    "role": "Nuffield Research Placement",
+    "org": "Heriot-Watt University",
+    "start": "2022-06",
+    "end": "2022-08",
+    "highlights": [
+      "Worked in a group of 3 on a project advancing sorbent-based carbon capture.",
+      "Graphed our results in Excel, showing how temperature affects CO2 adsorption.",
+      "Fixed our early results by lowering the temperature so the sorbent didn't decompose."
+    ]
   }
 ]
