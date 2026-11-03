@@ -6,7 +6,7 @@ export const siteUrl = "https://samadali.dev";
 export const siteName = "Samad Ali";
 
 export const siteDescription =
-  "Samad Ali, a computer science student at the University of Edinburgh. Experience, projects and a dev log, in retro pixel art.";
+  "I'm Samad, a 4th year computer science student at the University of Edinburgh, building unique and accessible user interfaces.";
 
 type PageMetadata = {
   // Leave out for the homepage, which is titled with the site name alone.

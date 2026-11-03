@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ComponentProps } from "react";
+import { NewTabNote } from "@/components/ui/new-tab-note";
 import { cn } from "@/lib/cn";
+import { isExternal, newTab } from "@/lib/links";
 
 type LinkProps = ComponentProps<typeof Link> & { href: string };
 type ButtonProps = ComponentProps<"button"> & { href?: undefined };
@@ -27,6 +29,11 @@ export function PixelButton({ className, ...props }: PixelButtonProps) {
         // A file to save, not a page: Link would prefetch it as a route,
         // which fails with a 404 on every visit.
         <a {...props} className={face} />
+      ) : isExternal(props.href) ? (
+        <a {...props} {...newTab} className={face}>
+          {props.children}
+          <NewTabNote />
+        </a>
       ) : (
         <Link {...props} className={face} />
       )}

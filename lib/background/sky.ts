@@ -31,6 +31,30 @@ const evening: readonly (readonly [number, EveningColour])[] = [
   [460, "night"],
 ];
 
+type DawnColour = EveningColour | "blush" | "skyLate" | "sky";
+
+// With the sky swapped, the page starts at night and dawn breaks around the
+// contact section instead, in pixels from its top. The light text at the end
+// of the dev log, about 60px above, stays on deep blue. The sky then lightens
+// quickly across the empty gap, so it's pale enough for dark text by the
+// contact heading, 160px in on phones. Morning carries on to the bottom.
+const dawn: readonly (readonly [number, DawnColour])[] = [
+  [-460, "night"],
+  [-200, "duskDeep"],
+  [-30, "duskDeep"],
+  [70, "duskLight"],
+  [140, "mauve"],
+  [300, "sunset"],
+  [520, "blush"],
+  [720, "skyLate"],
+  [920, "sky"],
+];
+
+// Where dawn's fade runs in pixels from the contact section: night above the
+// first, and day once the sky is sunrise orange.
+const dawnNight = dawn[0][0];
+const dawnDay = dawn.find(([, colour]) => colour === "sunset")![0];
+
 export function skyLayout(contactTop: number): SkyLayout {
   return {
     contactTop,
@@ -40,8 +64,20 @@ export function skyLayout(contactTop: number): SkyLayout {
 }
 
 // How night it is at a point on the page: 0 for day, 1 for night. It stays 0
-// through the dusk half of the fade, so day sprites linger into dusk.
-export function nightAmount(pageY: number, layout: SkyLayout | undefined) {
+// through the dusk half of the fade, so day sprites linger into dusk. With
+// the sky `swapped`, night is at the top and day at the bottom.
+export function nightAmount(
+  pageY: number,
+  layout: SkyLayout | undefined,
+  swapped = false,
+) {
+  if (swapped) {
+    if (!layout) return 1;
+    const night = layout.contactTop + dawnNight;
+    const dawnMiddle = layout.contactTop + (dawnNight + dawnDay) / 2;
+    const amount = (dawnMiddle - pageY) / (dawnMiddle - night);
+    return Math.min(1, Math.max(0, amount));
+  }
   if (!layout) return 0;
   const dusk = (layout.dayEnd + layout.nightStart) / 2;
   const amount = (pageY - dusk) / (layout.nightStart - dusk);
@@ -74,8 +110,9 @@ const warming = { start: 0.25, skyLate: 0.5, blush: 0.76 } as const;
 export function skyBackground(
   layout: SkyLayout | undefined,
   colours: SkyColours,
+  swapped = false,
 ) {
-  const { end, stops } = skyGradient(layout, colours);
+  const { end, stops } = skyGradient(layout, colours, swapped);
   const parts = stops.map(
     ([offset, colour]) => `${colour} ${Math.round(offset * end)}px`,
   );
@@ -84,10 +121,34 @@ export function skyBackground(
 
 // Colour stops for one gradient running from the top of the page to full
 // night, as [offset from 0 to 1, colour]. `end` is where the gradient stops.
+// With the sky `swapped`, it runs from night to morning instead.
 export function skyGradient(
   layout: SkyLayout | undefined,
   colours: SkyColours,
+  swapped = false,
 ): { end: number; stops: [number, string][] } {
+  if (swapped) {
+    if (!layout) {
+      return {
+        end: 1,
+        stops: [
+          [0, colours.night],
+          [1, colours.night],
+        ],
+      };
+    }
+    const end = layout.contactTop + dawn[dawn.length - 1][0];
+    return {
+      end,
+      stops: [
+        [0, colours.night],
+        ...dawn.map(([offset, colour]): [number, string] => [
+          Math.max(0, layout.contactTop + offset) / end,
+          colours[colour],
+        ]),
+      ],
+    };
+  }
   if (!layout || layout.dayEnd <= topGlowHeight) {
     return {
       end: topGlowHeight,

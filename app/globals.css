@@ -27,6 +27,13 @@
   --color-paper: #ffffff;
   --color-moon: #f3efff;
 
+  /*
+   * Text straight on the sky: dark by day and light at night. Clicking the
+   * sun or moon swaps the sky round, and these with it.
+   */
+  --color-on-sky: var(--color-ink);
+  --color-on-night: var(--color-moon);
+
   /* Ground. Grass is darker than the prototype so white text passes WCAG AA. */
   --color-grass: #2b7d35;
   --color-grass-hi: #4caf50;
@@ -110,6 +117,17 @@
       transition: none !important;
       scroll-behavior: auto !important;
     }
+  }
+
+  /* The sky swapped round: night at the top of the page, morning at the end. */
+  :root[data-sky-swap] {
+    --color-on-sky: var(--color-moon);
+    --color-on-night: var(--color-ink);
+  }
+
+  /* Jumps to a section of the page glide there, rather than cutting. */
+  html {
+    scroll-behavior: smooth;
   }
 
   /* Pixelify Sans draws its "fi" ligature as a single glyph that reads as "A". */

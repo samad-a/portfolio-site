@@ -4,6 +4,7 @@ import { useId } from "react";
 import { Sprite } from "@/components/sprite";
 import { PixelPanel } from "@/components/ui/pixel-panel";
 import type { Project } from "@/lib/content";
+import { newTab, newTabNote } from "@/lib/links";
 import { sprites } from "@/lib/sprites";
 
 // A plus-shaped D-pad, cut from a square.
@@ -31,7 +32,8 @@ function FaceButtons({ project }: { project: Project }) {
       {code ? (
         <a
           href={code}
-          aria-label={`View code for ${project.name}`}
+          {...newTab}
+          aria-label={`View code for ${project.name}${newTabNote}`}
           className={controlClass}
         >
           <span
@@ -49,7 +51,8 @@ function FaceButtons({ project }: { project: Project }) {
       {play ? (
         <a
           href={play}
-          aria-label={`Play ${project.name}`}
+          {...newTab}
+          aria-label={`Play ${project.name}${newTabNote}`}
           className={`mb-4 ${controlClass}`}
         >
           <span className={aClass}>play</span>
@@ -95,7 +98,7 @@ export function ConsoleCard({ project }: { project: Project }) {
         as="article"
         aria-labelledby={titleId}
         outerClassName="h-full"
-        className="relative grid h-full grid-rows-[auto_auto_auto_1fr_auto] gap-3 console-bevel px-5 pt-4 pb-5 text-paper pixel-corners-2"
+        className="relative grid h-full grid-rows-[auto_auto_auto_1fr_auto] gap-2.5 console-bevel px-5 pt-3 pb-4 text-paper pixel-corners-2"
         style={{ backgroundColor: project.colour }}
       >
         <p className="flex items-center gap-2 font-label text-[10px] tracking-wide">
@@ -115,14 +118,18 @@ export function ConsoleCard({ project }: { project: Project }) {
           <p className="mb-1.5 flex items-center gap-2 font-label text-[9px] tracking-wide whitespace-nowrap text-[#9aa6b8] before:h-0.5 before:flex-1 before:bg-[#6b3f8f] after:h-0.5 after:flex-1 after:bg-[#2f5aa8]">
             {project.event}
           </p>
-          <div className="relative grid aspect-4/3 place-items-center overflow-hidden bg-screen">
+          <div className="relative grid aspect-16/10 place-items-center overflow-hidden bg-screen">
             {project.screenshot ? (
               <Image
                 src={project.screenshot.src}
                 alt={project.screenshot.alt}
                 fill
                 sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 85vw"
-                className="object-cover"
+                className={
+                  project.screenshot.align === "top"
+                    ? "object-cover object-top"
+                    : "object-cover"
+                }
               />
             ) : (
               <Sprite grid={sprites[project.sprite]} className="w-16" />
@@ -130,7 +137,7 @@ export function ConsoleCard({ project }: { project: Project }) {
           </div>
         </div>
         <div>
-          <h3 id={titleId} className="text-2xl leading-tight font-bold">
+          <h3 id={titleId} className="text-[28px] leading-tight font-medium">
             <Link
               href={`/projects/${project.id}`}
               className="text-paper underline decoration-transparent decoration-[3px] underline-offset-[5px] hover:decoration-current focus-visible:outline-paper"
@@ -142,8 +149,8 @@ export function ConsoleCard({ project }: { project: Project }) {
             {project.stack.join(" · ")}
           </p>
         </div>
-        <p className="text-[17px] leading-snug">{project.summary}</p>
-        <div className="grid grid-cols-[auto_1fr_auto] items-center pt-1">
+        <p className="text-base leading-snug">{project.summary}</p>
+        <div className="grid grid-cols-[auto_1fr_auto] items-center">
           <span
             aria-hidden="true"
             className={`size-12.5 bg-[rgb(0_0_0/0.4)] ${dpadShape}`}

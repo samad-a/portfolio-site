@@ -13,17 +13,26 @@ describe("ContactSection", () => {
     ).toHaveAttribute("id", "contact");
   });
 
-  it.each([
-    ["email", `mailto:${contact.email}`],
-    ["github", contact.github],
-    ["linkedin", contact.linkedin],
-  ])("links %s to %s", (label, href) => {
+  it("opens email in the visitor's mail app, in the same tab", () => {
     render(<ContactSection />);
 
-    expect(screen.getByRole("link", { name: label })).toHaveAttribute(
-      "href",
-      href,
-    );
+    const link = screen.getByRole("link", { name: "email" });
+    expect(link).toHaveAttribute("href", `mailto:${contact.email}`);
+    expect(link).not.toHaveAttribute("target");
+  });
+
+  it.each([
+    ["github", contact.github],
+    ["linkedin", contact.linkedin],
+  ])("links %s to %s in a new tab", (label, href) => {
+    render(<ContactSection />);
+
+    const link = screen.getByRole("link", {
+      name: `${label} (opens in a new tab)`,
+    });
+    expect(link).toHaveAttribute("href", href);
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
 });
 

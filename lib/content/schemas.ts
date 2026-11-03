@@ -92,7 +92,10 @@ export const projectSchema = z.strictObject({
   award: text.optional(),
   // Drawn on the console's screen when there's no screenshot.
   sprite: z.enum(spriteNames),
-  // A 4:3 image in public/projects/, shown on the console's screen.
+  // An image in public/projects/, shown on the console's 16:10 screen and
+  // beside the write-up at 4:3. Either shape is trimmed to fit, from the
+  // middle, or from the top with `align` "top", such as for a page whose
+  // header matters.
   screenshot: z
     .strictObject({
       src: z
@@ -102,6 +105,7 @@ export const projectSchema = z.strictObject({
           'Use a path like "/projects/blockr.png"',
         ),
       alt: text,
+      align: z.literal("top").optional(),
     })
     .optional(),
   // Photos, screenshots and short videos for projects without a live demo,

@@ -63,12 +63,9 @@ describe("ExperienceSection", () => {
     expect(
       within(section).getByRole("article", { name: "Second Role" }),
     ).toBeInTheDocument();
-    expect(
-      within(section).queryByRole("button", { name: /more/ }),
-    ).not.toBeInTheDocument();
   });
 
-  it("folds away roles after the first two until asked for them", () => {
+  it("shows the newest role in full and older ones as slabs that open", () => {
     render(
       <ExperienceSection
         roles={["One", "Two", "Three", "Four"].map((name) => ({
@@ -80,20 +77,16 @@ describe("ExperienceSection", () => {
     );
 
     const section = screen.getByRole("region", { name: /experience/ });
-    expect(
-      within(section)
-        .getAllByRole("article")
-        .map((card) => card.textContent),
-    ).toEqual([expect.stringContaining("One"), expect.stringContaining("Two")]);
-    const toggle = within(section).getByRole("button", {
-      name: "show 2 more roles",
-    });
+    expect(within(section).getAllByRole("article")).toHaveLength(4);
+    expect(within(section).getAllByRole("button")).toHaveLength(3);
+    const three = within(section).getByRole("article", { name: "Three" });
+    const toggle = within(three).getByRole("button");
     expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(within(three).queryByRole("listitem")).not.toBeInTheDocument();
 
     fireEvent.click(toggle);
 
-    expect(within(section).getAllByRole("article")).toHaveLength(4);
     expect(toggle).toHaveAttribute("aria-expanded", "true");
-    expect(toggle).toHaveTextContent("show less");
+    expect(within(three).getAllByRole("listitem")).toHaveLength(2);
   });
 });

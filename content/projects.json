@@ -2,7 +2,7 @@
   {
     "id": "caddymate",
     "name": "CaddyMate",
-    "summary": "An assistive shopping trolley that guides older shoppers to each item and lifts their groceries so they don't have to bend.",
+    "summary": "A smart trolley that guides older shoppers to each item and lifts their shopping to waist height.",
     "stack": [
       "Autodesk Inventor",
       "3D printing",
@@ -24,7 +24,7 @@
     "award": "Amazon runner-up",
     "sprite": "spark",
     "screenshot": {
-      "src": "/projects/caddymate-render.jpg",
+      "src": "/projects/caddymate-wide.jpg",
       "alt": "CaddyMate: a black trolley on an aluminium frame, with two handles and a touchscreen on an arm, on a pink-to-orange background."
     },
     "gallery": [
@@ -77,6 +77,7 @@
     "sprite": "coin",
     "screenshot": {
       "src": "/projects/reverse-captcha.png",
+      "align": "top",
       "alt": "Reverse CAPTCHA's gate: \"Prove you're not human\" above an \"I am not a human\" checkbox."
     },
     "gallery": [
@@ -95,6 +96,10 @@
       {
         "src": "/projects/reverse-captcha/flights-results.png",
         "caption": "A mock flight site with no CAPTCHA, where the same checks quietly route agents to their own lane."
+      },
+      {
+        "src": "/projects/reverse-captcha/tickets.png",
+        "caption": "A mock concert ticket site: people join the fan queue, while agents get their own queue, capped at 2 tickets each."
       },
       {
         "src": "/projects/reverse-captcha/dashboard.png",

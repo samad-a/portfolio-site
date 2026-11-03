@@ -88,3 +88,44 @@ describe("skyGradient", () => {
     });
   });
 });
+
+describe("the swapped sky", () => {
+  const layout = skyLayout(3000);
+
+  it.each([
+    [0, 1],
+    [2540, 1],
+    [2730, 0.5],
+    [2920, 0],
+    [9000, 0],
+  ])("is night at the top: at %s it's %s night", (pageY, amount) => {
+    expect(nightAmount(pageY, layout, true)).toBeCloseTo(amount, 2);
+  });
+
+  it("is all night on pages without a contact section", () => {
+    expect(nightAmount(5000, undefined, true)).toBe(1);
+    expect(skyGradient(undefined, colours, true).stops).toEqual([
+      [0, "#121238"],
+      [1, "#121238"],
+    ]);
+  });
+
+  it("breaks into dawn around the contact section, then morning", () => {
+    const { end, stops } = skyGradient(layout, colours, true);
+    expect(end).toBe(3920);
+    expect(
+      stops.map(([offset, colour]) => [Math.round(offset * end), colour]),
+    ).toEqual([
+      [0, "#121238"],
+      [2540, "#121238"],
+      [2800, "#4a3f8f"],
+      [2970, "#4a3f8f"],
+      [3070, "#8b7fd3"],
+      [3140, "#c495b8"],
+      [3300, "#f4ab84"],
+      [3520, "#f0c3c8"],
+      [3720, "#c6cbee"],
+      [3920, "#a9dbee"],
+    ]);
+  });
+});

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import {
   celestialProgress,
   moonPosition,
@@ -27,11 +27,64 @@ import { spriteImage } from "@/lib/background/sprite-image";
 import { scenery, sceneryPosition } from "@/lib/background/scenery";
 import { makeStars, type Star, starOpacity } from "@/lib/background/stars";
 import { konamiEvent } from "@/lib/konami";
+import { isSkySwapped, subscribeSkySwap, toggleSkySwap } from "@/lib/sky-swap";
 import { type SpriteName, sprites } from "@/lib/sprites";
 
 // Faint, so text near the scenery or under a passing coin stays easy to read.
 const spriteOpacity = 0.55;
-const moonOpacity = 0.6;
+// The moon, and the sun when it rises from the bottom, where they can pass
+// behind text.
+const dimmedOpacity = 0.6;
+// On phones the moon passes right behind light text, so it's fainter still:
+// white at this strength on the night sky keeps 4.5:1 with the text.
+const phoneMoonOpacity = 0.3;
+const phoneWidth = 768;
+
+// The sun or moon, where it was last drawn on screen, so it can be clicked.
+type Body = {
+  name: "sun" | "moon";
+  x: number;
+  y: number;
+  size: number;
+  opacity: number;
+};
+
+// Clicks on these, on words, or inside anything with a background land on the
+// page rather than on the sky behind it.
+const notSky =
+  "a,button,input,textarea,select,label,summary,img,svg,video,[role=dialog]";
+
+// Whether a point is on a line of text. A heading's box can stretch across
+// the page past its words, so it's the words themselves that are checked.
+function isOnText(x: number, y: number) {
+  const node =
+    document.caretPositionFromPoint?.(x, y)?.offsetNode ??
+    document.caretRangeFromPoint?.(x, y)?.startContainer;
+  if (node?.nodeType !== Node.TEXT_NODE) return false;
+  const range = document.createRange();
+  range.selectNodeContents(node);
+  return [...range.getClientRects()].some(
+    (line) =>
+      x >= line.left && x <= line.right && y >= line.top && y <= line.bottom,
+  );
+}
+
+function isOpenSky({ target, clientX, clientY }: MouseEvent) {
+  if (!(target instanceof Element) || target.closest(notSky)) return false;
+  if (isOnText(clientX, clientY)) return false;
+  for (
+    let element: Element | null = target;
+    element && element !== document.body;
+    element = element.parentElement
+  ) {
+    const style = getComputedStyle(element);
+    const clear =
+      style.backgroundColor === "transparent" ||
+      style.backgroundColor === "rgba(0, 0, 0, 0)";
+    if (style.backgroundImage !== "none" || !clear) return false;
+  }
+  return true;
+}
 
 function themeColour(name: string) {
   return getComputedStyle(document.documentElement)
@@ -45,6 +98,12 @@ function themeColour(name: string) {
 // section takes it from day through dusk to night.
 export function SkyCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const swapped = useSyncExternalStore(
+    subscribeSkySwap,
+    isSkySwapped,
+    () => false,
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -64,6 +123,7 @@ export function SkyCanvas() {
       night: themeColour("night"),
     };
     const starColour = themeColour("moon");
+    const sunRayColour = themeColour("gold");
     const images = new Map<SpriteName, HTMLCanvasElement>();
     const imageOf = (name: SpriteName) => {
       if (!images.has(name)) images.set(name, spriteImage(sprites[name]));
@@ -85,6 +145,14 @@ export function SkyCanvas() {
     // and only redrawn when the page scrolls or resizes.
     const motionQuery = matchMedia("(prefers-reduced-motion: reduce)");
     let still = motionQuery.matches;
+    // Whether the page starts at night, as the visitor last chose.
+    let swapped = isSkySwapped();
+    // The sun and moon on screen, most in view first, and which one the
+    // pointer is on.
+    let bodies: Body[] = [];
+    let hovered: Body["name"] | undefined;
+    let focused = false;
+    const button = buttonRef.current;
 
     function resize() {
       // One canvas pixel per CSS pixel, scaled up by the browser without
@@ -103,7 +171,7 @@ export function SkyCanvas() {
     // Whether the middle of the screen is on the night sky, which decides
     // which sky the Konami coins fade with.
     function isNight() {
-      return nightAmount(scrollY + viewport.height / 2, layout) > 0.5;
+      return nightAmount(scrollY + viewport.height / 2, layout, swapped) > 0.5;
     }
 
     // Finds the contact section, where night falls, and fills the night sky
@@ -113,18 +181,27 @@ export function SkyCanvas() {
       layout = contact
         ? skyLayout(contact.getBoundingClientRect().top + scrollY)
         : undefined;
-      stars = layout
-        ? makeStars(
-            Math.random,
-            viewport.width,
-            layout.dayEnd,
-            document.documentElement.scrollHeight,
-          )
-        : [];
+      // Stars fill whichever part of the page is night.
+      const pageHeight = document.documentElement.scrollHeight;
+      if (swapped)
+        stars = makeStars(
+          Math.random,
+          viewport.width,
+          0,
+          layout ? layout.contactTop : pageHeight,
+        );
+      else
+        stars = layout
+          ? makeStars(Math.random, viewport.width, layout.dayEnd, pageHeight)
+          : [];
       placeScenery();
       // The browser positions the body's background against the whole page,
       // so this lines up with the canvas as it scrolls.
-      document.body.style.backgroundImage = skyBackground(layout, colours);
+      document.body.style.backgroundImage = skyBackground(
+        layout,
+        colours,
+        swapped,
+      );
       document.body.style.backgroundRepeat = "no-repeat";
     }
 
@@ -155,7 +232,7 @@ export function SkyCanvas() {
       y: number,
       night: boolean,
     ) {
-      const amount = nightAmount(scrollY + y, layout);
+      const amount = nightAmount(scrollY + y, layout, swapped);
       const opacity = spriteOpacity * (night ? amount : 1 - amount);
       if (opacity < 0.02) return;
       const image = imageOf(sprite);
@@ -178,7 +255,7 @@ export function SkyCanvas() {
         const opacity = starOpacity(
           star,
           seconds,
-          nightAmount(star.y, layout),
+          nightAmount(star.y, layout, swapped),
           !still,
         );
         if (opacity <= 0) continue;
@@ -188,7 +265,7 @@ export function SkyCanvas() {
     }
 
     function drawSky() {
-      const { end, stops } = skyGradient(layout, colours);
+      const { end, stops } = skyGradient(layout, colours, swapped);
       const gradient = context!.createLinearGradient(
         0,
         -scrollY,
@@ -220,10 +297,77 @@ export function SkyCanvas() {
       );
     }
 
+    // Pointed at or tabbed to, the sun shines with a ring of rays that pulse
+    // out and back, and the moon glows in soft rings of moonlight.
+    function drawHighlight(body: Body, seconds: number) {
+      const pulse = still ? 0 : Math.round((Math.sin(seconds * 5) + 1) * 2);
+      const pixel = Math.max(3, Math.round(body.size / 12));
+      if (body.name === "sun") {
+        context!.globalAlpha = body.opacity;
+        context!.fillStyle = sunRayColour;
+        const reach = body.size * 0.62 + pulse * 2;
+        for (let ray = 0; ray < 8; ray++) {
+          const angle = (ray * Math.PI) / 4;
+          for (let step = 0; step < 3; step++) {
+            const distance = reach + step * pixel;
+            context!.fillRect(
+              Math.round(body.x + Math.cos(angle) * distance - pixel / 2),
+              Math.round(body.y + Math.sin(angle) * distance - pixel / 2),
+              pixel,
+              pixel,
+            );
+          }
+        }
+        return;
+      }
+      context!.fillStyle = starColour;
+      context!.globalAlpha = 0.14;
+      for (let ring = 1; ring <= 3; ring++) {
+        context!.beginPath();
+        context!.arc(
+          body.x,
+          body.y,
+          body.size / 2 + ring * pixel * 2 + pulse,
+          0,
+          Math.PI * 2,
+        );
+        context!.fill();
+      }
+    }
+
+    // Draws the sun or moon, and remembers where, for clicks. `sunset` is
+    // how red the sun is.
+    function drawBody(
+      name: Body["name"],
+      point: Point,
+      opacity: number,
+      seconds: number,
+      sunset = 0,
+    ) {
+      if (opacity <= 0) return;
+      const size = imageOf(name).width * (floaterScale(viewport) + 1);
+      const body: Body = { name, ...point, size, opacity };
+      bodies.push(body);
+      if (hovered === name) drawHighlight(body, seconds);
+      if (name === "moon") return drawSprite("moon", point, opacity);
+      drawSprite("sunset", point, opacity * sunset);
+      drawSprite("sun", point, opacity * (1 - sunset));
+    }
+
+    // How much of a sun or moon is on screen, from 0 to 1.
+    function onScreen({ x, y, size }: Point & { size: number }) {
+      const half = size / 2;
+      const across = Math.min(viewport.width, x + half) - Math.max(0, x - half);
+      const down = Math.min(viewport.height, y + half) - Math.max(0, y - half);
+      return (Math.max(0, across) * Math.max(0, down)) / (size * size);
+    }
+
     // The sun and moon follow the scroll. With reduced motion they stay put
     // on the page instead: the sun at the top and the moon at the bottom, so
-    // they scroll past like everything else.
-    function drawSunAndMoon() {
+    // they scroll past like everything else. With the sky swapped, the moon
+    // takes the sun's path down from the top, and the sun rises on the
+    // moon's, red at first.
+    function drawSunAndMoon(seconds: number) {
       const lastScroll =
         document.documentElement.scrollHeight - viewport.height;
       const progress = still
@@ -235,17 +379,44 @@ export function SkyCanvas() {
             lastScroll + viewport.height / 2,
           );
 
-      const sun = sunPosition(progress.sun, viewport);
-      if (still) sun.y -= scrollY;
-      const red = sunsetAmount(progress.sun);
-      drawSprite("sunset", sun, red);
-      drawSprite("sun", sun, 1 - red);
+      const high = sunPosition(progress.sun, viewport);
+      if (still) high.y -= scrollY;
+      const low = moonPosition(progress.moon, viewport);
+      if (still) low.y += lastScroll - scrollY;
+      const lowShows = progress.moon > 0;
 
-      const moon = moonPosition(progress.moon, viewport);
-      if (still) moon.y += lastScroll - scrollY;
-      // Dimmed like the scenery, since on phones it rises behind the
-      // contact section's light text.
-      drawSprite("moon", moon, progress.moon > 0 ? moonOpacity : 0);
+      // The keyboard's focus lights up whichever is most in view.
+      if (focused) {
+        const size = imageOf("sun").width * (floaterScale(viewport) + 1);
+        const highFirst =
+          onScreen({ ...high, size }) >=
+          (lowShows ? onScreen({ ...low, size }) : 0);
+        hovered = highFirst !== swapped ? "sun" : "moon";
+      }
+
+      bodies = [];
+      const moonOpacity =
+        viewport.width < phoneWidth ? phoneMoonOpacity : dimmedOpacity;
+      // Whichever rises from the bottom is dimmed like the scenery, since it
+      // passes behind the contact text.
+      if (swapped) {
+        drawBody("moon", high, moonOpacity, seconds);
+        const sunrise = 1 - Math.min(1, progress.moon / 0.5);
+        drawBody("sun", low, lowShows ? dimmedOpacity : 0, seconds, sunrise);
+      } else {
+        drawBody("sun", high, 1, seconds, sunsetAmount(progress.sun));
+        drawBody("moon", low, lowShows ? moonOpacity : 0, seconds);
+      }
+    }
+
+    // The sun or moon at a point on screen, with a little room around it.
+    function bodyAt(x: number, y: number) {
+      return bodies.find(
+        (body) =>
+          body.opacity > 0.1 &&
+          Math.abs(x - body.x) <= body.size / 2 + 8 &&
+          Math.abs(y - body.y) <= body.size / 2 + 8,
+      );
     }
 
     function frame(time: number) {
@@ -257,7 +428,7 @@ export function SkyCanvas() {
 
       drawSky();
       drawStars(time / 1000);
-      drawSunAndMoon();
+      drawSunAndMoon(time / 1000);
 
       for (const { sprite, x, y, night } of placed) {
         if (y - scrollY > viewport.height || y - scrollY < -100) continue;
@@ -304,6 +475,35 @@ export function SkyCanvas() {
       if (still) redraw();
     }
 
+    // Pointing at the sun or moon, where the sky shows through, makes it
+    // shine and turns the pointer into a hand. Only mice point; a tap swaps.
+    function onPointerMove(event: PointerEvent) {
+      if (event.pointerType !== "mouse" || focused) return;
+      const body = bodyAt(event.clientX, event.clientY);
+      const over = body && isOpenSky(event) ? body.name : undefined;
+      if (over === hovered) return;
+      hovered = over;
+      document.documentElement.style.cursor = over ? "pointer" : "";
+      if (still) redraw();
+    }
+
+    function onClick(event: MouseEvent) {
+      if (bodyAt(event.clientX, event.clientY) && isOpenSky(event))
+        toggleSkySwap();
+    }
+
+    function onFocusChange() {
+      focused = !!button?.matches(":focus-visible");
+      if (!focused) hovered = undefined;
+      redraw();
+    }
+
+    function onSwap() {
+      swapped = isSkySwapped();
+      measure();
+      redraw();
+    }
+
     function onMotionChange() {
       still = motionQuery.matches;
       lastTime = undefined;
@@ -321,6 +521,11 @@ export function SkyCanvas() {
     resize();
     addEventListener("resize", resize);
     addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("pointermove", onPointerMove, { passive: true });
+    addEventListener("click", onClick);
+    button?.addEventListener("focus", onFocusChange);
+    button?.addEventListener("blur", onFocusChange);
+    const unsubscribe = subscribeSkySwap(onSwap);
     addEventListener(konamiEvent, onKonami);
     motionQuery.addEventListener("change", onMotionChange);
     document.addEventListener("visibilitychange", onVisibilityChange);
@@ -335,6 +540,12 @@ export function SkyCanvas() {
       cancelAnimationFrame(frameId);
       removeEventListener("resize", resize);
       removeEventListener("scroll", onScroll);
+      removeEventListener("pointermove", onPointerMove);
+      removeEventListener("click", onClick);
+      button?.removeEventListener("focus", onFocusChange);
+      button?.removeEventListener("blur", onFocusChange);
+      unsubscribe();
+      document.documentElement.style.cursor = "";
       removeEventListener(konamiEvent, onKonami);
       motionQuery.removeEventListener("change", onMotionChange);
       document.removeEventListener("visibilitychange", onVisibilityChange);
@@ -346,10 +557,26 @@ export function SkyCanvas() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 size-full [image-rendering:pixelated]"
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 -z-10 size-full [image-rendering:pixelated]"
+      />
+      {/*
+        The sun and moon are painted on the canvas, so they can't be tabbed
+        to. This does the same job for the keyboard: hidden until focused,
+        when it shows in the corner and the sun or moon in view shines.
+      */}
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-pressed={swapped}
+        onClick={toggleSkySwap}
+        className="sr-only z-50 cursor-pointer bg-gold px-4 py-2 font-label text-ink focus:not-sr-only focus:fixed focus:top-4 focus:right-4"
+      >
+        swap day and night
+      </button>
+    </>
   );
 }

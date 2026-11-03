@@ -11,12 +11,16 @@ describe("SiteFooter", () => {
     );
   });
 
-  it("links to the site's source", () => {
+  it("links to the site's source in a new tab", () => {
     render(<SiteFooter />);
 
-    expect(screen.getByRole("link", { name: "view source" })).toHaveAttribute(
+    const link = screen.getByRole("link", {
+      name: "view source (opens in a new tab)",
+    });
+    expect(link).toHaveAttribute(
       "href",
       "https://github.com/samad-a/portfolio-site",
     );
+    expect(link).toHaveAttribute("target", "_blank");
   });
 });
