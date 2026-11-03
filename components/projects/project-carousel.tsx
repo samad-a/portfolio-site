@@ -132,7 +132,8 @@ export function ProjectCarousel({ projects }: { projects: Project[] }) {
                 className="group grid h-8 cursor-pointer place-items-center px-1"
               >
                 <span
-                  className={`block h-3 ${shown ? "w-7 bg-ink" : "w-3 bg-[rgb(27_27_47/0.3)] group-hover:bg-[rgb(27_27_47/0.6)]"}`}
+                  // On the sky, so dark by day and light once it's swapped to night.
+                  className={`block h-3 ${shown ? "w-7 bg-on-sky" : "w-3 bg-on-sky/30 group-hover:bg-on-sky/60"}`}
                 />
               </button>
             );
