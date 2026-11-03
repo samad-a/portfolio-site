@@ -49,7 +49,7 @@ export default async function CaseStudyPage({ params }: Props) {
     >
       <Link
         href="/#projects"
-        className="justify-self-start font-label text-sm tracking-wider text-ink"
+        className="justify-self-start font-label text-sm tracking-wider text-on-sky"
       >
         <span aria-hidden="true">← </span>back to projects
       </Link>
@@ -157,7 +157,7 @@ export default async function CaseStudyPage({ params }: Props) {
       {next !== project && (
         <Link
           href={`/projects/${next.id}`}
-          className="justify-self-end font-label text-sm tracking-wider text-ink"
+          className="justify-self-end font-label text-sm tracking-wider text-on-sky"
         >
           next project: {next.name}
           <span aria-hidden="true"> →</span>

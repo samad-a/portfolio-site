@@ -1,4 +1,6 @@
 import type { MDXComponents } from "mdx/types";
+import { NewTabNote } from "@/components/ui/new-tab-note";
+import { isExternal, newTab } from "@/lib/links";
 
 // How Markdown elements look inside MDX content, such as the case studies.
 // Next.js looks for this file at the project root.
@@ -23,9 +25,21 @@ const components: MDXComponents = {
     <ol className="mt-3 grid list-decimal gap-1.5 pl-6" {...props} />
   ),
   li: (props) => <li className="marker:text-gold-dark" {...props} />,
-  a: (props) => (
-    <a className="underline decoration-2 underline-offset-4" {...props} />
-  ),
+  a: ({ children, ...props }) =>
+    props.href && isExternal(props.href) ? (
+      <a
+        className="underline decoration-2 underline-offset-4"
+        {...props}
+        {...newTab}
+      >
+        {children}
+        <NewTabNote />
+      </a>
+    ) : (
+      <a className="underline decoration-2 underline-offset-4" {...props}>
+        {children}
+      </a>
+    ),
   // Code blocks, coloured by rehype-pretty-code while the site builds.
   figure: (props) =>
     "data-rehype-pretty-code-figure" in props ? (

@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { jetbrainsMono, pixelifySans, silkscreen } from "./fonts";
 import "./globals.css";
 import { pageMetadata, siteDescription, siteName, siteUrl } from "@/lib/site";
+import { skySwapScript } from "@/lib/sky-swap";
 
 export const metadata: Metadata = {
   // Lets pages give relative URLs for canonical links and preview images.
@@ -27,10 +28,18 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // Smooth scrolling is for jumps within a page; Next.js turns it off
+      // while moving to another page, so new pages start at the top at once.
+      data-scroll-behavior="smooth"
       className={`${pixelifySans.variable} ${silkscreen.variable} ${jetbrainsMono.variable}`}
+      // The head script below may mark the sky as swapped before React loads.
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: skySwapScript }} />
+      </head>
       {/* A column at least as tall as the screen, so the footer sits at the bottom of short pages. */}
-      <body className="flex min-h-dvh flex-col bg-sky text-[17px] text-ink sm:text-[19px]">
+      <body className="flex min-h-dvh flex-col bg-sky text-[17px] text-on-sky sm:text-[19px]">
         {/* Hidden until focused, so keyboard users can jump past the navigation. */}
         <a
           href="#main"

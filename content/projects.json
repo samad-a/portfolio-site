@@ -97,6 +97,10 @@
         "caption": "A mock flight site with no CAPTCHA, where the same checks quietly route agents to their own lane."
       },
       {
+        "src": "/projects/reverse-captcha/tickets.png",
+        "caption": "A mock concert ticket site: people join the fan queue, while agents get their own queue, capped at 2 tickets each."
+      },
+      {
         "src": "/projects/reverse-captcha/dashboard.png",
         "caption": "The live dashboard: a human-to-machine meter, recent attempts and traffic in each lane."
       }

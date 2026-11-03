@@ -31,3 +31,22 @@ test.describe("with reduced motion", () => {
     expect(animated).toBe(0);
   });
 });
+
+test("the keyboard can swap day and night, and it's remembered", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  await page.keyboard.press("Tab");
+  await page.keyboard.press("Tab");
+  const swap = page.getByRole("button", { name: "swap day and night" });
+  await expect(swap).toBeFocused();
+  await expect(swap).toBeInViewport();
+  await page.keyboard.press("Enter");
+  await expect(swap).toHaveAttribute("aria-pressed", "true");
+
+  // Set before the page draws, so the night sky doesn't flash day first.
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-sky-swap", "");
+  await expect(page.locator("body")).toHaveCSS("color", "rgb(243, 239, 255)");
+});

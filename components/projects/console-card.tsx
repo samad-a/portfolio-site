@@ -4,6 +4,7 @@ import { useId } from "react";
 import { Sprite } from "@/components/sprite";
 import { PixelPanel } from "@/components/ui/pixel-panel";
 import type { Project } from "@/lib/content";
+import { newTab, newTabNote } from "@/lib/links";
 import { sprites } from "@/lib/sprites";
 
 // A plus-shaped D-pad, cut from a square.
@@ -31,7 +32,8 @@ function FaceButtons({ project }: { project: Project }) {
       {code ? (
         <a
           href={code}
-          aria-label={`View code for ${project.name}`}
+          {...newTab}
+          aria-label={`View code for ${project.name}${newTabNote}`}
           className={controlClass}
         >
           <span
@@ -49,7 +51,8 @@ function FaceButtons({ project }: { project: Project }) {
       {play ? (
         <a
           href={play}
-          aria-label={`Play ${project.name}`}
+          {...newTab}
+          aria-label={`Play ${project.name}${newTabNote}`}
           className={`mb-4 ${controlClass}`}
         >
           <span className={aClass}>play</span>

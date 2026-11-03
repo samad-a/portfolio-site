@@ -33,7 +33,7 @@ export function Hero({ cvHref }: HeroProps) {
           )}
           <a
             href="#experience"
-            className="animate-blink font-label text-sm tracking-wider text-ink no-underline motion-reduce:animate-none"
+            className="animate-blink font-label text-sm tracking-wider text-on-sky no-underline motion-reduce:animate-none"
           >
             press start <span aria-hidden="true">↓</span>
           </a>

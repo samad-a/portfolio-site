@@ -1,4 +1,6 @@
+import { NewTabNote } from "@/components/ui/new-tab-note";
 import { contact } from "@/lib/contact";
+import { newTab } from "@/lib/links";
 
 // The ground the whole page stands on: a strip of grass over dirt.
 export function SiteFooter() {
@@ -14,8 +16,13 @@ export function SiteFooter() {
             up up down down left right left right B A
           </span>
         </span>
-        <a href={`${contact.github}/portfolio-site`} className="text-paper">
+        <a
+          href={`${contact.github}/portfolio-site`}
+          {...newTab}
+          className="text-paper"
+        >
           view source
+          <NewTabNote />
         </a>
       </div>
     </footer>

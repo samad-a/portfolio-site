@@ -42,7 +42,7 @@ export default async function PostPage({ params }: Props) {
     >
       <Link
         href="/blog"
-        className="justify-self-start font-label text-sm tracking-wider text-ink"
+        className="justify-self-start font-label text-sm tracking-wider text-on-sky"
       >
         <span aria-hidden="true">← </span>back to dev log
       </Link>
