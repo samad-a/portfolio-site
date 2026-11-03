@@ -122,7 +122,7 @@ a key, the form shows a friendly error and the rest of the site works.
 
    - `colour` is the console's body. White text sits on it, so the check fails if it's lighter than a 4.5:1 contrast.
    - `tag`, `event` and `award` are optional: the console's top edge, the label above its screen and a gold sticker.
-   - `screenshot` is optional: a 4:3 image in `public/projects/`. Without one, the screen shows `sprite`, any name from `lib/sprites`.
+   - `screenshot` is optional: an image in `public/projects/`. The console's screen is 16:10 and the project page shows it at 4:3, each trimmed from the middle. Add `"align": "top"` to trim from the bottom instead, so a page's header stays in view. Without a screenshot, the screen shows `sprite`, any name from `lib/sprites`.
    - `gallery` is optional: photos, screenshots and short silent `.mp4` clips in `public/projects/my-project/`, each with a `caption` (and a `poster` still for a video). They appear in a demo section on the project's page.
    - The console's A button opens the `play` link if there is one, or else the gallery. With neither, it greys out and says "no demo".
 
