@@ -120,6 +120,8 @@ export default async function CaseStudyPage({ params }: Props) {
                       <video
                         src={src}
                         poster={poster}
+                        // Named by its caption, as images are by their alt text.
+                        aria-label={caption}
                         controls
                         muted
                         loop

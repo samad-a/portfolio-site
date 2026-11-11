@@ -52,17 +52,26 @@ describe("CopyEmail", () => {
     expect(writeText).toHaveBeenCalledWith("me@example.com");
   });
 
-  it("selects the address when the clipboard isn't available", async () => {
-    vi.stubGlobal("navigator", {
-      clipboard: { writeText: vi.fn().mockRejectedValue(new Error("denied")) },
-    });
-    render(<CopyEmail email="me@example.com" />);
+  it.each([
+    ["Windows", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)", "ctrl+c"],
+    ["a Mac", "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5)", "⌘C"],
+  ])(
+    "on %s, selects the address when the clipboard isn't available",
+    async (_device, userAgent, keys) => {
+      vi.stubGlobal("navigator", {
+        userAgent,
+        clipboard: {
+          writeText: vi.fn().mockRejectedValue(new Error("denied")),
+        },
+      });
+      render(<CopyEmail email="me@example.com" />);
 
-    fireEvent.click(screen.getByRole("button", { name: "copy" }));
+      fireEvent.click(screen.getByRole("button", { name: "copy" }));
 
-    expect(await screen.findByRole("status")).toHaveTextContent(
-      "selected, press ctrl+c to copy",
-    );
-    expect(getSelection()?.toString()).toBe("me@example.com");
-  });
+      expect(await screen.findByRole("status")).toHaveTextContent(
+        `selected, press ${keys} to copy`,
+      );
+      expect(getSelection()?.toString()).toBe("me@example.com");
+    },
+  );
 });

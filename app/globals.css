@@ -135,9 +135,14 @@
     font-variant-ligatures: none;
   }
 
-  /* A chunky dashed outline that stays visible on every background. */
+  /*
+   * A chunky dashed outline in the text's own colour, which is already chosen
+   * to stand out from whatever is behind it: dark on the day sky and light at
+   * night. Gold was too faint on the day sky, at 1.45:1. Controls whose ring
+   * sits on a different background from their text set its colour themselves.
+   */
   :focus-visible {
-    outline: 3px dashed var(--color-gold-dark);
+    outline: 3px dashed currentColor;
     outline-offset: 4px;
   }
 }

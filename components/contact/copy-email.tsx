@@ -2,6 +2,11 @@
 
 import { useRef, useState } from "react";
 
+// The keys that copy on this device: ⌘C on Apple devices, ctrl+c elsewhere.
+function copyKeys() {
+  return /Mac|iPhone|iPad/.test(navigator.userAgent ?? "") ? "⌘C" : "ctrl+c";
+}
+
 // The address as text, with a button that copies it. If the clipboard isn't
 // available, it selects the address so the visitor can copy it themselves.
 export function CopyEmail({ email }: { email: string }) {
@@ -15,7 +20,7 @@ export function CopyEmail({ email }: { email: string }) {
     } catch {
       const address = addressRef.current;
       if (address) getSelection()?.selectAllChildren(address);
-      setStatus("selected, press ctrl+c to copy");
+      setStatus(`selected, press ${copyKeys()} to copy`);
     }
   }
 
@@ -30,7 +35,8 @@ export function CopyEmail({ email }: { email: string }) {
       <button
         type="button"
         onClick={copy}
-        className="cursor-pointer bg-gold px-3 py-2 font-label text-xs tracking-wide text-ink"
+        // Dark text on gold, but the focus ring falls on the night sky around it.
+        className="cursor-pointer bg-gold px-3 py-2 font-label text-xs tracking-wide text-ink focus-visible:outline-on-night"
       >
         copy
       </button>

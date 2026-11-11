@@ -11,7 +11,7 @@ export default function Image() {
     eyebrow: "portfolio",
     title: "hi, I'm Samad!",
     subtitle:
-      "Computer science student at the University of Edinburgh. Web tools, Android apps and pixel art.",
+      "Computer science student at the University of Edinburgh, building unique and accessible user interfaces.",
     sprite: avatar,
     spriteScale: 17,
   });
