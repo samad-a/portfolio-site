@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   celestialProgress,
   moonPosition,
+  overlapsAny,
   sunLowestStart,
   sunPosition,
   sunsetAmount,
@@ -74,6 +75,32 @@ describe("sunPosition", () => {
     const { x, y } = sunPosition(1, viewport);
     expect(x).toBeGreaterThan(viewport.width + 40);
     expect(y).toBeGreaterThan(viewport.height + 40);
+  });
+
+  it("starts at a given point, and keeps the arc's shape from there", () => {
+    const phone = { width: 375, height: 812 };
+    const start = { x: 331, y: 202 };
+    const plain = [0, 0.5, 1].map((p) => sunPosition(p, phone));
+    const moved = [0, 0.5, 1].map((p) => sunPosition(p, phone, start));
+
+    expect(moved[0]).toEqual(start);
+    moved.forEach((point, index) => {
+      expect(point.x - plain[index].x).toBeCloseTo(start.x - plain[0].x);
+      expect(point.y - plain[index].y).toBeCloseTo(start.y - plain[0].y);
+    });
+  });
+});
+
+describe("overlapsAny", () => {
+  const boxes = [{ left: 100, top: 100, right: 300, bottom: 150 }];
+
+  it.each([
+    [{ x: 90, y: 125 }, true],
+    [{ x: 200, y: 165 }, true],
+    [{ x: 60, y: 125 }, false],
+    [{ x: 200, y: 200 }, false],
+  ])("a 40px square at %o overlaps: %s", (point, expected) => {
+    expect(overlapsAny(point, 40, boxes)).toBe(expected);
   });
 });
 

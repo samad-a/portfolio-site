@@ -4,6 +4,7 @@ import { useEffect, useRef, useSyncExternalStore } from "react";
 import {
   celestialProgress,
   moonPosition,
+  overlapsAny,
   type Point,
   sunPosition,
   sunsetAmount,
@@ -35,10 +36,14 @@ const spriteOpacity = 0.55;
 // The moon, and the sun when it rises from the bottom, where they can pass
 // behind text.
 const dimmedOpacity = 0.6;
-// On phones the moon passes right behind light text, so it's fainter still:
-// white at this strength on the night sky keeps 4.5:1 with the text.
-const phoneMoonOpacity = 0.3;
+// Behind light text the moon is fainter still: white at this strength on the
+// night sky keeps 4.5:1 with the text. On phones it's always this faint, as
+// the text there fills the screen's width.
+const faintMoonOpacity = 0.3;
 const phoneWidth = 768;
+// The gap kept between the sun and the end of a phone's heading, and between
+// the sun and the screen's edge.
+const sunGap = 16;
 
 // The sun or moon, where it was last drawn on screen, so it can be clicked.
 type Body = {
@@ -84,6 +89,23 @@ function isOpenSky({ target, clientX, clientY }: MouseEvent) {
     if (style.backgroundImage !== "none" || !clear) return false;
   }
   return true;
+}
+
+// The boxes around each line of words straight on the sky (not inside a
+// panel), in page pixels, so the moon can fade behind them.
+function skyTextBoxes() {
+  const range = document.createRange();
+  return [...document.querySelectorAll("main h1, main h2, main p")]
+    .filter((element) => !element.closest(".pixel-outline"))
+    .flatMap((element) => {
+      range.selectNodeContents(element);
+      return [...range.getClientRects()].map((line) => ({
+        left: line.left,
+        right: line.right,
+        top: line.top + scrollY,
+        bottom: line.bottom + scrollY,
+      }));
+    });
 }
 
 function themeColour(name: string) {
@@ -139,6 +161,14 @@ export function SkyCanvas() {
     let placed: { sprite: SpriteName; x: number; y: number; night: boolean }[] =
       [];
     let stars: Star[] = [];
+    // On phones, where the sun starts: beside the page's heading, in page
+    // pixels. Left out when the heading is too wide to leave room.
+    let sunStart: Point | undefined;
+    let textBoxes: ReturnType<typeof skyTextBoxes> = [];
+    // The moon's strength now, easing towards a fainter one behind text.
+    let moonOpacity: number | undefined;
+    // Seconds since the last frame.
+    let delta = 0;
     let frameId = 0;
     let lastTime: number | undefined;
     // With reduced motion, nothing moves: the sky is drawn as a still picture
@@ -195,6 +225,8 @@ export function SkyCanvas() {
           ? makeStars(Math.random, viewport.width, layout.dayEnd, pageHeight)
           : [];
       placeScenery();
+      sunStart = placeSun();
+      textBoxes = skyTextBoxes();
       // The browser positions the body's background against the whole page,
       // so this lines up with the canvas as it scrolls.
       document.body.style.backgroundImage = skyBackground(
@@ -203,6 +235,21 @@ export function SkyCanvas() {
         swapped,
       );
       document.body.style.backgroundRepeat = "no-repeat";
+    }
+
+    // On a phone the intro sits under the heading, right where the sun's arc
+    // starts, so the sun starts to the right of the heading's first line.
+    function placeSun(): Point | undefined {
+      const heading = document.querySelector("main h1");
+      if (viewport.width >= phoneWidth || !heading) return undefined;
+      const range = document.createRange();
+      range.selectNodeContents(heading);
+      const line = range.getClientRects()[0];
+      if (!line) return undefined;
+      const size = imageOf("sun").width * (floaterScale(viewport) + 1);
+      const x = viewport.width - sunGap - size / 2;
+      if (line.right + sunGap > x - size / 2) return undefined;
+      return { x, y: line.top + scrollY + line.height / 2 };
     }
 
     // Works out where each piece of scenery goes beside its section.
@@ -379,7 +426,7 @@ export function SkyCanvas() {
             lastScroll + viewport.height / 2,
           );
 
-      const high = sunPosition(progress.sun, viewport);
+      const high = sunPosition(progress.sun, viewport, sunStart);
       if (still) high.y -= scrollY;
       const low = moonPosition(progress.moon, viewport);
       if (still) low.y += lastScroll - scrollY;
@@ -395,8 +442,22 @@ export function SkyCanvas() {
       }
 
       bodies = [];
-      const moonOpacity =
-        viewport.width < phoneWidth ? phoneMoonOpacity : dimmedOpacity;
+      // The moon fades a little more while it's behind words on the sky.
+      const moon = swapped ? high : low;
+      const size = imageOf("moon").width * (floaterScale(viewport) + 1);
+      const behindText = overlapsAny(
+        { x: moon.x, y: moon.y + scrollY },
+        size,
+        textBoxes,
+      );
+      const target =
+        viewport.width < phoneWidth || behindText
+          ? faintMoonOpacity
+          : dimmedOpacity;
+      moonOpacity =
+        still || moonOpacity === undefined
+          ? target
+          : moonOpacity + (target - moonOpacity) * Math.min(1, delta * 6);
       // Whichever rises from the bottom is dimmed like the scenery, since it
       // passes behind the contact text.
       if (swapped) {
@@ -425,6 +486,7 @@ export function SkyCanvas() {
         ? 0
         : Math.min((time - (lastTime ?? time)) / 1000, 0.1);
       lastTime = time;
+      delta = seconds;
 
       drawSky();
       drawStars(time / 1000);

@@ -7,8 +7,10 @@ import type { SpriteGrid } from "@/lib/sprites/grid";
 
 // Shared by cloud links and the mobile menu's cloud button. The default width
 // suits the original 24-pixel cloud; cloudStyle sizes any other cloud.
+// The label is dark on a white cloud, but the focus ring falls on the sky
+// around it, so it takes the sky's text colour.
 export const cloudClassName =
-  "group relative grid w-[150px] animate-bob cursor-pointer text-xl font-medium text-ink no-underline motion-reduce:animate-none";
+  "group relative grid w-[150px] animate-bob cursor-pointer text-xl font-medium text-ink no-underline focus-visible:outline-on-sky motion-reduce:animate-none";
 
 // CSS pixels per sprite pixel for the smaller clouds, so their pixels match.
 const cloudPixelSize = 6.75;

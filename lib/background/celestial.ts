@@ -74,11 +74,34 @@ export const moonArc: Arc = {
 export const sunLowestStart = 230;
 
 // Where the middle of the sun is on screen. On a tall screen the whole arc
-// lifts, so the sun starts no lower than sunLowestStart.
-export function sunPosition(progress: number, viewport: Viewport) {
-  const lift = Math.max(0, onArc(sunArc, 0, viewport).y - sunLowestStart);
+// lifts, so the sun starts no lower than sunLowestStart. With `start`, the
+// whole arc moves instead so the sun starts there, such as beside a phone's
+// heading, where the arc's own start would be behind the text below it.
+export function sunPosition(
+  progress: number,
+  viewport: Viewport,
+  start?: Point,
+) {
+  const first = onArc(sunArc, 0, viewport);
+  const shift = start
+    ? { x: start.x - first.x, y: start.y - first.y }
+    : { x: 0, y: -Math.max(0, first.y - sunLowestStart) };
   const { x, y } = onArc(sunArc, progress, viewport);
-  return { x, y: y - lift };
+  return { x: x + shift.x, y: y + shift.y };
+}
+
+type Box = { left: number; top: number; right: number; bottom: number };
+
+// Whether a square of `size` centred on a point overlaps any of the boxes.
+export function overlapsAny({ x, y }: Point, size: number, boxes: Box[]) {
+  const half = size / 2;
+  return boxes.some(
+    (box) =>
+      x + half > box.left &&
+      x - half < box.right &&
+      y + half > box.top &&
+      y - half < box.bottom,
+  );
 }
 
 // Where the middle of the moon is on screen.
